@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>A little question for you 💌</title>
+<meta name="description" content="I have something to ask you…" />
+<meta property="og:title" content="I have a question for you 💌" />
+<meta property="og:description" content="Open me 🥰" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg1:#ffd9e1; --bg2:#ffeef0; --bg3:#e7d6ff;
+    --ink:#5a2a43; --soft:#8a6076;
+    --accent:#ff5d8f; --accent-dark:#e23e74;
+    --card:rgba(255,255,255,.72);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:"Quicksand",system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:linear-gradient(135deg,var(--bg1),var(--bg2) 45%,var(--bg3));
+    background-size:200% 200%;
+    animation:drift 16s ease infinite;
+    min-height:100dvh;display:flex;align-items:center;justify-content:center;
+    padding:20px;overflow-x:hidden;
+  }
+  @keyframes drift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+  .card{
+    width:100%;max-width:440px;background:var(--card);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.6);
+    border-radius:28px;padding:34px 26px 30px;
+    box-shadow:0 24px 60px rgba(196,67,118,.28);
+    text-align:center;position:relative;
+  }
+  .step{display:none;animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+  .step.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .kicker{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin:0 0 6px;font-weight:600}
+  h1{font-family:"Dancing Script",cursive;font-weight:700;font-size:40px;line-height:1.08;margin:0 0 6px}
+  h2{font-family:"Dancing Script",cursive;font-weight:700;font-size:34px;margin:0 0 4px}
+  p.sub{margin:6px 0 22px;color:var(--soft);font-size:16px}
+  .emoji{font-size:46px;display:block;margin:2px 0 10px;animation:beat 1.6s ease-in-out infinite}
+  @keyframes beat{0%,100%{transform:scale(1)}25%{transform:scale(1.18)}40%{transform:scale(.97)}}
+
+  .btn{
+    appearance:none;border:none;cursor:pointer;font-family:inherit;
+    font-weight:700;font-size:17px;border-radius:16px;padding:15px 22px;
+    transition:transform .15s ease,box-shadow .2s ease,background .2s;
+    width:100%;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;box-shadow:0 12px 24px rgba(226,62,116,.4)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-primary:active{transform:translateY(0)}
+
+  .yesno{display:flex;gap:12px;align-items:center;justify-content:center;position:relative;height:74px;margin-top:8px}
+  #yesBtn{flex:1;max-width:230px}
+  #noBtn{
+    background:#fff;color:var(--soft);border:2px solid rgba(138,96,118,.25);
+    padding:13px 20px;border-radius:16px;font-weight:600;font-size:15px;
+    position:relative;transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+    cursor:pointer;
+  }
+
+  .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 18px}
+  .chip{
+    background:#fff;border:2px solid rgba(255,93,143,.25);color:var(--ink);
+    padding:11px 16px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;
+    transition:all .15s ease;font-family:inherit;
+  }
+  .chip:hover{border-color:var(--accent)}
+  .chip.sel{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-color:transparent;transform:translateY(-1px)}
+
+  input[type="text"],input[type="date"]{
+    width:100%;font-family:inherit;font-size:16px;color:var(--ink);
+    padding:13px 15px;border-radius:14px;border:2px solid rgba(138,96,118,.18);
+    background:#fff;margin:4px 0 16px;outline:none;
+  }
+  input:focus{border-color:var(--accent)}
+  label.fld{display:block;text-align:left;font-weight:600;font-size:14px;color:var(--soft);margin:2px 2px 4px}
+
+  .row{display:flex;gap:10px;margin-top:6px}
+  .row .btn{width:auto}
+  .btn-ghost{background:transparent;color:var(--soft);font-weight:600;flex:0 0 auto;padding:15px 16px}
+  .grow{flex:1}
+
+  .dots{display:flex;gap:7px;justify-content:center;margin-top:20px}
+  .dot{width:8px;height:8px;border-radius:50%;background:rgba(226,62,116,.25);transition:all .3s}
+  .dot.on{background:var(--accent);width:22px;border-radius:999px}
+
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+  .err{color:var(--accent-dark);font-size:14px;min-height:18px;margin-top:6px;font-weight:600}
+
+  .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+  .confetti span{position:absolute;top:-20px;font-size:20px;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.9}}
+
+  .heart-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .heart-bg span{position:absolute;bottom:-30px;color:rgba(255,93,143,.35);font-size:18px;animation:floatUp linear infinite}
+  @keyframes floatUp{to{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+</style>
+</head>
+<body>
+  <div class="heart-bg" id="heartBg"></div>
+
+  <form class="card" id="form" autocomplete="off">
+    <!-- Step 1 -->
+    <section class="step active" data-step="0">
+      <span class="emoji">💌</span>
+      <p class="kicker">I have a question</p>
+      <h1>Will you go on a date with me?</h1>
+      <p class="sub">No pressure… okay, maybe a little 🥺</p>
+      <div class="yesno">
+        <button type="button" class="btn btn-primary" id="yesBtn">Yes 🥰</button>
+        <button type="button" id="noBtn">No</button>
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="step" data-step="1">
+      <span class="emoji">🥳</span>
+      <h2>Yay! When are you free?</h2>
+      <p class="sub">Pick whatever's easiest</p>
+      <div class="chips" id="whenChips">
+        <button type="button" class="chip">This Friday</button>
+        <button type="button" class="chip">Saturday</button>
+        <button type="button" class="chip">Sunday</button>
+        <button type="button" class="chip">Next week</button>
+        <button type="button" class="chip">You pick 😊</button>
+      </div>
+      <label class="fld">…or a specific day</label>
+      <input type="date" id="whenDate" />
+      <div class="err" id="whenErr"></div>
+      <div class="row">
+        <button type="button" class="btn btn-ghost" data-back>← Back</button>
+        <button type="button" class="btn btn-primary grow" data-next>Next →</button>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="step" data-step="2">
+      <span class="emoji">✨</span>
+      <h2>Where to?</h2>
+      <p class="sub">What sounds lovely?</p>
+      <div class="chips" id="whereChips">
+        <button type="button" class="chip">Dinner 🍝</button>
+        <button type="button" class="chip">Coffee ☕</button>
+        <button type="button" class="chip">Drinks 🍸</button>
+        <button type="button" class="chip">A walk 🌿</button>
+        <button type="button" class="chip">Surprise me ✨</button>
+      </div>
+      <label class="fld">Anything you'd love? (optional)</label>
+      <input type="text" id="note" placeholder="A note for me 💕" maxlength="200" />
+      <div class="err" id="whereErr"></div>
+      <div class="row">
+        <button type="button" class="btn btn-ghost" data-back>← Back</button>
+        <button type="submit" class="btn btn-primary grow" id="sendBtn">Send it 💌</button>
+      </div>
+    </section>
+
+    <!-- Step: gentle "no" -->
+    <section class="step" data-step="no">
+      <span class="emoji">🥺</span>
+      <h2>Oh… okay 💔</h2>
+      <p class="sub">No worries at all — thank you for being honest. I'll let you know I asked. 💛</p>
+    </section>
+
+    <!-- Step: success -->
+    <section class="step" data-step="done">
+      <span class="emoji">💞</span>
+      <h2>Can't wait!</h2>
+      <p class="sub" id="doneMsg">I just got your answer — I'll be in touch. 🥰</p>
+    </section>
+
+    <!-- honeypot -->
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" />
+
+    <div class="dots" id="dots">
+      <span class="dot on"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+  </form>
+
+<script>
+(function(){
+  var ENDPOINT = "https://formsubmit.co/ajax/yonatan@thepipelinegroup.io";
+
+  var data = { answer:"", when:"", where:"", note:"" };
+  var steps = Array.prototype.slice.call(document.querySelectorAll(".step"));
+  var dots = document.getElementById("dots");
+
+  function show(key){
+    steps.forEach(function(s){ s.classList.toggle("active", s.dataset.step === String(key)); });
+    var n = parseInt(key,10);
+    dots.style.display = (key===0||key===1||key===2) ? "flex" : "none";
+    if(!isNaN(n)){
+      Array.prototype.forEach.call(dots.children,function(d,i){ d.classList.toggle("on", i<=n); });
+    }
+    window.scrollTo(0,0);
+  }
+
+  // ---- Step 1: yes / playful no ----
+  var dodge = 0;
+  var noBtn = document.getElementById("noBtn");
+  var noTexts = ["No","Are you sure? 🥺","Really? 😟","Last chance… 💔"];
+  noBtn.addEventListener("mouseenter", nudge);
+  noBtn.addEventListener("click", function(){
+    if(dodge < 3){ nudge(); return; }
+    data.answer = "No 💔";
+    sendNo();
+  });
+  function nudge(){
+    dodge++;
+    if(dodge < noTexts.length) noBtn.textContent = noTexts[dodge];
+    var dx = (Math.random()*120-60), dy = (Math.random()*40-30);
+    noBtn.style.transform = "translate("+dx+"px,"+dy+"px) rotate("+(Math.random()*16-8)+"deg)";
+  }
+  document.getElementById("yesBtn").addEventListener("click", function(){
+    data.answer = "YES 🥰";
+    burst();
+    show(1);
+  });
+
+  // ---- chips ----
+  function wireChips(containerId, key, clearDate){
+    var c = document.getElementById(containerId);
+    c.addEventListener("click", function(e){
+      if(!e.target.classList.contains("chip")) return;
+      Array.prototype.forEach.call(c.children,function(ch){ ch.classList.remove("sel"); });
+      e.target.classList.add("sel");
+      data[key] = e.target.textContent.trim();
+      if(clearDate){ document.getElementById("whenDate").value=""; }
+    });
+  }
+  wireChips("whenChips","when",true);
+  wireChips("whereChips","where",false);
+
+  var whenDate = document.getElementById("whenDate");
+  whenDate.min = new Date().toISOString().split("T")[0];
+  whenDate.addEventListener("change", function(){
+    if(whenDate.value){
+      Array.prototype.forEach.call(document.getElementById("whenChips").children,function(ch){ ch.classList.remove("sel"); });
+      var d = new Date(whenDate.value + "T00:00");
+      data.when = d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+    }
+  });
+
+  // ---- nav ----
+  document.querySelectorAll("[data-next]").forEach(function(b){
+    b.addEventListener("click", function(){
+      if(!data.when){ document.getElementById("whenErr").textContent="Pick a day or tap “You pick” 😊"; return; }
+      document.getElementById("whenErr").textContent="";
+      show(2);
+    });
+  });
+  document.querySelectorAll("[data-back]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var cur = b.closest(".step").dataset.step;
+      show(cur==="2" ? 1 : 0);
+    });
+  });
+
+  // ---- submit ----
+  document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    if(!data.where){ document.getElementById("whereErr").textContent="Pick a vibe ✨"; return; }
+    data.note = document.getElementById("note").value.trim();
+    var btn = document.getElementById("sendBtn");
+    btn.disabled = true; btn.textContent = "Sending… 💌";
+    post({
+      _subject: "💌 She answered your date ask!",
+      _template: "table",
+      _captcha: "false",
+      "Her answer": data.answer,
+      "When she's free": data.when,
+      "Where she'd love to go": data.where,
+      "Her note": data.note || "(none)"
+    }).then(function(){
+      burst();
+      show("done");
+    }).catch(function(){
+      // even if the relay hiccups, don't leave her stuck
+      show("done");
+      document.getElementById("doneMsg").textContent = "Got it — I'll be in touch! 🥰";
+    });
+  });
+
+  function sendNo(){
+    post({
+      _subject: "She answered your date ask",
+      _template: "table",
+      _captcha: "false",
+      "Her answer": "No 💔",
+      "When she's free": "—",
+      "Where she'd love to go": "—",
+      "Her note": document.getElementById("note") ? "" : ""
+    }).finally(function(){ show("no"); });
+  }
+
+  function post(payload){
+    return fetch(ENDPOINT,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "Accept":"application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(r){ if(!r.ok) throw new Error("bad"); return r.json(); });
+  }
+
+  // ---- fun: confetti + floating hearts ----
+  function burst(){
+    var c = document.createElement("div"); c.className="confetti";
+    var icons=["💖","✨","💕","🥳","💞","🌸","💘"];
+    for(var i=0;i<28;i++){
+      var s=document.createElement("span");
+      s.textContent=icons[i%icons.length];
+      s.style.left=Math.random()*100+"vw";
+      s.style.animationDuration=(2+Math.random()*2)+"s";
+      s.style.animationDelay=(Math.random()*.4)+"s";
+      s.style.fontSize=(14+Math.random()*18)+"px";
+      c.appendChild(s);
+    }
+    document.body.appendChild(c);
+    setTimeout(function(){ c.remove(); },4200);
+  }
+  (function hearts(){
+    var bg=document.getElementById("heartBg");
+    for(var i=0;i<10;i++){
+      var s=document.createElement("span");
+      s.textContent="💗";
+      s.style.left=Math.random()*100+"vw";
+      s.style.fontSize=(12+Math.random()*22)+"px";
+      s.style.animationDuration=(8+Math.random()*10)+"s";
+      s.style.animationDelay=(Math.random()*8)+"s";
+      bg.appendChild(s);
+    }
+  })();
+})();
+</script>
+</body>
+</html>

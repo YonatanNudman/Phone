@@ -1,0 +1,44 @@
+name: FormSubmit setup (one-time activation)
+
+# Runs on GitHub's runners (open internet) so it can reach FormSubmit,
+# which the build container cannot. Used once to activate email delivery.
+#   mode=trigger  -> sends a submission, which makes FormSubmit email an
+#                    activation link to the inbox.
+#   mode=confirm  -> fetches the activation link to confirm the address.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "trigger | confirm"
+        required: true
+        default: "trigger"
+      confirm_url:
+        description: "FormSubmit activation URL (only for mode=confirm)"
+        required: false
+        default: ""
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      EMAIL: "yonatan@thepipelinegroup.io"
+      MODE: ${{ inputs.mode }}
+      CONFIRM_URL: ${{ inputs.confirm_url }}
+    steps:
+      - name: FormSubmit action
+        run: |
+          set -euo pipefail
+          if [ "$MODE" = "confirm" ]; then
+            echo "Confirming activation link…"
+            curl -sS -L --max-time 40 "$CONFIRM_URL" | head -c 1200
+            echo
+          else
+            echo "Sending submission to trigger activation / test delivery…"
+            curl -sS --max-time 40 -X POST "https://formsubmit.co/ajax/${EMAIL}" \
+              -H "Content-Type: application/json" \
+              -H "Accept: application/json" \
+              -d '{"_subject":"FormSubmit setup ping (please ignore)","_template":"table","_captcha":"false","Her answer":"(setup ping - please ignore)","When she is free":"-","Where she would love to go":"-","Her note":"setup"}' \
+              | head -c 1200
+            echo
+          fi
