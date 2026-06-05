@@ -2,7 +2,7 @@ name: Deploy date-ask page to GitHub Pages
 
 on:
   push:
-    branches: ["claude/cloudflare-build-setup-FS7D9"]
+    branches: ["main", "claude/cloudflare-build-setup-FS7D9"]
   workflow_dispatch:
 
 permissions:
