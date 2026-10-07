@@ -1,0 +1,16 @@
+name: ParkNearMe smoke check
+# One-off: confirm the live app serves the new screen and the seeded hydrants.
+on: workflow_dispatch
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          set -e
+          U=https://parknearme.excel-capital.workers.dev
+          curl -fsS "$U/" | grep -o '<title>[^<]*</title>'
+          curl -fsS "$U/api/health" | head -c 600; echo
+          curl -fsS "$U/api/cameras/1ccb8d7c-43d4-450e-b40c-79527766db75/calibration" | python3 -c "import sys,json;r=json.load(sys.stdin)['regions'][0];print('lane',r['id'],'hydrantsM',r.get('hydrantsM'))"
+          curl -fsS -X POST "$U/api/cameras/1ccb8d7c-43d4-450e-b40c-79527766db75/analyze" | python3 -c "import sys,json;d=json.load(sys.stdin);print('analyze:',d['status'],d.get('reason'),'vehicles',d['vehiclesDetected'],'parked',d['parkedVehicles'],'detector',d['detector'],'freshness',d['freshness']);[print(' spot',c['lengthM'],'m',c['status'],c['reasons']) for c in d['candidates']];print(' notes',d['notes'][:4])"
+          curl -fsS "$U/api/parking/current" | python3 -c "import sys,json;d=json.load(sys.stdin);print('summary',d['summary'])"
+          curl -fsS -o /dev/null -w "image %{http_code} %{content_type} %{size_download}B\n" "$U/api/cameras/1ccb8d7c-43d4-450e-b40c-79527766db75/image"
