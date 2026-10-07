@@ -1,0 +1,73 @@
+name: ParkNearMe camera discovery
+
+# Runs on GitHub's runners (open internet) because the development container
+# cannot reach webcams.nyctmc.org. Fetches the NYC TMC camera catalog, pulls
+# frame sequences from cameras near 403 Audubon Ave, runs DETR / YOLOv8n over
+# them, and commits the report + contact sheets to parknearme/feasibility/.
+#
+# Re-run: Actions tab -> "Run workflow", or edit parknearme/feasibility/RUN_REQUEST.
+
+on:
+  workflow_dispatch:
+    inputs:
+      radius:
+        description: "Radius in miles"
+        default: "0.75"
+      frames:
+        description: "Frames per camera"
+        default: "5"
+  push:
+    paths:
+      - "parknearme/scripts/discover-cameras.mjs"
+      - "parknearme/scripts/detect_vehicles.py"
+      - "parknearme/feasibility/RUN_REQUEST"
+      - ".github/workflows/parknearme-camera-discovery.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: parknearme-camera-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: parknearme
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Discover cameras and pull frames
+        run: node scripts/discover-cameras.mjs --radius "${{ inputs.radius || '0.75' }}" --frames "${{ inputs.frames || '5' }}" --interval 4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install detectors (CPU)
+        run: |
+          pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet "transformers>=4.40,<5" pillow ultralytics
+
+      - name: Run DETR + YOLOv8n, build contact sheets
+        run: python scripts/detect_vehicles.py
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add feasibility
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Camera discovery run $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
