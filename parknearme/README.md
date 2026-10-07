@@ -25,12 +25,18 @@ NYC TMC camera ──► Worker /api/cameras/:id/image  (same-origin proxy, 3 s 
                        │  boxes (normalized), duplicate boxes removed (class-agnostic NMS)
                        ▼
        Curb-gap analysis (shared/curb-gaps.ts)
-         • per-camera calibration: parking-lane quad, RESTRICTED / IGNORE / roadway / sidewalk polygons
-         • homography maps the lane quad → unit rectangle (u along the street, v across)
-         • vehicles whose ground point is in the lane = parked; each covers ~1 car slot of u
-         • uncovered u − restricted zones = gaps; gap ≥ 1 slot (1 / lane capacity) = candidate
-         • confidence: gap size, bounded by cars on both sides, on-screen pixel size,
-           occlusion by traffic, temporal persistence across checks, optional VLM second opinion
+         • per-camera calibration: parking-lane quad (+ cars that fit), RESTRICTED / IGNORE / roadway polygons
+         • homography: lane quad → unit rectangle (u along the street, v across); lane length = capacity × 6.1 m
+         • each box → fitted ground footprint (matches the box's left/right/bottom edges; splits merged
+           bumper-to-bumper boxes); footprints in the lane are parked, ones further out only occlude
+         • 1-D occupancy grid per lane (0.25 m bins, prior 75% occupied), persisted in D1 and fused across
+           checks: parked footprints add "occupied" evidence; elsewhere "free" evidence is weighted by how
+           visible a car parked there would be (detector recall at that distance × not hidden behind
+           other vehicles). Curb hidden behind a parked car or a bus stays unknown, never "free".
+         • gaps = runs of likely-free curb − RESTRICTED / IGNORE zones; a car needs ~6.1 m (5.6 m next to a
+           no-parking zone)
+         • confidence = P(gap long enough | measurement noise) × mean P(free) × far-field factor
+           (pixels per metre along the curb) × calibration quality; optional VLM second opinion
                        │
                        ▼
        D1: detections + parking_candidates  ──► /api/parking/current ──► map + bottom sheet
@@ -193,7 +199,7 @@ The same spot is not repeated within 30 minutes, and you get at most one push ev
 
 Worst case: background mode set to *Always* for 3 cameras, every 2 minutes, all day, is about 2,200 analyses/day. With DETR that is about 1,500 neurons (free). If DETR has been retired and the Moondream fallback is used, it is about 55k neurons/day: roughly $0.50/day on the Workers Paid plan ($5/month base), and on the Free plan Workers AI stops after the daily 10k neurons. The default mode (*With alerts*) only runs in the background while alerts are on or the app was opened in the last 15 minutes.
 
-CPU: the Free plan allows 10 ms CPU per request. The Worker never decodes JPEGs; it only hashes them and forwards bytes to Workers AI.
+CPU: the Free plan allows 10 ms CPU per request. The Worker never decodes JPEGs; it only hashes them and forwards bytes to Workers AI. Measured in Node, the gap analysis takes about 1.5–6 ms per frame once warm, but about 20 ms on the first run in a fresh isolate (JIT warm-up). If you see `Exceeded CPU` / error 1102 in the logs on cold starts, move to Workers Paid ($5/month, 30 s CPU).
 
 ---
 
