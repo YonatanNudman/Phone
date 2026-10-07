@@ -1,0 +1,167 @@
+// One analysis run for one camera: cooldown, frame fetch, freshness gate,
+// calibration gate, vehicle detection + curb-gap analysis, optional VLM second
+// opinion, then persist and (in the background) evaluate push alerts.
+//
+// Every outcome is stored as a detection, including failures (status
+// "unknown" with a machine-readable reason), so history shows why a check
+// produced nothing. AI is only called for live frames.
+
+import { secondsSince } from '../../shared/freshness';
+import type { AppSettings, Calibration, Camera, Detection, Freshness, ParkingAnalysis } from '../../shared/types';
+import { createVehicleDetector, CurbGapParkingDetector } from '../analysis/detectors';
+import { applyVerdict, GemmaCandidateVerifier } from '../analysis/vlm';
+import { getCalibrationRow, insertDetection, recentDetections, toCalibration } from '../db';
+import type { Env } from '../env';
+import { errorMessage, type Background } from '../http';
+import { TmcError } from '../tmc';
+import { evaluateAlerts } from './alerts';
+import { hasParkingLane, requireCamera } from './cameras';
+import { getFrameCached, type CameraFrameBytes } from './frames';
+import { readSettings } from './settings';
+
+/** Even a forced admin analysis waits this long after the previous one. */
+const ADMIN_FORCE_MIN_SECONDS = 5;
+/** Previous candidates feed temporal consistency only while this recent. */
+const PREVIOUS_CANDIDATES_MAX_AGE_SECONDS = 300;
+/** VLM second opinions per analysis (each costs ~5-13 neurons). */
+const MAX_VERIFIED_CANDIDATES = 2;
+const MAX_ERROR_LENGTH = 300;
+
+const SKIP_REASON: Record<Exclude<Freshness, 'live'>, string> = {
+  stale: 'stale_frame',
+  offline: 'camera_offline',
+  unknown: 'frame_unavailable',
+};
+
+export interface AnalyzeOptions {
+  /** Admin only: bypass the cooldown (still at least 5 s apart). */
+  force?: boolean;
+  /** Admin callers may analyze uncalibrated cameras (to preview detections). */
+  admin?: boolean;
+}
+
+interface AnalysisInput {
+  settings: AppSettings;
+  calibration: Calibration | null;
+  latest: Detection | null;
+  admin: boolean;
+}
+
+const truncate = (s: string, n = MAX_ERROR_LENGTH) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+
+function inCooldown(latest: Detection, settings: AppSettings, opts: AnalyzeOptions): boolean {
+  const age = secondsSince(latest.timestamp) ?? Infinity;
+  const minAge = opts.admin && opts.force ? ADMIN_FORCE_MIN_SECONDS : settings.analysisCooldownSeconds;
+  return age < minAge;
+}
+
+/** An analysis that stopped before (or instead of) running the detector. */
+function skipped(cameraId: string, reason: string, fields: Partial<ParkingAnalysis> = {}): ParkingAnalysis {
+  return {
+    cameraId,
+    timestamp: new Date().toISOString(),
+    frameFetchedAt: null,
+    frameHash: null,
+    freshness: 'unknown',
+    detector: 'none',
+    vehiclesDetected: 0,
+    parkedVehicles: 0,
+    candidateSpaces: 0,
+    confidence: 0,
+    status: 'unknown',
+    reason,
+    objects: [],
+    candidates: [],
+    notes: [],
+    error: null,
+    ...fields,
+  };
+}
+
+/** Ask the vision LLM about the best candidates and fold its verdicts in. Failures only add a note. */
+async function verifyCandidates(ai: Ai, frame: CameraFrameBytes, result: ParkingAnalysis, minConfidence: number): Promise<ParkingAnalysis> {
+  if (result.candidates.length === 0) return result;
+  const verifier = new GemmaCandidateVerifier(ai);
+  const top = result.candidates.slice(0, MAX_VERIFIED_CANDIDATES);
+  const verdicts = await Promise.allSettled(top.map((c) => verifier.verify(frame, c)));
+  const notes = [...result.notes];
+  const candidates = result.candidates.map((c, i) => {
+    const v = verdicts[i];
+    if (!v) return c;
+    if (v.status === 'fulfilled') return applyVerdict(c, v.value.agrees, v.value.note, minConfidence);
+    notes.push(`Vision check failed: ${truncate(errorMessage(v.reason), 120)}`);
+    return c;
+  });
+  candidates.sort((a, b) => b.confidence - a.confidence);
+  return {
+    ...result,
+    detector: `${result.detector}+${verifier.name}`,
+    candidates,
+    notes,
+    status: candidates.some((c) => c.status === 'likely_available') ? 'likely_available' : 'possible',
+    confidence: candidates[0]!.confidence,
+  };
+}
+
+async function runAnalysis(env: Env, ctx: Background, camera: Camera, input: AnalysisInput): Promise<ParkingAnalysis> {
+  let fetched;
+  try {
+    fetched = await getFrameCached(env, ctx, camera);
+  } catch (e) {
+    if (!(e instanceof TmcError)) throw e;
+    return skipped(camera.id, 'frame_unavailable', { freshness: e.code === 'timeout' ? 'unknown' : 'offline', error: truncate(e.message) });
+  }
+  const { frame, state } = fetched;
+  const frameInfo: Partial<ParkingAnalysis> = { frameFetchedAt: frame.fetchedAt, frameHash: frame.hash, freshness: state.freshness };
+  if (state.freshness !== 'live') return skipped(camera.id, SKIP_REASON[state.freshness], frameInfo);
+
+  // Without a parking lane there is nothing to measure; only admins (previewing boxes) pay for detection.
+  if (!hasParkingLane(input.calibration) && !input.admin) {
+    return skipped(camera.id, 'needs_calibration', { ...frameInfo, notes: ['No parking lane is calibrated for this camera.'] });
+  }
+  const vehicles = createVehicleDetector(env);
+  if (!vehicles) return skipped(camera.id, 'detector_unavailable', { ...frameInfo, notes: ['Workers AI binding is not configured.'] });
+
+  const detector = new CurbGapParkingDetector(vehicles);
+  const latest = input.latest;
+  const previousFresh = latest && (secondsSince(latest.timestamp) ?? Infinity) < PREVIOUS_CANDIDATES_MAX_AGE_SECONDS;
+  try {
+    const result = await detector.analyze(frame, {
+      calibration: input.calibration,
+      previousCandidates: previousFresh ? latest.candidates : [],
+      minConfidence: input.settings.minConfidence,
+      camera: { lat: camera.lat, lon: camera.lon, name: camera.name },
+    });
+    const analysis: ParkingAnalysis = { ...result, freshness: state.freshness };
+    return input.settings.vlmVerify && env.AI ? await verifyCandidates(env.AI, frame, analysis, input.settings.minConfidence) : analysis;
+  } catch (e) {
+    console.error(`analyze ${camera.id}: detector failed: ${errorMessage(e)}`);
+    return skipped(camera.id, 'detector_error', { ...frameInfo, detector: detector.name, error: truncate(errorMessage(e)) });
+  }
+}
+
+/**
+ * Analyze a stored camera and persist the result. Inside the cooldown the
+ * latest stored detection is returned unchanged (no frame fetch, no AI call).
+ * Throws HttpError 404 for unknown cameras.
+ */
+export async function analyzeCamera(env: Env, ctx: Background, cameraId: string, opts: AnalyzeOptions = {}): Promise<Detection> {
+  const camera = await requireCamera(env, cameraId);
+  const [settings, calibrationRow, recent] = await Promise.all([
+    readSettings(env),
+    getCalibrationRow(env.DB, cameraId),
+    recentDetections(env.DB, cameraId, 1),
+  ]);
+  const latest = recent[0] ?? null;
+  if (latest && inCooldown(latest, settings, opts)) return latest;
+
+  const calibration = calibrationRow ? toCalibration(calibrationRow) : null;
+  const analysis = await runAnalysis(env, ctx, camera, { settings, calibration, latest, admin: !!opts.admin });
+  const detection = await insertDetection(env.DB, analysis);
+  console.log(
+    `analyze ${cameraId}: #${detection.id} ${detection.status}${detection.reason ? ` (${detection.reason})` : ''}, ` +
+      `${detection.vehiclesDetected} vehicles, ${detection.candidateSpaces} spaces, ${detection.freshness}, ${detection.detector}`,
+  );
+  ctx.waitUntil(evaluateAlerts(env, detection).catch((e: unknown) => console.error(`alerts: ${errorMessage(e)}`)));
+  return detection;
+}

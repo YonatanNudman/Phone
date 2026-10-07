@@ -13,6 +13,11 @@ describe('frameFreshness', () => {
   it('is STALE when the frame bytes have not changed for too long', () => {
     expect(frameFreshness({ ...base, lastChangedAt: ago(FRESHNESS.frozenAfterSeconds + 1) }, now)).toBe('stale');
   });
+  it('is STALE when the EXIF capture time is old even though bytes change', () => {
+    expect(frameFreshness({ ...base, lastCaptureAt: ago(FRESHNESS.exifStaleAfterSeconds + 10) }, now)).toBe('stale');
+    expect(frameFreshness({ ...base, lastCaptureAt: ago(200) }, now)).toBe('live'); // modest clock drift tolerated
+    expect(frameFreshness({ ...base, lastCaptureAt: ago(6) }, now)).toBe('live');
+  });
   it('is OFFLINE when the catalog says so or fetches keep failing', () => {
     expect(frameFreshness({ ...base, catalogOnline: false }, now)).toBe('offline');
     expect(frameFreshness({ ...base, consecutiveFailures: FRESHNESS.offlineAfterFailures }, now)).toBe('offline');

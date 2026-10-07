@@ -122,7 +122,7 @@ async function send(path: string, opts: RequestOptions, accept: string): Promise
 }
 
 async function errorFrom(res: Response): Promise<ApiError> {
-  let body: Partial<ApiErrorBody> | null = null;
+  let body: Partial<ApiErrorBody> | null;
   try {
     body = (await res.json()) as Partial<ApiErrorBody>;
   } catch {

@@ -199,7 +199,31 @@ CPU: the Free plan allows 10 ms CPU per request. The Worker never decodes JPEGs;
 
 ## NYC DOT / TMC camera terms
 
-<!-- TERMS -->
+**Read this before sharing the app with anyone.** This is a summary, not legal advice.
+
+What was verified (from the GitHub Actions discovery run, 2026-10-07):
+- `GET https://webcams.nyctmc.org/api/cameras/` returns a JSON array of 976 cameras: `{id, name, latitude, longitude, area, isOnline: "true"|"false" (a string), imageUrl}`, with `cache-control: no-store` and **no `Access-Control-Allow-Origin`**.
+- `GET /api/cameras/{id}/image` returns the current JPEG, mostly 352×240 (some highway cameras are 720×480), 13–38 KB, `no-store`, with a new frame every ~1–4 s and a burned-in clock. AXIS cameras also write an EXIF capture time.
+- No API key is needed.
+
+What others found:
+- An offline camera answers HTTP 200 with a 5,485-byte PNG reading "This camera is being serviced", labelled `image/jpeg`. ParkNearMe treats it as OFFLINE.
+- No rate limit is published. DOT's subscriber guidance says static cameras update about every 15 s. Repos polling at 1 request/s per camera report no 429s.
+
+Terms and restrictions:
+- **No open-data license.** The cameras sit under the **NYC.gov Terms of Use** (https://www.nyc.gov/main/terms-of-use): lawful use only, don't disrupt the servers, and images are property of the City of New York.
+- **NYC DOT has enforced this.** In Nov 2024 it sent a cease-and-desist to the public "Traffic Cam Photobooth" site, calling it unauthorized use of the traffic cameras under those terms.
+- **Formal access** is through DOT's *Video and Traffic Flow Data Sharing Partnership Agreement* (apply via `TMCDOT@dot.nyc.gov`; see https://webcams.nyctmc.org/subscribers). It permits "news-oriented" uses, requires attribution to NYC DOT, forbids copying ("transferring") the feed contents to your own site, and forbids use in advertising without written consent.
+- NYC DOT states its cameras provide live images only and do not record.
+
+How ParkNearMe stays on the conservative side:
+- **Personal use.** It fetches only the handful of cameras near one address, at human-scale rates: frames are cached at the edge for 3 s, and analysis is limited to one run per camera per 45 s.
+- **Nothing is stored or redistributed.** Frames are analyzed in memory; only numbers and boxes go to D1.
+- **Credit** "Camera imagery: NYC DOT" is shown in the app.
+- **Recommended:** keep the deployment private with Cloudflare Access (see *Admin protection*). The `/api/cameras/:id/image` proxy re-serves DOT frames from your domain. That is needed for same-origin analysis, but on a public URL it looks like mirroring.
+- If you ever want to share it beyond yourself, email `TMCDOT@dot.nyc.gov` first.
+
+Uncertain: the exact text behind the "Terms of Use" link on webcams.nyctmc.org couldn't be retrieved (the site is a JS app), and whether a private, personal pass-through proxy is acceptable to DOT has not been confirmed.
 
 ---
 

@@ -1,0 +1,638 @@
+/* Bottom sheet and everything that lives in it on the main screen. */
+
+.sheet {
+  position: fixed;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(100% - var(--safe-top) - 68px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px 20px 0 0;
+  background: var(--surface);
+  box-shadow: 0 -0.5px 0 var(--separator), 0 -10px 40px rgba(0, 0, 0, 0.14);
+  transform: translate3d(0, 100%, 0);
+  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  touch-action: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sheet {
+    background: #1c1c1e;
+    box-shadow: 0 -0.5px 0 rgba(255, 255, 255, 0.08), 0 -10px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Wide screens: a floating card on the left, like Maps on iPad/Mac. */
+@media (min-width: 760px) {
+  .sheet {
+    left: max(16px, var(--safe-left));
+    right: auto;
+    width: 400px;
+    border-radius: 20px 20px 0 0;
+  }
+}
+
+.sheet.is-dragging {
+  transition: none;
+}
+
+.sheet-probe {
+  position: absolute;
+  visibility: hidden;
+  height: var(--safe-bottom);
+  width: 0;
+}
+
+.sheet-top {
+  flex: none;
+  touch-action: none;
+}
+
+.sheet-grabber {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 22px;
+  padding: 7px 0 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+}
+
+.sheet-grabber span {
+  width: 38px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--label-3);
+}
+
+.sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: pan-x;
+  overscroll-behavior: contain;
+}
+
+.sheet.is-full .sheet-body {
+  overflow-y: auto;
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sheet-content {
+  padding-bottom: calc(16px + var(--safe-bottom));
+}
+
+.panel {
+  padding: 6px 16px 0;
+}
+
+/* ---- Parking card ---------------------------------------------------------- */
+
+.pcard-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tone-text);
+}
+
+.pcard-eyebrow .dot {
+  width: 9px;
+  height: 9px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tone) 22%, transparent);
+}
+
+.pcard-title {
+  margin-top: 6px;
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.pcard-reason {
+  margin-top: 4px;
+  font-size: 15px;
+  color: var(--label-2);
+}
+
+.pcard-rows {
+  margin: 14px 0 0;
+  padding: 0 14px;
+  list-style: none;
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pcard-rows {
+    background: #2c2c2e;
+  }
+}
+
+.pcard-rows li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 16px;
+}
+
+.pcard-rows li + li {
+  border-top: 0.5px solid var(--separator);
+}
+
+.pcard-rows svg {
+  flex: none;
+  color: var(--label-2);
+}
+
+.pcard-rows span {
+  flex: 1;
+}
+
+.pcard-rows strong {
+  font-weight: 600;
+}
+
+.pcard-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.pcard-approx {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--label-2);
+}
+
+.disclaimer {
+  margin: 14px 4px 0;
+  font-size: 13px;
+  line-height: 1.38;
+  color: var(--label-2);
+}
+
+/* Carousel of candidates */
+.pager {
+  display: flex;
+  gap: 10px;
+  margin: 0 -16px;
+  padding: 0 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 16px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.pager::-webkit-scrollbar {
+  display: none;
+}
+
+.pager-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.pager.is-multiple .pager-slide {
+  flex-basis: calc(100% - 22px);
+}
+
+.pager-dots {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.pager-dots button {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.pager-dots button::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--label-3);
+  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.pager-dots button[aria-selected='true']::after {
+  background: var(--label);
+  transform: scale(1.1);
+}
+
+/* ---- Nothing open ---------------------------------------------------------- */
+
+.none-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.none-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--tone-text);
+  background: color-mix(in srgb, var(--tone) 15%, transparent);
+}
+
+.none-text {
+  min-width: 0;
+}
+
+.none-text h2 {
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.none-text p {
+  margin-top: 2px;
+  font-size: 15px;
+  color: var(--label-2);
+}
+
+.thumb-strip {
+  display: flex;
+  gap: 12px;
+  margin: 16px -16px 0;
+  padding: 0 16px 4px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding: 0 16px;
+  scrollbar-width: none;
+}
+
+.thumb-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 0 0 168px;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  scroll-snap-align: start;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.thumb:active .thumb-frame {
+  transform: scale(0.97);
+}
+
+.thumb-frame {
+  border-radius: 12px;
+  margin-bottom: 6px;
+  transition: transform 160ms var(--ease);
+}
+
+.thumb-chip {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.thumb-name {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumb-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--label-2);
+}
+
+.thumb-meta .badge {
+  height: 18px;
+  padding: 0 6px;
+  font-size: 10px;
+}
+
+.thumb-more {
+  flex-basis: 108px;
+  justify-content: flex-start;
+}
+
+.thumb-more-icon {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 352 / 240;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  color: var(--blue);
+  background: color-mix(in srgb, var(--blue) 10%, transparent);
+}
+
+.thumb-more > span:last-child {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.empty-cta {
+  margin-top: 10px;
+  min-width: 220px;
+}
+
+/* ---- Camera sheet ---------------------------------------------------------- */
+
+.cs-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 2px 16px 12px;
+}
+
+.cs-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.cs-title h2 {
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.cs-title p {
+  margin-top: 2px;
+  font-size: 15px;
+  color: var(--label-2);
+}
+
+.cs-header .icon-btn {
+  margin-top: 2px;
+  color: var(--label-2);
+}
+
+.cs {
+  padding-top: 0;
+}
+
+.cs-frame {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cs-frame-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.cs-frame-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 10px 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+  pointer-events: none;
+}
+
+.cs-frame-caption:empty {
+  display: none;
+}
+
+.cs-result {
+  margin-top: 16px;
+}
+
+.cs-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cs-status-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #fff;
+  background: var(--tone);
+}
+
+.cs-result.tone-yellow .cs-status-icon {
+  color: var(--on-yellow);
+}
+
+.cs-status h3 {
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cs-status p {
+  margin-top: 1px;
+  font-size: 15px;
+  color: var(--label-2);
+}
+
+.cs-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 14px 0 0;
+}
+
+.cs-stats div {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .cs-stats div {
+    background: #2c2c2e;
+  }
+}
+
+.cs-stats dt {
+  font-size: 13px;
+  color: var(--label-2);
+}
+
+.cs-stats dd {
+  margin: 2px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cs-reason {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--label);
+}
+
+.cs-reason svg {
+  flex: none;
+  color: var(--label-2);
+}
+
+.cs-prev {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--label-2);
+}
+
+.cs-error {
+  margin-top: 12px;
+}
+
+.cs-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.cs-actions .btn {
+  flex: 1;
+  min-width: 0;
+  padding: 0 12px;
+  font-size: 16px;
+}
+
+.cs-lock {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.cs-group {
+  margin: 20px 0 0;
+  background: var(--surface-2);
+}
+
+.cs-section-title {
+  margin: 24px 4px 8px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cs .group {
+  margin-left: 0;
+  margin-right: 0;
+  background: var(--surface-2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .cs .group {
+    background: #2c2c2e;
+  }
+}
+
+/* ---- History ------------------------------------------------------------- */
+
+.history {
+  margin: 0;
+  padding: 0 16px;
+  list-style: none;
+}
+
+.history li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 15px;
+}
+
+.history li + li {
+  border-top: 0.5px solid var(--separator);
+}
+
+.history-time {
+  width: 74px;
+  flex: none;
+  color: var(--label-2);
+}
+
+.history-time small {
+  display: block;
+  font-size: 11px;
+}
+
+.history .dot {
+  width: 8px;
+  height: 8px;
+}
+
+.history-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-text::first-letter {
+  text-transform: uppercase;
+}
+
+.history-conf {
+  color: var(--label-2);
+}
+
+.history-flag {
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--label-2);
+  background: var(--fill);
+}
+
+.history-empty {
+  padding: 14px 16px;
+  font-size: 15px;
+  color: var(--label-2);
+}

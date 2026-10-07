@@ -10,6 +10,11 @@ import type { Env } from './env';
 export type AppEnv = { Bindings: Env };
 export type AppContext = Context<AppEnv>;
 
+/** The part of the execution context services need (Hono's and the Workers runtime's both fit). */
+export interface Background {
+  waitUntil(promise: Promise<unknown>): void;
+}
+
 /** Largest JSON request body we accept (calibrations are the biggest, ~5 KB). */
 const MAX_BODY_BYTES = 64 * 1024;
 

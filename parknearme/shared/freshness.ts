@@ -2,7 +2,8 @@
 //
 // NYC TMC frames refresh every ~1-4 s and carry a burned-in clock. The API
 // sends `cache-control: no-store` and no timestamp header, so we judge
-// freshness from our own fetch times and whether the JPEG bytes change.
+// freshness from our own fetch times, whether the JPEG bytes change, and (for
+// AXIS cameras that include it) the EXIF capture time.
 
 import type { Freshness } from './types';
 
@@ -11,6 +12,8 @@ export const FRESHNESS = {
   frozenAfterSeconds: 120,
   /** No successful fetch for longer than this => we no longer know. */
   unknownAfterSeconds: 15 * 60,
+  /** EXIF capture time older than this (vs. our fetch time) => STALE. Lenient: camera clocks drift. */
+  exifStaleAfterSeconds: 600,
   /** This many consecutive failed fetches => OFFLINE. */
   offlineAfterFailures: 2,
 } as const;
@@ -20,6 +23,8 @@ export interface FrameObservation {
   lastFetchedAt: string | null;
   lastChangedAt: string | null;
   consecutiveFailures: number;
+  /** EXIF capture time of the last frame (UTC ISO), when the camera writes one. */
+  lastCaptureAt?: string | null;
 }
 
 const ageSeconds = (iso: string | null, now: Date) => (iso ? (now.getTime() - Date.parse(iso)) / 1000 : Infinity);
@@ -30,6 +35,9 @@ export function frameFreshness(o: FrameObservation, now = new Date()): Freshness
   if (!o.lastFetchedAt) return 'unknown';
   if (ageSeconds(o.lastFetchedAt, now) > FRESHNESS.unknownAfterSeconds) return 'unknown';
   if (ageSeconds(o.lastChangedAt, now) > FRESHNESS.frozenAfterSeconds) return 'stale';
+  // A camera can keep re-sending an old picture with a fresh burned-in clock;
+  // EXIF capture time catches that when present.
+  if (o.lastCaptureAt && ageSeconds(o.lastCaptureAt, o.lastFetchedAt ? new Date(o.lastFetchedAt) : now) > FRESHNESS.exifStaleAfterSeconds) return 'stale';
   return 'live';
 }
 

@@ -11,17 +11,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CameraSummary, Detection, ParkingCurrentResponse } from '../../shared/types';
 import { isDetectionCurrent } from '../../shared/freshness';
-import { DEFAULT_SETTINGS } from '../../shared/settings';
 import { summarize } from '../../shared/status';
 import { analyzeCamera, getParkingCurrent, isAbortError, toApiError, type ApiError } from '../lib/api';
+import { MAX_DETECTION_AGE_SECONDS } from '../lib/detection';
 import { cameraLabel } from '../lib/format';
 import type { AutoRefreshSeconds } from '../lib/prefs';
 import { usePageVisible } from './usePageVisible';
 
 /** Re-analyze a watched camera when its latest result is older than this. */
 const ANALYZE_AFTER_SECONDS = 45;
-/** Client-side guard matching the server default; older results never count as current. */
-export const MAX_DETECTION_AGE_SECONDS = DEFAULT_SETTINGS.maxDetectionAgeSeconds;
 
 export interface ParkingState {
   data: ParkingCurrentResponse | null;
