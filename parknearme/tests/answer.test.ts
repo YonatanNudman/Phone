@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { CAR } from '../shared/car';
 import { hydrantMarks, spotFacts } from '../shared/curb-gaps';
 import type { ParkingCandidate, ParkingCurrentResponse, Region } from '../shared/types';
-import { answerFor } from '../src/lib/answer';
+import { answerFor, lookCameras, shortCameraLabel } from '../src/lib/answer';
 
 const lane: Region = {
   id: 'lane',
@@ -61,5 +61,25 @@ describe('answerFor', () => {
   it('says no when the camera saw a full curb, and why it cannot tell otherwise', () => {
     expect(answerFor(data([], 'none'), lanes, now)).toMatchObject({ tone: 'no', title: 'No open spots' });
     expect(answerFor(data([], 'unknown', 'no_vehicles_detected'), lanes, now)).toMatchObject({ tone: 'unknown', detail: "Couldn't see any cars (dark or glare?)" });
+  });
+});
+
+describe('lookCameras', () => {
+  const cam = (id: string, name: string, distanceMi: number, extra = {}) =>
+    ({ id, name, distanceMi, catalogOnline: true, preference: { streetLabel: null }, ...extra }) as never;
+  const audubon = cam('a', 'Audobon Ave @ W 181 ST', 0.21, { preference: { streetLabel: 'W 181st St, Audubon → Amsterdam' } });
+  const stNick = cam('s', 'St Nicholas Ave @ 181 St', 0.23);
+  const amsterdam = cam('m', 'Amsterdam Ave @ 181 St', 0.209);
+  const offline = cam('o', 'Somewhere @ 182 St', 0.1, { catalogOnline: false });
+  const highway = cam('h', 'Amsterdam Ave @ W 180 st', 0.34);
+
+  it('puts the parking camera first, then nearby street cameras, nearest first', () => {
+    const list = lookCameras({ watched: [audubon], nearby: [amsterdam, audubon, stNick, offline, highway] });
+    expect(list.map((c) => c.id)).toEqual(['a', 'm', 's']);
+  });
+  it('makes short tab labels', () => {
+    expect(shortCameraLabel(audubon)).toBe('W 181st');
+    expect(shortCameraLabel(stNick)).toBe('St Nicholas');
+    expect(shortCameraLabel(amsterdam)).toBe('Amsterdam');
   });
 });

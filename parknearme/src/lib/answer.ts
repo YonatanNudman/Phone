@@ -3,7 +3,7 @@
 import { spotFacts, type SpotFacts } from '../../shared/curb-gaps';
 import type { CameraSummary, ParkingCandidate, ParkingCurrentResponse, Region } from '../../shared/types';
 import { currentCandidates, isCurrent, maxDetectionAge } from './detection';
-import { ageSeconds, reasonText } from './format';
+import { ageSeconds, cameraLabel, reasonText } from './format';
 
 export type AnswerTone = 'yes' | 'maybe' | 'no' | 'unknown';
 
@@ -51,4 +51,21 @@ export function answerFor(data: ParkingCurrentResponse, lanes: Record<string, Re
   const age = ageSeconds(latest?.timestamp, nowMs);
   const why = age !== null && age <= maxAge ? reasonText(latest!.reason) : null;
   return { tone: 'unknown', title: "Can't tell right now", detail: why ?? 'No recent camera check', spot: null, spots, camera: nearest };
+}
+
+/** Street cameras worth a look: within ~5 blocks of home (the next ones out are expressways). */
+export const LOOK_RADIUS_MI = 0.3;
+
+/** Cameras to flip between: watched (parking-checked) ones first, then other nearby online ones, nearest first. */
+export function lookCameras(data: Pick<ParkingCurrentResponse, 'watched' | 'nearby'>): CameraSummary[] {
+  const watched = new Set(data.watched.map((c) => c.id));
+  const others = data.nearby.filter((c) => !watched.has(c.id) && c.catalogOnline && c.distanceMi <= LOOK_RADIUS_MI);
+  const byDistance = (a: CameraSummary, b: CameraSummary) => a.distanceMi - b.distanceMi;
+  return [...[...data.watched].sort(byDistance), ...others.sort(byDistance)];
+}
+
+/** Short tab label: "W 181st" from "W 181st St, Audubon → Amsterdam"; "St Nicholas" from "St Nicholas Ave @ 181 St". */
+export function shortCameraLabel(cam: Pick<CameraSummary, 'name' | 'preference'>): string {
+  const street = cameraLabel(cam).split(/,| near /)[0]!.trim();
+  return street.replace(/\s+(Ave|Avenue|St|Street)$/i, '') || street;
 }

@@ -170,6 +170,7 @@ Observability is enabled in `wrangler.jsonc`, so logs are also under Workers & P
 
 1. Open the deployed URL on your phone → Share → **Add to Home Screen**.
 2. That's it: the screen says whether there's a spot, whether your Escape fits, how far the hydrant is, and shows the live camera. **Check again** re-checks now; it also re-checks every minute while open.
+3. The tabs above the camera (**W 181st · Amsterdam · St Nicholas**) let you look at every street camera within ~5 blocks (the three at 181st St; the next ones out are expressways). Only W 181st is checked for parking; the others are just for looking.
 
 The camera TMC calls "Audobon Ave @ W 181 ST" comes pre-set: it looks east along W 181st St at the north curb between Audubon and Amsterdam, with that curb lane and its hydrants already marked (`seed/calibrations.json`, migrations `0002` and `0007`). If the camera gets re-aimed, fix the outline at `/calibrate/1ccb8d7c-43d4-450e-b40c-79527766db75` (desktop recommended; it asks for the admin token, the `PARKNEARME_ADMIN_TOKEN` secret). Draw the lane as 4 points (near-curb, near-traffic, far-traffic, far-curb), set how many cars fit, and mark driveways or bus stops as **RESTRICTED**.
 

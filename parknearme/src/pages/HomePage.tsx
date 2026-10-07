@@ -11,7 +11,7 @@ import { useFrame } from '../hooks/useFrame';
 import { useParking } from '../hooks/useParking';
 import { usePageVisible } from '../hooks/usePageVisible';
 import { useResource } from '../hooks/useResource';
-import { answerFor, type AnswerTone } from '../lib/answer';
+import { answerFor, lookCameras, shortCameraLabel, type AnswerTone } from '../lib/answer';
 import { getCalibration } from '../lib/api';
 import { ageSeconds } from '../lib/format';
 import './home.css';
@@ -46,7 +46,11 @@ export function HomePage() {
   });
 
   const answer = parking.data ? answerFor(parking.data, lanes.data ?? {}, now) : null;
-  const camera = answer?.camera ?? null;
+  // Which camera to look at: the one the answer is about, unless you tap another.
+  const [picked, setPicked] = useState<string | null>(null);
+  const cameras = parking.data ? lookCameras(parking.data) : [];
+  const camera = cameras.find((c) => c.id === picked) ?? answer?.camera ?? null;
+  const checked = !!camera && parking.data?.watched.some((c) => c.id === camera.id);
   const frame = useFrame(camera?.id ?? null, { intervalMs: 10_000, active: visible });
 
   const tone: AnswerTone | 'checking' = answer ? answer.tone : 'checking';
@@ -96,6 +100,15 @@ export function HomePage() {
       )}
 
       <figure className="cam">
+        {cameras.length > 1 && (
+          <div className="cam-tabs" role="group" aria-label="Camera">
+            {cameras.map((c) => (
+              <button key={c.id} type="button" aria-pressed={c.id === camera?.id} onClick={() => setPicked(c.id)}>
+                {shortCameraLabel(c)}
+              </button>
+            ))}
+          </div>
+        )}
         <FrameView
           src={frame.src}
           alt={camera ? `Live camera: ${camera.preference.streetLabel ?? camera.name}` : 'Live camera'}
@@ -105,12 +118,18 @@ export function HomePage() {
           errorText={frame.error ? 'Camera image unavailable' : null}
         />
         <figcaption>
-          <span>
-            <i className="key key-open" /> open curb
-          </span>
-          <span>
-            <i className="key key-hydrant" /> hydrant
-          </span>
+          {checked ? (
+            <>
+              <span>
+                <i className="key key-open" /> open curb
+              </span>
+              <span>
+                <i className="key key-hydrant" /> hydrant
+              </span>
+            </>
+          ) : (
+            <span>Just a look, no parking check here</span>
+          )}
           {frameAge && <span className="cam-age">Camera {frameAge}</span>}
         </figcaption>
       </figure>
