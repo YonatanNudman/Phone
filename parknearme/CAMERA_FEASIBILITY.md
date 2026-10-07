@@ -55,7 +55,7 @@
 
 Context ring (0.75–1.25 mi): Cross Bronx and Major Deegan expressways, Broadway @ 169 St, Riverside Dr @ Washington Bridge ramp, Henry Hudson Pkwy, Harlem River Dr @ 166 St, 207 St @ 9 Ave, Fordham Rd @ Major Deegan, CBX @ Morris Ave. None were assessed as parking views for this address.
 
-![Contact sheet with DETR (green) and YOLOv8n (blue) boxes](feasibility/contact-sheet-annotated.jpg)
+![Night contact sheet with DETR (green) and YOLOv8n (blue) boxes](feasibility/night-2026-10-07/contact-sheet-annotated.jpg)
 
 ## What the detector and analysis actually saw
 
