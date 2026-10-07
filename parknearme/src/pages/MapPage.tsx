@@ -82,7 +82,17 @@ export function MapPage() {
   const wide = useMediaQuery(WIDE_QUERY);
   const insets: MapInsets = useMemo(() => ({ top: topInset, bottom: wide ? 0 : sheetVisible }), [topInset, sheetVisible, wide]);
 
-  const headline = data ? data.summary.headline : parking.error ? "Can't reach ParkNearMe" : 'Checking parking…';
+  // The server summary is computed at response time; once its spots age out on
+  // this device (no refresh for a while), don't keep announcing them.
+  const expired = !!data && (data.summary.state === 'available' || data.summary.state === 'possible') && shown.length === 0;
+  const summaryState = data ? (expired ? 'unknown' : data.summary.state) : null;
+  const headline = data
+    ? expired
+      ? 'Parking results expired'
+      : data.summary.headline
+    : parking.error
+      ? "Can't reach ParkNearMe"
+      : 'Checking parking…';
   const errorText = parking.error ? (data ? "Couldn't refresh — tap ↻ to retry" : parking.error.message) : null;
 
   return (
@@ -103,7 +113,7 @@ export function MapPage() {
 
       <div className="map-top" ref={topRef}>
         <StatusPill
-          state={data?.summary.state ?? null}
+          state={summaryState}
           headline={headline}
           updatedAt={data?.summary.updatedAt ?? null}
           working={parking.working}

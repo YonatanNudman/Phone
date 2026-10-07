@@ -15,6 +15,8 @@ const SHELL_CACHE = 'pnm-shell-v1';
 const ASSET_CACHE = 'pnm-assets-v1';
 const MAX_ASSETS = 40;
 const ICON = '/icons/icon-192.png';
+/** Monochrome (white on transparent) for Android's status bar. */
+const BADGE = '/icons/badge-96.png';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -136,7 +138,7 @@ self.addEventListener('push', (event) => {
       tag,
       renotify: true,
       icon: ICON,
-      badge: ICON,
+      badge: BADGE,
       timestamp: Date.now(),
       data: { url: safePath(msg.url) },
     }),
