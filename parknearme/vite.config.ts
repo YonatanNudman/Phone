@@ -12,4 +12,6 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 700,
   },
+  // Only the app's own entry; feasibility/raw/ holds saved third-party HTML pages.
+  optimizeDeps: { entries: ['index.html'] },
 });
