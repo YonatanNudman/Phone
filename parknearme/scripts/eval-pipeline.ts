@@ -10,7 +10,7 @@
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { analyzeCurbGaps, applyTemporalConsistency } from '../shared/curb-gaps';
+import { analyzeCurbGaps, type LaneStates } from '../shared/curb-gaps';
 import type { Region } from '../shared/types';
 import { cleanVehicles, parseObjectDetections } from '../worker/analysis/vehicles';
 
@@ -24,6 +24,8 @@ interface FrameDetections {
   detr: unknown[];
 }
 
+const discovery = read('feasibility/discovery.json') as { generatedAt: string; nearby: { id: string; frames: { n: number; fetchedAt: string }[] }[] };
+const discoveryFrames = new Map(discovery.nearby.flatMap((c) => c.frames.map((f) => [`${c.id}:${f.n}`, Date.parse(f.fetchedAt)] as const)));
 const detections = read('feasibility/detections.json') as Record<string, { name: string; distanceMi: number; frames: FrameDetections[] }>;
 const seed = read('seed/calibrations.json') as { cameras: Record<string, { regions: Region[]; referenceWidth: number; referenceHeight: number }> };
 
@@ -35,22 +37,24 @@ for (const [cameraId, cal] of Object.entries(seed.cameras)) {
     continue;
   }
   console.log(`\n${cam.name} (${cam.distanceMi} mi) [${cameraId}]`);
-  let previous: { regionId: string; start: number; end: number }[] = [];
+  let state: LaneStates | undefined;
+  const t0 = Date.parse(discovery.generatedAt);
   for (const frame of cam.frames) {
-    const objects = cleanVehicles(parseObjectDetections(frame.detr, cal.referenceWidth, cal.referenceHeight), 0.5);
-    const result = analyzeCurbGaps(objects, cal.regions, { imageWidth: cal.referenceWidth, imageHeight: cal.referenceHeight });
-    const gaps = applyTemporalConsistency(result.candidates, previous, 0.6);
-    previous = gaps.map((g) => ({ regionId: g.regionId, start: g.start, end: g.end }));
+    const objects = cleanVehicles(parseObjectDetections(frame.detr, cal.referenceWidth, cal.referenceHeight), 0.35);
+    const fetchedAt = discoveryFrames.get(`${cameraId}:${frame.n}`) ?? t0 + frame.n * 4000;
+    const result = analyzeCurbGaps(objects, cal.regions, { imageWidth: cal.referenceWidth, imageHeight: cal.referenceHeight, nowMs: fetchedAt, state });
+    state = result.state;
     const lanes = result.lanes
-      .map((l) => `${l.regionId}: ${l.parkedVehicles} parked, occupied ${l.occupied.map(([a, b]) => `${a.toFixed(2)}-${b.toFixed(2)}`).join(',')}`)
+      .map((l) => `${l.regionId}: ${l.parkedVehicles} parked, observed ${Math.round(l.observedFraction * 100)}%, px/m ${l.pxPerMetre.start}->${l.pxPerMetre.end}, calSigma ${l.calibrationSigmaM} m`)
       .join(' | ');
+    const grid = Object.values(state)[0]?.logodds.map((l) => (l < -0.4 ? '.' : l < 0.85 ? '?' : '#')).join('') ?? '';
     console.log(
       `  frame ${frame.n}: ${result.vehicles} vehicles, status=${result.status} conf=${result.confidence}` +
         (result.reason ? ` reason=${result.reason}` : '') +
-        `\n    ${lanes}` +
-        gaps.map((g) => `\n    gap ${g.start.toFixed(2)}-${g.end.toFixed(2)} slots=${g.slots} spaces=${g.spaces} conf=${g.confidence} ${g.status} :: ${g.reasons.join('; ')}`).join(''),
+        `\n    ${lanes}\n    grid ${grid}` +
+        result.candidates.map((g) => `\n    gap ${g.start.toFixed(2)}-${g.end.toFixed(2)} ${g.lengthM} m need ${g.needM} pLen=${g.pLength} pFree=${g.pFree} far=${g.farFactor} conf=${g.confidence} ${g.status}`).join(''),
     );
-    out.push({ cameraId, frame: frame.n, file: frame.file, status: result.status, vehicles: result.vehicles, parked: result.parkedVehicles, gaps, roles: result.objects.map((o) => o.role) });
+    out.push({ cameraId, frame: frame.n, file: frame.file, status: result.status, vehicles: result.vehicles, parked: result.parkedVehicles, candidates: result.candidates, roles: result.objects.map((o) => o.role) });
   }
 }
 writeFileSync(join(root, 'feasibility/eval.json'), JSON.stringify(out, null, 1));

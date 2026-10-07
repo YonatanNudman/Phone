@@ -23,7 +23,6 @@ function point(lat: unknown, lon: unknown): { lat: number; lon: number } | null 
   return Number.isFinite(p.lat) && Number.isFinite(p.lon) ? p : null;
 }
 
-type Json = Record<string, unknown> | undefined;
 const field = (v: unknown, key: string): unknown => (v && typeof v === 'object' ? (v as Record<string, unknown>)[key] : undefined);
 const first = (v: unknown): unknown => (Array.isArray(v) ? v[0] : undefined);
 
@@ -40,16 +39,16 @@ const GEOCODERS: Provider[] = [
     name: 'us-census',
     url: (q) => `https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${q}&benchmark=Public_AR_Current&format=json`,
     parse: (body) => {
-      const c = field(first(field(field(body, 'result'), 'addressMatches')), 'coordinates') as Json;
-      return c ? point(c.y, c.x) : null;
+      const c = field(first(field(field(body, 'result'), 'addressMatches')), 'coordinates');
+      return c ? point(field(c, 'y'), field(c, 'x')) : null;
     },
   },
   {
     name: 'nominatim',
     url: (q) => `https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`,
     parse: (body) => {
-      const hit = first(body) as Json;
-      return hit ? point(hit.lat, hit.lon) : null;
+      const hit = first(body);
+      return hit ? point(field(hit, 'lat'), field(hit, 'lon')) : null;
     },
   },
 ];

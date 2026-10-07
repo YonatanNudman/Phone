@@ -10,43 +10,57 @@ interface Props {
   ageSeconds: number | null;
   distanceMi: number;
   onViewCamera: () => void;
+  /** "1 of 3" when there are several candidates. */
+  position?: string;
 }
 
 /** One possible parking spot: where, how sure, how old, and how to get there. */
-export function ParkingCard({ candidate: c, ageSeconds, distanceMi, onViewCamera }: Props) {
+export function ParkingCard({ candidate: c, ageSeconds, distanceMi, onViewCamera, position }: Props) {
   const likely = c.status === 'likely_available';
   const tone = likely ? 'green' : 'yellow';
+  const detail = [c.reasons[0], c.lengthM ? `about ${Math.round(c.lengthM)} m of open curb` : null].filter(Boolean).join(' · ');
   return (
     <article className={`pcard tone-${tone}`} aria-label={`${likely ? 'Parking detected' : 'Possible parking'}: ${c.streetLabel}`}>
-      <div className="pcard-eyebrow">
-        <span className="dot" aria-hidden="true" />
-        {likely ? 'Parking detected' : 'Possible parking'}
+      <div className="pcard-top">
+        <div className="pcard-eyebrow">
+          <span className="dot" aria-hidden="true" />
+          {likely ? 'Parking detected' : 'Possible parking'}
+        </div>
+        {position && <span className="pcard-count tabular">{position}</span>}
       </div>
       <h2 className="pcard-title">{c.streetLabel}</h2>
-      {c.reasons[0] && <p className="pcard-reason">{c.reasons[0]}</p>}
+      {detail && <p className="pcard-reason">{detail}</p>}
 
-      <ul className="pcard-rows">
-        <li>
-          <SquareParking size={18} aria-hidden="true" />
-          <span>Possible spaces</span>
-          <strong className="tabular">{c.spaces}</strong>
-        </li>
-        <li>
-          <Gauge size={18} aria-hidden="true" />
-          <span>Confidence</span>
-          <strong className="tabular">{formatPercent(c.confidence)}</strong>
-        </li>
-        <li>
-          <Clock size={18} aria-hidden="true" />
-          <span>Detected</span>
-          <strong className="tabular">{formatAge(ageSeconds)}</strong>
-        </li>
-        <li>
-          <House size={18} aria-hidden="true" />
-          <span>Distance from home</span>
-          <strong className="tabular">{formatMiles(distanceMi)}</strong>
-        </li>
-      </ul>
+      <dl className="pcard-stats">
+        <div>
+          <dt>
+            <SquareParking size={15} aria-hidden="true" />
+            Possible spaces
+          </dt>
+          <dd className="tabular">{c.spaces}</dd>
+        </div>
+        <div>
+          <dt>
+            <Gauge size={15} aria-hidden="true" />
+            Confidence
+          </dt>
+          <dd className="tabular">{formatPercent(c.confidence)}</dd>
+        </div>
+        <div>
+          <dt>
+            <Clock size={15} aria-hidden="true" />
+            Detected
+          </dt>
+          <dd className="tabular">{formatAge(ageSeconds)}</dd>
+        </div>
+        <div>
+          <dt>
+            <House size={15} aria-hidden="true" />
+            From home
+          </dt>
+          <dd className="tabular">{formatMiles(distanceMi)}</dd>
+        </div>
+      </dl>
 
       <div className="pcard-actions">
         <a className="btn btn-primary" href={directionsUrl(c.lat, c.lon)} target="_blank" rel="noopener noreferrer">

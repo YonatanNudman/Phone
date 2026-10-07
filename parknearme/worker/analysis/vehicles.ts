@@ -56,17 +56,36 @@ export function iou(a: DetectedObject['box'], b: DetectedObject['box']): number 
 }
 
 /**
- * Keep vehicles only and drop duplicates. DETR often reports the same vehicle
- * twice (e.g. "car" 0.96 and "truck" 0.86 on an identical box), so this runs
- * class-agnostic non-maximum suppression across vehicle labels.
+ * Keep vehicles only and drop duplicates:
+ *  - class-agnostic NMS: DETR often reports one vehicle twice (e.g. "car" 0.96
+ *    and "truck" 0.86 on an identical box);
+ *  - part boxes: a box at least 85% inside a kept box that shares 2+ edges
+ *    with it (within 2 px) is a sub-part of the same vehicle. A partly hidden
+ *    car behind another does not share edges, so it survives.
  */
-export function cleanVehicles(objects: DetectedObject[], minScore: number, iouThreshold = 0.6): DetectedObject[] {
+export function cleanVehicles(objects: DetectedObject[], minScore: number, iouThreshold = 0.6, imageWidth = 352, imageHeight = 240): DetectedObject[] {
   const vehicles = objects
     .filter((o) => (VEHICLE_LABELS as readonly string[]).includes(o.label) && o.score >= minScore)
     .sort((a, b) => b.score - a.score);
+  const area = (b: DetectedObject['box']) => Math.max(0, b.xmax - b.xmin) * Math.max(0, b.ymax - b.ymin);
+  const inter = (a: DetectedObject['box'], b: DetectedObject['box']) =>
+    Math.max(0, Math.min(a.xmax, b.xmax) - Math.max(a.xmin, b.xmin)) * Math.max(0, Math.min(a.ymax, b.ymax) - Math.max(a.ymin, b.ymin));
+  const tx = 2 / imageWidth;
+  const ty = 2 / imageHeight;
   const kept: DetectedObject[] = [];
   for (const v of vehicles) {
-    if (kept.every((k) => iou(k.box, v.box) < iouThreshold)) kept.push(v);
+    if (kept.some((k) => iou(k.box, v.box) >= iouThreshold)) continue;
+    const isPart = kept.some((k) => {
+      if (inter(k.box, v.box) < 0.85 * area(v.box)) return false;
+      const shared = [
+        Math.abs(k.box.xmin - v.box.xmin) <= tx,
+        Math.abs(k.box.xmax - v.box.xmax) <= tx,
+        Math.abs(k.box.ymin - v.box.ymin) <= ty,
+        Math.abs(k.box.ymax - v.box.ymax) <= ty,
+      ].filter(Boolean).length;
+      return shared >= 2;
+    });
+    if (!isPart) kept.push(v);
   }
   return kept;
 }

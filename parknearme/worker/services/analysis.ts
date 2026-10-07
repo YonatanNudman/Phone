@@ -6,11 +6,12 @@
 // "unknown" with a machine-readable reason), so history shows why a check
 // produced nothing. AI is only called for live frames.
 
+import type { LaneStates } from '../../shared/curb-gaps';
 import { secondsSince } from '../../shared/freshness';
 import type { AppSettings, Calibration, Camera, Detection, Freshness, ParkingAnalysis } from '../../shared/types';
 import { createVehicleDetector, CurbGapParkingDetector } from '../analysis/detectors';
 import { applyVerdict, GemmaCandidateVerifier } from '../analysis/vlm';
-import { getCalibrationRow, insertDetection, recentDetections, toCalibration } from '../db';
+import { getCalibrationRow, getLaneState, insertDetection, putLaneState, recentDetections, toCalibration } from '../db';
 import type { Env } from '../env';
 import { errorMessage, type Background } from '../http';
 import { TmcError } from '../tmc';
@@ -21,8 +22,6 @@ import { readSettings } from './settings';
 
 /** Even a forced admin analysis waits this long after the previous one. */
 const ADMIN_FORCE_MIN_SECONDS = 5;
-/** Previous candidates feed temporal consistency only while this recent. */
-const PREVIOUS_CANDIDATES_MAX_AGE_SECONDS = 300;
 /** VLM second opinions per analysis (each costs ~5-13 neurons). */
 const MAX_VERIFIED_CANDIDATES = 2;
 const MAX_ERROR_LENGTH = 300;
@@ -43,8 +42,14 @@ export interface AnalyzeOptions {
 interface AnalysisInput {
   settings: AppSettings;
   calibration: Calibration | null;
-  latest: Detection | null;
+  laneState: LaneStates | undefined;
   admin: boolean;
+}
+
+interface AnalysisOutput {
+  analysis: ParkingAnalysis;
+  /** Updated curb occupancy grids to persist, when the detector ran. */
+  laneState?: LaneStates;
 }
 
 const truncate = (s: string, n = MAX_ERROR_LENGTH) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
@@ -103,40 +108,42 @@ async function verifyCandidates(ai: Ai, frame: CameraFrameBytes, result: Parking
   };
 }
 
-async function runAnalysis(env: Env, ctx: Background, camera: Camera, input: AnalysisInput): Promise<ParkingAnalysis> {
+async function runAnalysis(env: Env, ctx: Background, camera: Camera, input: AnalysisInput): Promise<AnalysisOutput> {
+  const skip = (reason: string, fields: Partial<ParkingAnalysis> = {}): AnalysisOutput => ({ analysis: skipped(camera.id, reason, fields) });
   let fetched;
   try {
     fetched = await getFrameCached(env, ctx, camera);
   } catch (e) {
     if (!(e instanceof TmcError)) throw e;
-    return skipped(camera.id, 'frame_unavailable', { freshness: e.code === 'timeout' ? 'unknown' : 'offline', error: truncate(e.message) });
+    return skip('frame_unavailable', { freshness: e.code === 'timeout' ? 'unknown' : 'offline', error: truncate(e.message) });
   }
   const { frame, state } = fetched;
   const frameInfo: Partial<ParkingAnalysis> = { frameFetchedAt: frame.fetchedAt, frameHash: frame.hash, freshness: state.freshness };
-  if (state.freshness !== 'live') return skipped(camera.id, SKIP_REASON[state.freshness], frameInfo);
+  if (state.freshness !== 'live') return skip(SKIP_REASON[state.freshness], frameInfo);
 
   // Without a parking lane there is nothing to measure; only admins (previewing boxes) pay for detection.
   if (!hasParkingLane(input.calibration) && !input.admin) {
-    return skipped(camera.id, 'needs_calibration', { ...frameInfo, notes: ['No parking lane is calibrated for this camera.'] });
+    return skip('needs_calibration', { ...frameInfo, notes: ['No parking lane is calibrated for this camera.'] });
   }
   const vehicles = createVehicleDetector(env);
-  if (!vehicles) return skipped(camera.id, 'detector_unavailable', { ...frameInfo, notes: ['Workers AI binding is not configured.'] });
+  if (!vehicles) return skip('detector_unavailable', { ...frameInfo, notes: ['Workers AI binding is not configured.'] });
 
   const detector = new CurbGapParkingDetector(vehicles);
-  const latest = input.latest;
-  const previousFresh = latest && (secondsSince(latest.timestamp) ?? Infinity) < PREVIOUS_CANDIDATES_MAX_AGE_SECONDS;
   try {
-    const result = await detector.analyze(frame, {
+    const { laneState, ...result } = await detector.analyze(frame, {
       calibration: input.calibration,
-      previousCandidates: previousFresh ? latest.candidates : [],
+      laneState: input.laneState,
       minConfidence: input.settings.minConfidence,
       camera: { lat: camera.lat, lon: camera.lon, name: camera.name },
     });
     const analysis: ParkingAnalysis = { ...result, freshness: state.freshness };
-    return input.settings.vlmVerify && env.AI ? await verifyCandidates(env.AI, frame, analysis, input.settings.minConfidence) : analysis;
+    return {
+      analysis: input.settings.vlmVerify && env.AI ? await verifyCandidates(env.AI, frame, analysis, input.settings.minConfidence) : analysis,
+      laneState,
+    };
   } catch (e) {
     console.error(`analyze ${camera.id}: detector failed: ${errorMessage(e)}`);
-    return skipped(camera.id, 'detector_error', { ...frameInfo, detector: detector.name, error: truncate(errorMessage(e)) });
+    return skip('detector_error', { ...frameInfo, detector: detector.name, error: truncate(errorMessage(e)) });
   }
 }
 
@@ -147,17 +154,21 @@ async function runAnalysis(env: Env, ctx: Background, camera: Camera, input: Ana
  */
 export async function analyzeCamera(env: Env, ctx: Background, cameraId: string, opts: AnalyzeOptions = {}): Promise<Detection> {
   const camera = await requireCamera(env, cameraId);
-  const [settings, calibrationRow, recent] = await Promise.all([
+  const [settings, calibrationRow, recent, laneState] = await Promise.all([
     readSettings(env),
     getCalibrationRow(env.DB, cameraId),
     recentDetections(env.DB, cameraId, 1),
+    getLaneState(env.DB, cameraId),
   ]);
   const latest = recent[0] ?? null;
   if (latest && inCooldown(latest, settings, opts)) return latest;
 
   const calibration = calibrationRow ? toCalibration(calibrationRow) : null;
-  const analysis = await runAnalysis(env, ctx, camera, { settings, calibration, latest, admin: !!opts.admin });
-  const detection = await insertDetection(env.DB, analysis);
+  const out = await runAnalysis(env, ctx, camera, { settings, calibration, laneState, admin: !!opts.admin });
+  const [detection] = await Promise.all([
+    insertDetection(env.DB, out.analysis),
+    out.laneState && Object.keys(out.laneState).length ? putLaneState(env.DB, cameraId, out.laneState, new Date().toISOString()) : null,
+  ]);
   console.log(
     `analyze ${cameraId}: #${detection.id} ${detection.status}${detection.reason ? ` (${detection.reason})` : ''}, ` +
       `${detection.vehiclesDetected} vehicles, ${detection.candidateSpaces} spaces, ${detection.freshness}, ${detection.detector}`,

@@ -20,7 +20,7 @@ const RETENTION_DAYS = 7;
 const RETENTION_HOUR_UTC = 8;
 
 /** Why background analysis should run now, or null to stay idle. */
-export async function backgroundReason(env: Env, state: SettingsState, now = Date.now()): Promise<string | null> {
+async function backgroundReason(env: Env, state: SettingsState, now = Date.now()): Promise<string | null> {
   const { backgroundMode, notificationsEnabled } = state.settings;
   if (backgroundMode === 'off') return null;
   if (backgroundMode === 'always') return 'always';
@@ -30,7 +30,7 @@ export async function backgroundReason(env: Env, state: SettingsState, now = Dat
   return null;
 }
 
-export function isRetentionTick(scheduledTime: number): boolean {
+function isRetentionTick(scheduledTime: number): boolean {
   const t = new Date(scheduledTime);
   return t.getUTCHours() === RETENTION_HOUR_UTC && t.getUTCMinutes() <= 1;
 }

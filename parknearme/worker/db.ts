@@ -3,6 +3,7 @@
 // Row types mirror migrations/0001_init.sql; mappers turn rows into the
 // shared API types.
 
+import type { LaneStates } from '../shared/curb-gaps';
 import type {
   Calibration,
   Camera,
@@ -54,6 +55,8 @@ export interface FrameStateRow {
   last_changed_at: string | null;
   consecutive_failures: number;
   last_error: string | null;
+  /** migrations/0003: EXIF capture time of the last frame. */
+  last_capture_at: string | null;
 }
 
 export interface DetectionRow {
@@ -86,6 +89,7 @@ export interface CandidateRow {
   status: ParkingCandidate['status'];
   gap_start: number;
   gap_end: number;
+  length_m: number | null;
   polygon_json: string;
   latitude: number;
   longitude: number;
@@ -150,7 +154,7 @@ export function toCalibration(row: CalibrationRow): Calibration {
   };
 }
 
-export function toCandidate(row: CandidateRow): ParkingCandidate {
+function toCandidate(row: CandidateRow): ParkingCandidate {
   return {
     id: row.id,
     cameraId: row.camera_id,
@@ -161,6 +165,7 @@ export function toCandidate(row: CandidateRow): ParkingCandidate {
     status: row.status,
     gapStart: row.gap_start,
     gapEnd: row.gap_end,
+    ...(row.length_m === null ? {} : { lengthM: row.length_m }),
     polygon: parseJson(row.polygon_json, []),
     lat: row.latitude,
     lon: row.longitude,
@@ -169,7 +174,7 @@ export function toCandidate(row: CandidateRow): ParkingCandidate {
   };
 }
 
-export function toDetection(row: DetectionRow, candidates: CandidateRow[]): Detection {
+function toDetection(row: DetectionRow, candidates: CandidateRow[]): Detection {
   return {
     id: row.id,
     cameraId: row.camera_id,
@@ -349,20 +354,25 @@ export async function getFrameStateRow(db: D1Database, cameraId: string): Promis
   return db.prepare('SELECT * FROM camera_frame_state WHERE camera_id = ?').bind(cameraId).first<FrameStateRow>();
 }
 
-export async function putFrameState(
-  db: D1Database,
-  cameraId: string,
-  s: { lastHash: string | null; lastFetchedAt: string; lastChangedAt: string | null; consecutiveFailures: number; lastError: string | null },
-): Promise<void> {
+export interface StoredFrameState {
+  lastHash: string | null;
+  lastFetchedAt: string;
+  lastChangedAt: string | null;
+  consecutiveFailures: number;
+  lastError: string | null;
+  lastCaptureAt: string | null;
+}
+
+export async function putFrameState(db: D1Database, cameraId: string, s: StoredFrameState): Promise<void> {
   await db
     .prepare(
-      `INSERT INTO camera_frame_state (camera_id, last_hash, last_fetched_at, last_changed_at, consecutive_failures, last_error)
-       VALUES (?, ?, ?, ?, ?, ?)
+      `INSERT INTO camera_frame_state (camera_id, last_hash, last_fetched_at, last_changed_at, consecutive_failures, last_error, last_capture_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT (camera_id) DO UPDATE SET last_hash = excluded.last_hash, last_fetched_at = excluded.last_fetched_at,
          last_changed_at = excluded.last_changed_at, consecutive_failures = excluded.consecutive_failures,
-         last_error = excluded.last_error`,
+         last_error = excluded.last_error, last_capture_at = excluded.last_capture_at`,
     )
-    .bind(cameraId, s.lastHash, s.lastFetchedAt, s.lastChangedAt, s.consecutiveFailures, s.lastError)
+    .bind(cameraId, s.lastHash, s.lastFetchedAt, s.lastChangedAt, s.consecutiveFailures, s.lastError, s.lastCaptureAt)
     .run();
 }
 
@@ -372,6 +382,27 @@ export async function putFrameState(
 const LATEST_DETECTION_IDS = `SELECT (SELECT id FROM detections x WHERE x.camera_id = c.id ORDER BY x.analyzed_at DESC LIMIT 1) AS id FROM cameras c`;
 
 /** Newest detection (with candidates) for every stored camera, keyed by camera id. */
+/** Persisted curb occupancy grids for a camera (see shared/curb-gaps.ts). */
+export async function getLaneState(db: D1Database, cameraId: string): Promise<LaneStates | undefined> {
+  const row = await db.prepare('SELECT state_json FROM camera_lane_state WHERE camera_id = ?').bind(cameraId).first<{ state_json: string }>();
+  if (!row) return undefined;
+  try {
+    return JSON.parse(row.state_json) as LaneStates;
+  } catch {
+    return undefined;
+  }
+}
+
+export async function putLaneState(db: D1Database, cameraId: string, state: LaneStates, now: string): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO camera_lane_state (camera_id, state_json, updated_at) VALUES (?, ?, ?)
+       ON CONFLICT (camera_id) DO UPDATE SET state_json = excluded.state_json, updated_at = excluded.updated_at`,
+    )
+    .bind(cameraId, JSON.stringify(state), now)
+    .run();
+}
+
 export async function latestDetections(db: D1Database): Promise<Map<string, Detection>> {
   const [detections, candidates] = await Promise.all([
     db.prepare(`SELECT * FROM detections WHERE id IN (${LATEST_DETECTION_IDS})`).all<DetectionRow>(),
@@ -437,8 +468,8 @@ export async function insertDetection(db: D1Database, a: ParkingAnalysis): Promi
   // Inside the batch transaction the detection just inserted has the largest id.
   const candidate = db.prepare(
     `INSERT INTO parking_candidates (detection_id, camera_id, region_id, street_label, spaces, confidence, status, gap_start,
-       gap_end, polygon_json, latitude, longitude, approximate_location, reasons_json, created_at)
-     VALUES ((SELECT MAX(id) FROM detections), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
+       gap_end, length_m, polygon_json, latitude, longitude, approximate_location, reasons_json, created_at)
+     VALUES ((SELECT MAX(id) FROM detections), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
   );
   const results = await db.batch<{ id: number }>([
     detection,
@@ -452,6 +483,7 @@ export async function insertDetection(db: D1Database, a: ParkingAnalysis): Promi
         c.status,
         c.gapStart,
         c.gapEnd,
+        c.lengthM ?? null,
         JSON.stringify(c.polygon),
         c.lat,
         c.lon,

@@ -117,6 +117,8 @@ export interface ParkingCandidate {
   /** Lane-normalized extent of the gap along the street, 0..1. */
   gapStart: number;
   gapEnd: number;
+  /** Estimated open curb length in metres (a car needs ~6 m). */
+  lengthM?: number;
   /** Gap outline in normalized image coordinates (for overlays). */
   polygon: Point[];
   /** Approximate location (lane anchor, else camera position). Not an exact spot. */

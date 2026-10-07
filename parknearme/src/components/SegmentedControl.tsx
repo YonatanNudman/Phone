@@ -34,7 +34,13 @@ export function SegmentedControl<T extends string | number>({ options, value, on
   };
 
   return (
-    <div role="radiogroup" aria-label={label} aria-disabled={disabled || undefined} className={`segmented${disabled ? ' is-disabled' : ''} ${className}`} onKeyDown={onKey}>
+    <div
+      role="radiogroup"
+      aria-label={label}
+      aria-disabled={disabled || undefined}
+      className={`segmented${disabled ? ' is-disabled' : ''} ${className}`}
+      onKeyDown={onKey}
+    >
       {index >= 0 && (
         <span
           className="segmented-thumb"

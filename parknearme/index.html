@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="Live parking near 403 Audubon Ave" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -14,6 +16,11 @@
     <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <title>ParkNearMe</title>
+    <!-- Paint the right background before the CSS bundle loads (no white flash in dark mode). -->
+    <style>
+      html { background: #f2f2f7; }
+      @media (prefers-color-scheme: dark) { html { background: #000; } }
+    </style>
   </head>
   <body>
     <div id="root"></div>

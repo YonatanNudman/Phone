@@ -40,7 +40,7 @@ export function mergeDetection(data: ParkingCurrentResponse, det: Detection): Pa
   const now = new Date();
   const fresh = isDetectionCurrent(det, MAX_DETECTION_AGE_SECONDS, now) ? det.candidates : [];
   const candidates = [...data.candidates.filter((c) => c.cameraId !== det.cameraId), ...fresh].sort((a, b) => b.confidence - a.confidence);
-  const current = watched.filter((c) => isDetectionCurrent(c.latest, MAX_DETECTION_AGE_SECONDS, now));
+  const current = watched.filter((c) => c.latest?.status !== 'unknown' && isDetectionCurrent(c.latest, MAX_DETECTION_AGE_SECONDS, now));
   const updatedAt = watched.reduce<string | null>((max, c) => {
     const t = c.latest?.timestamp ?? null;
     return t && (!max || Date.parse(t) > Date.parse(max)) ? t : max;
@@ -75,11 +75,12 @@ export function useParking(autoRefreshSeconds: AutoRefreshSeconds) {
       loadedAt.current = Date.now();
       setState((s) => ({ ...s, data: first }));
 
-      const queue = mode === 'full'
-        ? [...first.watched]
-            .filter((c) => c.latestAgeSeconds === null || c.latestAgeSeconds > ANALYZE_AFTER_SECONDS)
-            .sort((a, b) => a.distanceMi - b.distanceMi)
-        : [];
+      const queue =
+        mode === 'full'
+          ? [...first.watched]
+              .filter((c) => c.latestAgeSeconds === null || c.latestAgeSeconds > ANALYZE_AFTER_SECONDS)
+              .sort((a, b) => a.distanceMi - b.distanceMi)
+          : [];
       for (const cam of queue) {
         setState((s) => ({ ...s, message: `Analyzing ${cameraLabel(cam)}…` }));
         try {

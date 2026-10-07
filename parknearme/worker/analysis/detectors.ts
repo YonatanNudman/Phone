@@ -10,7 +10,7 @@
 //                             (DETR run offline on real frames) keyed by frame hash.
 // CurbGapParkingDetector    - ParkingDetector: vehicles + calibration -> open curb.
 
-import { analyzeCurbGaps, applyTemporalConsistency, DEFAULT_GAP_OPTIONS } from '../../shared/curb-gaps';
+import { analyzeCurbGaps } from '../../shared/curb-gaps';
 import type { ParkingCandidate } from '../../shared/types';
 import type { Env } from '../env';
 import type { AnalysisContext, Frame, ParkingDetector, VehicleDetector } from './detector';
@@ -28,8 +28,8 @@ export function bytesToBase64(bytes: Uint8Array): string {
   for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
   return btoa(s);
 }
-/** Detector boxes below this score are discarded before analysis. */
-export const MIN_VEHICLE_SCORE = 0.5;
+/** Detector boxes below this score are discarded. Fairly low because the lane grid fuses evidence over time. */
+export const MIN_VEHICLE_SCORE = 0.35;
 
 export class WorkersAiDetrDetector implements VehicleDetector {
   readonly name = 'workers-ai/detr-resnet-50';
@@ -144,46 +144,37 @@ export class CurbGapParkingDetector implements ParkingDetector {
     const detected = cleanVehicles(await this.vehicles.detect(frame), MIN_VEHICLE_SCORE);
     const regions = ctx.calibration?.regions ?? [];
     const result = analyzeCurbGaps(detected, regions, {
-      ...DEFAULT_GAP_OPTIONS,
       imageWidth: frame.width,
       imageHeight: frame.height,
       minVehicleScore: MIN_VEHICLE_SCORE,
       minConfidence: ctx.minConfidence,
+      nowMs: Date.parse(frame.fetchedAt) || Date.now(),
+      state: ctx.laneState,
     });
 
-    const gaps = applyTemporalConsistency(
-      result.candidates,
-      ctx.previousCandidates.map((c) => ({ regionId: c.regionId ?? '', start: c.gapStart, end: c.gapEnd })),
-      ctx.minConfidence,
-    );
     const regionById = new Map(regions.map((r) => [r.id, r]));
-    const candidates: ParkingCandidate[] = gaps
-      .sort((a, b) => b.confidence - a.confidence)
-      .map((g) => {
-        const anchor = regionById.get(g.regionId)?.anchor;
-        return {
-          cameraId: frame.cameraId,
-          regionId: g.regionId,
-          streetLabel: g.streetLabel,
-          spaces: g.spaces,
-          confidence: g.confidence,
-          status: g.status,
-          gapStart: g.start,
-          gapEnd: g.end,
-          polygon: g.polygon,
-          lat: anchor?.lat ?? ctx.camera.lat,
-          lon: anchor?.lon ?? ctx.camera.lon,
-          approximateLocation: !anchor,
-          reasons: g.reasons,
-        };
-      });
+    const candidates: ParkingCandidate[] = result.candidates.map((g) => {
+      const anchor = regionById.get(g.regionId)?.anchor;
+      return {
+        cameraId: frame.cameraId,
+        regionId: g.regionId,
+        streetLabel: g.streetLabel,
+        spaces: g.spaces,
+        confidence: g.confidence,
+        status: g.status,
+        gapStart: g.start,
+        gapEnd: g.end,
+        lengthM: g.lengthM,
+        polygon: g.polygon,
+        lat: anchor?.lat ?? ctx.camera.lat,
+        lon: anchor?.lon ?? ctx.camera.lon,
+        approximateLocation: !anchor,
+        reasons: g.reasons,
+      };
+    });
 
-    let status = result.status;
-    let confidence = result.confidence;
-    if (candidates.length && status !== 'unknown') {
-      status = candidates.some((c) => c.status === 'likely_available') ? 'likely_available' : 'possible';
-      confidence = candidates[0]!.confidence;
-    }
+    const status = result.status;
+    const confidence = result.confidence;
 
     return {
       cameraId: frame.cameraId,
@@ -202,6 +193,7 @@ export class CurbGapParkingDetector implements ParkingDetector {
       candidates: status === 'unknown' ? [] : candidates,
       notes: result.notes,
       error: null,
+      laneState: result.state,
     };
   }
 }

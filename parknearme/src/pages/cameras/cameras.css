@@ -1,0 +1,212 @@
+/* /cameras discovery page */
+
+.cameras-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  padding: 16px 16px 0;
+}
+
+.cameras-toolbar .chip-row {
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+
+.cameras-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+@media (max-width: 559px) {
+  .cameras-tools {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.cameras-pause {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.cameras-banner {
+  padding: 16px 16px 0;
+}
+
+.cameras-banner a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cameras-count {
+  padding: 18px 20px 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--label-2);
+}
+
+.cameras-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 10px 16px 0;
+}
+
+@media (min-width: 700px) {
+  .cameras-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .cameras-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cameras-empty {
+  padding: 24px 20px;
+  text-align: center;
+  color: var(--label-2);
+}
+
+/* ---- Card ---------------------------------------------------------------- */
+
+.ccard {
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.ccard.is-watched {
+  border-color: color-mix(in srgb, var(--green) 55%, transparent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--green) 10%, transparent),
+    var(--card-shadow);
+}
+
+.ccard-frame {
+  border-radius: 0;
+}
+
+.ccard-badges {
+  /* bottom: the burned-in camera clock lives along the top edge */
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.ccard-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px 14px;
+}
+
+.ccard-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ccard-head h2 {
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.ccard-dist {
+  flex: none;
+  font-size: 15px;
+  color: var(--label-2);
+}
+
+.ccard-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-top: -6px;
+  font-size: 13px;
+  color: var(--label-2);
+}
+
+.ccard-calibrated {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 600;
+  color: var(--green-text);
+}
+
+.ccard-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label-2);
+}
+
+textarea.ccard-notes {
+  min-height: 40px;
+  padding: 9px 12px;
+  resize: none;
+  field-sizing: content;
+  max-height: 120px;
+}
+
+.ccard-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tone) 12%, var(--surface));
+}
+
+.ccard-result-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ccard-result-text small {
+  display: block;
+  margin-top: 1px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--label-2);
+}
+
+.ccard-result .btn-link {
+  min-height: 32px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ccard-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}

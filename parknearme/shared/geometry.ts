@@ -29,17 +29,42 @@ export function solveLinear(A: number[][], b: number[]): number[] | null {
   return M.map((row, i) => row[n]! / row[i]!);
 }
 
+/** Hartley normalization: centroid to the origin, mean distance sqrt(2). */
+function normalizer(pts: Point[]): Mat3 {
+  const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
+  const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
+  const md = pts.reduce((s, p) => s + Math.hypot(p[0] - cx, p[1] - cy), 0) / pts.length;
+  const k = md > 0 ? Math.SQRT2 / md : 1;
+  return [k, 0, -k * cx, 0, k, -k * cy, 0, 0, 1];
+}
+
+export function mul3(A: Mat3, B: Mat3): Mat3 {
+  const C = [0, 0, 0, 0, 0, 0, 0, 0, 0] as Mat3;
+  for (let i = 0; i < 3; i++)
+    for (let j = 0; j < 3; j++) {
+      let s = 0;
+      for (let k = 0; k < 3; k++) s += A[i * 3 + k]! * B[k * 3 + j]!;
+      C[i * 3 + j] = s;
+    }
+  return C;
+}
+
 /**
- * Homography H (h33 = 1) mapping each src[i] to dst[i] for 4 correspondences
- * (direct linear transform). Returns null for degenerate quads.
+ * Homography H mapping each src[i] to dst[i] for 4 correspondences (direct
+ * linear transform with Hartley normalization, so pixel and normalized
+ * coordinates are equally well conditioned). Returns null for degenerate quads.
  */
 export function homographyFrom4(src: Point[], dst: Point[]): Mat3 | null {
   if (src.length !== 4 || dst.length !== 4) return null;
+  const Ts = normalizer(src);
+  const Td = normalizer(dst);
+  const s = src.map((p) => applyHomography(Ts, p));
+  const d = dst.map((p) => applyHomography(Td, p));
   const A: number[][] = [];
   const b: number[] = [];
   for (let i = 0; i < 4; i++) {
-    const [x, y] = src[i]!;
-    const [u, v] = dst[i]!;
+    const [x, y] = s[i]!;
+    const [u, v] = d[i]!;
     A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]);
     b.push(u);
     A.push([0, 0, 0, x, y, 1, -v * x, -v * y]);
@@ -47,7 +72,21 @@ export function homographyFrom4(src: Point[], dst: Point[]): Mat3 | null {
   }
   const h = solveLinear(A, b);
   if (!h || h.some((n) => !Number.isFinite(n))) return null;
-  return [h[0]!, h[1]!, h[2]!, h[3]!, h[4]!, h[5]!, h[6]!, h[7]!, 1];
+  const TdInv = invert3(Td);
+  if (!TdInv) return null;
+  const H = mul3(mul3(TdInv, [h[0]!, h[1]!, h[2]!, h[3]!, h[4]!, h[5]!, h[6]!, h[7]!, 1]), Ts);
+  const k = H[8] !== 0 ? H[8] : 1;
+  return H.map((t) => t / k) as Mat3;
+}
+
+/** Jacobian of the mapping at image point p: [[du/dx, du/dy], [dv/dx, dv/dy]]. */
+export function jacobian(H: Mat3, p: Point): [[number, number], [number, number]] {
+  const w = homographyW(H, p);
+  const [u, v] = applyHomography(H, p);
+  return [
+    [(H[0] - u * H[6]) / w, (H[1] - u * H[7]) / w],
+    [(H[3] - v * H[6]) / w, (H[4] - v * H[7]) / w],
+  ];
 }
 
 export function applyHomography(H: Mat3, [x, y]: Point): Point {

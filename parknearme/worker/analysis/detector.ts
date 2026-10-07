@@ -1,6 +1,7 @@
 // Detector interfaces. The pipeline depends only on these, so a different
 // model or provider can be swapped in without touching the rest of the app.
 
+import type { LaneStates } from '../../shared/curb-gaps';
 import type { Calibration, DetectedObject, ParkingAnalysis, ParkingCandidate } from '../../shared/types';
 
 export interface Frame {
@@ -20,8 +21,10 @@ export interface VehicleDetector {
 
 export interface AnalysisContext {
   calibration: Calibration | null;
-  /** Candidates from the previous analysis of this camera, if recent. */
-  previousCandidates: Pick<ParkingCandidate, 'regionId' | 'gapStart' | 'gapEnd'>[];
+  /** Persisted per-lane occupancy grids from earlier checks (evidence is fused over time). */
+  laneState?: LaneStates;
+  /** @deprecated Superseded by laneState; ignored. */
+  previousCandidates?: Pick<ParkingCandidate, 'regionId' | 'gapStart' | 'gapEnd'>[];
   minConfidence: number;
   camera: { lat: number; lon: number; name: string };
 }
@@ -29,7 +32,7 @@ export interface AnalysisContext {
 /** Turns a frame into a parking verdict. */
 export interface ParkingDetector {
   readonly name: string;
-  analyze(frame: Frame, context: AnalysisContext): Promise<Omit<ParkingAnalysis, 'freshness'>>;
+  analyze(frame: Frame, context: AnalysisContext): Promise<Omit<ParkingAnalysis, 'freshness'> & { laneState?: LaneStates }>;
 }
 
 /** Optional second opinion on a candidate (e.g. a vision LLM). */

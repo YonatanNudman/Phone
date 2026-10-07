@@ -1,6 +1,7 @@
 // Shared setup for API tests: a fresh D1 shim, a fake TMC + geocoder behind a
-// stubbed global fetch, a fake Workers AI binding that returns recorded DETR
-// boxes, and an execution context whose waitUntil promises can be awaited.
+// stubbed global fetch, a fake Workers AI binding that returns DETR-shaped
+// boxes of a synthetic street with an open curb, and an execution context
+// whose waitUntil promises can be awaited.
 // Nothing touches the network.
 
 import { createHash } from 'node:crypto';
@@ -11,6 +12,7 @@ import { DETR_MODEL } from '../../worker/analysis/detectors';
 import type { Env } from '../../worker/env';
 import { createApp } from '../../worker/index';
 import { createTestDb, type TestDb } from './d1';
+import { acrossStreet } from './scene';
 
 export const ADMIN_TOKEN = 'x'.repeat(32);
 export const HOME = { lat: 40.851304, lon: -73.930153 };
@@ -48,11 +50,43 @@ interface Fixture {
 
 /** Real DETR output + seed calibration for the Audubon camera (tests/fixtures). */
 export const AUDUBON = JSON.parse(readFileSync('tests/fixtures/audubon-181-night.json', 'utf8')) as Fixture;
-/** A real 352x240 frame from the Audubon camera. */
-export const FRAME = new Uint8Array(readFileSync('tests/fixtures/audubon-181-frame0.jpg'));
+/**
+ * A synthetic curb with an obvious opening: a projected 3D street (see
+ * scene.ts) with cars at 0.5, 6.0, 24.4 and 30.4 m of a 36.6 m lane, i.e.
+ * 13.8 m of open curb. `detr` is in the Workers AI DETR shape (pixel boxes).
+ */
+export const OPEN_CURB = (() => {
+  const s = acrossStreet();
+  const detr = [0.5, 6.0, 24.4, 30.4].map((m) => {
+    const { label, score, box } = s.car(m);
+    return { label, score, box: { xmin: box.xmin * 352, ymin: box.ymin * 240, xmax: box.xmax * 352, ymax: box.ymax * 240 } };
+  });
+  const lane: Region = { ...s.lane, id: 'lane-181-south', streetLabel: 'W 181st St at Audubon Ave' };
+  return { detr, calibration: { referenceWidth: 352, referenceHeight: 240, regions: [lane] } };
+})();
+
+/** Copy of a JPEG without its EXIF (APP1) segments. */
+function withoutExif(jpeg: Uint8Array): Uint8Array<ArrayBuffer> {
+  const keep: Uint8Array[] = [jpeg.subarray(0, 2)];
+  let i = 2;
+  while (i + 4 <= jpeg.length && jpeg[i] === 0xff && jpeg[i + 1] !== 0xda) {
+    const end = i + 2 + ((jpeg[i + 2]! << 8) | jpeg[i + 3]!);
+    if (jpeg[i + 1] !== 0xe1) keep.push(jpeg.subarray(i, end));
+    i = end;
+  }
+  keep.push(jpeg.subarray(i));
+  const out = new Uint8Array(keep.reduce((n, part) => n + part.length, 0));
+  keep.reduce((offset, part) => (out.set(part, offset), offset + part.length), 0);
+  return out;
+}
+
+/** A real 352x240 frame from the Audubon camera; its EXIF says it was taken 2026-10-07 04:26:29 UTC. */
+export const FRAME_WITH_EXIF = new Uint8Array(readFileSync('tests/fixtures/audubon-181-0.jpg'));
+/** The same frame without EXIF, so its old capture time does not make it STALE whenever tests run. */
+export const FRAME = withoutExif(FRAME_WITH_EXIF);
 export const FRAME_HASH = createHash('sha256').update(FRAME).digest('hex');
 
-export type FrameMode = 'ok' | 'http_500' | 'html' | 'tiny' | 'timeout';
+export type FrameMode = 'ok' | 'old_exif' | 'serviced' | 'http_500' | 'html' | 'tiny' | 'timeout';
 
 export interface Harness {
   db: TestDb;
@@ -75,6 +109,14 @@ function frameResponse(mode: FrameMode): Response {
   switch (mode) {
     case 'ok':
       return new Response(FRAME.slice(), { headers: { 'Content-Type': 'image/jpeg', 'Cache-Control': 'no-store' } });
+    case 'old_exif':
+      return new Response(FRAME_WITH_EXIF.slice(), { headers: { 'Content-Type': 'image/jpeg' } });
+    case 'serviced': {
+      // TMC answers 200 "image/jpeg" with a PNG placeholder while a camera is being serviced.
+      const png = new Uint8Array(6000);
+      png.set([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+      return new Response(png, { headers: { 'Content-Type': 'image/jpeg' } });
+    }
     case 'http_500':
       return new Response('upstream broke', { status: 500 });
     case 'html':
@@ -109,7 +151,7 @@ export function createHarness(overrides: Partial<Env> = {}): Harness {
 
   const ai = {
     run: vi.fn(async (model: string) => {
-      if (model === DETR_MODEL) return AUDUBON.frames[0]!.detr;
+      if (model === DETR_MODEL) return OPEN_CURB.detr;
       throw new Error(`unexpected model ${model}`);
     }),
   };
@@ -147,7 +189,7 @@ export function createHarness(overrides: Partial<Env> = {}): Harness {
 
 /** Admin calls that put a camera into the "watched + calibrated" state. */
 export async function watchAndCalibrate(h: Harness, cameraId: string = CAM.audubon): Promise<void> {
-  const cal = await h.call(`/api/cameras/${cameraId}/calibration`, { method: 'POST', admin: true, json: AUDUBON.calibration });
+  const cal = await h.call(`/api/cameras/${cameraId}/calibration`, { method: 'POST', admin: true, json: OPEN_CURB.calibration });
   if (cal.status !== 200) throw new Error(`calibration failed: ${cal.status} ${await cal.text()}`);
   const pref = await h.call(`/api/cameras/${cameraId}/usefulness`, { method: 'POST', admin: true, json: { usefulness: 'yes' } });
   if (pref.status !== 200) throw new Error(`usefulness failed: ${pref.status} ${await pref.text()}`);

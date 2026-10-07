@@ -10,9 +10,12 @@ export function useInView(ref: RefObject<Element | null>, rootMargin = '200px'):
       const id = setTimeout(() => setInView(true), 0);
       return () => clearTimeout(id);
     }
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) setInView(e.isIntersecting);
-    }, { rootMargin });
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) setInView(e.isIntersecting);
+      },
+      { rootMargin },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, [ref, rootMargin]);

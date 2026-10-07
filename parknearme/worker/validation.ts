@@ -3,14 +3,14 @@
 
 import { z } from 'zod';
 import { isConvexQuad } from '../shared/geometry';
-import type { Point, Region, RegionKind } from '../shared/types';
+import type { Region, RegionKind } from '../shared/types';
 import { HttpError } from './http';
 
 export const CAMERA_ID_PATTERN = /^[A-Za-z0-9-]{1,64}$/;
 const REGION_ID_PATTERN = /^[a-zA-Z0-9_-]{1,40}$/;
 const BASE64URL_PATTERN = /^[A-Za-z0-9_-]+={0,2}$/;
 const REGION_KINDS = ['parking', 'restricted', 'ignore', 'roadway', 'sidewalk'] as const satisfies readonly RegionKind[];
-export const DEFAULT_LANE_CAPACITY = 6;
+const DEFAULT_LANE_CAPACITY = 6;
 
 export interface ValidationDetail {
   path: string;
@@ -35,7 +35,6 @@ export const usefulnessBody = z.object({
   notes: z.string().trim().max(500, 'At most 500 characters').nullable().optional(),
   streetLabel: z.string().trim().max(80, 'At most 80 characters').nullable().optional(),
 });
-export type UsefulnessBody = z.output<typeof usefulnessBody>;
 
 const coordinate = z.number().min(0, 'Points must be normalized (0..1)').max(1, 'Points must be normalized (0..1)');
 const point = z.tuple([coordinate, coordinate]);
@@ -54,14 +53,14 @@ const regionInput = z
     if (r.kind !== 'parking') return;
     if (r.points.length !== 4) {
       ctx.addIssue({ code: 'custom', path: ['points'], message: 'A parking lane needs exactly 4 points: start-curb, start-traffic, end-traffic, end-curb' });
-    } else if (!isConvexQuad(r.points as Point[])) {
+    } else if (!isConvexQuad(r.points)) {
       ctx.addIssue({ code: 'custom', path: ['points'], message: 'A parking lane must be a convex quadrilateral (points in order, edges not crossing)' });
     }
   });
 
 /** Parking-only fields are dropped from other kinds; lanes get a default capacity. */
 function normalizeRegion(r: z.output<typeof regionInput>): Region {
-  const base: Region = { id: r.id, kind: r.kind, points: r.points as Point[] };
+  const base: Region = { id: r.id, kind: r.kind, points: r.points };
   if (r.label) base.label = r.label;
   if (r.kind !== 'parking') return base;
   return {
@@ -87,7 +86,6 @@ export const calibrationBody = z
       seen.add(r.id);
     });
   });
-export type CalibrationBody = z.output<typeof calibrationBody>;
 
 const httpsEndpoint = z
   .url({ protocol: /^https$/, error: 'Must be an https URL' })
@@ -100,6 +98,5 @@ export const pushSubscriptionBody = z.object({
     auth: z.string().regex(BASE64URL_PATTERN, 'Must be base64url').max(100, 'At most 100 characters'),
   }),
 });
-export type PushSubscriptionBody = z.output<typeof pushSubscriptionBody>;
 
 export const pushUnsubscribeBody = z.object({ endpoint: httpsEndpoint });

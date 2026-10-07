@@ -1,24 +1,36 @@
 // Curb-gap analysis: given vehicle boxes and a calibrated parking lane, find
 // car-sized openings along the curb.
 //
-// Each parking lane is a 4-point quad drawn on the frame. A homography maps it
-// to a unit rectangle (u along the street, v across). Every vehicle whose
-// ground-contact point lands in the lane is treated as parked and occupies an
-// interval of u. Uncovered stretches of u, minus RESTRICTED / IGNORE zones, are
-// gaps; a gap at least one car slot long (1 / capacity) is a candidate space.
+// Model (validated on a synthetic pinhole street scene; see README "How it works"):
+//  1. Each parking lane is a 4-point quad. A homography maps it to a unit
+//     rectangle: u along the street, v across (0 = curb, 1 = traffic edge).
+//     Lane length in metres = capacity x slotM (6.1 m, a typical NYC space).
+//  2. Each vehicle's ground footprint is FITTED so its projected bounding box
+//     matches the detection's xmin, xmax and ymax (ymin depends on the unknown
+//     height). Merged boxes of 2-3 bumper-to-bumper cars are split. Footprints
+//     inside the lane are parked; ones on the traffic side only occlude.
+//  3. The lane is a 1-D occupancy grid (0.25 m bins, log-odds, prior 75%
+//     occupied). A bin under a parked footprint gets "occupied" evidence. Any
+//     other bin gets "free" evidence only in proportion to how visible a car
+//     parked there would be: detector recall at that distance x the fraction
+//     of a hypothetical car box not covered by other vehicles. Curb hidden
+//     behind a parked car or a bus therefore stays unknown, never "free".
+//     The grid is persisted between checks and decays toward the prior.
+//  4. Runs of likely-free bins minus RESTRICTED/IGNORE zones are gaps. A gap's
+//     confidence = P(long enough | measurement noise) x mean P(free) x a
+//     far-field factor (pixels per metre along the curb).
 //
-// This only says "the curb looks open". It cannot know about hydrants, signs or
-// rules unless the user marked them as RESTRICTED during calibration.
+// It only says "the curb looks open". Hydrants, driveways and signs are known
+// only if the user marked them RESTRICTED during calibration.
 
 import {
   applyHomography,
   clamp,
-  complementIntervals,
   homographyW,
+  jacobian,
   laneHomography,
   mergeIntervals,
   pointInPolygon,
-  subtractIntervals,
   type Interval,
   type Mat3,
 } from './geometry';
@@ -26,44 +38,100 @@ import type { DetectedObject, ParkingStatus, Point, Region } from './types';
 
 export const VEHICLE_LABELS = ['car', 'truck', 'bus', 'motorcycle'] as const;
 
-/** Relative length of a vehicle compared with one car slot. */
-const LENGTH_FACTOR: Record<string, number> = { car: 1, truck: 1.6, bus: 2.6, motorcycle: 0.5 };
+/** Assumed ground size by class (metres). */
+const VEHICLE_SIZE: Record<string, { lenM: number; widM: number }> = {
+  car: { lenM: 4.7, widM: 1.85 },
+  truck: { lenM: 6.5, widM: 2.1 },
+  bus: { lenM: 12, widM: 2.55 },
+  motorcycle: { lenM: 2.2, widM: 0.8 },
+};
 
 export interface GapOptions {
   imageWidth: number;
   imageHeight: number;
-  /** Ignore detections below this score. */
+  /** Ignore detections below this score. Low because evidence is fused over time. */
   minVehicleScore: number;
   /** Candidate confidence needed for "likely_available". */
   minConfidence: number;
-  /** A gap must be at least this many car slots to count as a likely space. */
-  likelyGapSlots: number;
-  /** Smallest gap (in slots) reported at all, as "possible". */
-  possibleGapSlots: number;
-  /** Gaps shorter than this on screen are too small to trust. */
-  minGapPixels: number;
+  /** Candidates below this confidence are not reported at all. */
+  reportConfidence: number;
+  /** Length of one parking space (m). */
+  slotM: number;
+  /** Width of the parking lane quad (m), used for across-lane units. */
+  widthM: number;
+  binM: number;
+  /** Prior probability that a curb bin is occupied (NYC curbs are usually full). */
+  priorOcc: number;
+  /** Evidence half-life-ish decay toward the prior between checks (s). */
+  tauSec: number;
+  /** Per-frame false-positive rate of the detector. */
+  fp: number;
+  /** Free length needed when the gap is bounded by cars / continues out of view. */
+  needBothM: number;
+  /** Free length needed when one end is a physical end (restricted zone). */
+  needOneM: number;
+  /** Detector box-edge noise in pixels. */
+  sigmaPx: number;
+  /** Below this many pixels per metre along the curb, gaps are not reported. */
+  minPxPerM: number;
+  /** At or above this, no far-field penalty. */
+  goodPxPerM: number;
+  /** A bin counts as free when P(occupied) is below this. */
+  pOccMax: number;
+  /** Current time (ms since epoch), for decaying persisted state. */
+  nowMs: number;
+  /** Persisted lane grids from the previous check, keyed by region id. */
+  state?: LaneStates;
 }
 
-export const DEFAULT_GAP_OPTIONS: GapOptions = {
+export const DEFAULT_GAP_OPTIONS: Omit<GapOptions, 'nowMs'> = {
   imageWidth: 352,
   imageHeight: 240,
-  minVehicleScore: 0.5,
+  minVehicleScore: 0.3,
   minConfidence: 0.6,
-  likelyGapSlots: 1.0,
-  possibleGapSlots: 0.85,
-  minGapPixels: 12,
+  reportConfidence: 0.3,
+  slotM: 6.1,
+  widthM: 2.4,
+  binM: 0.25,
+  priorOcc: 0.75,
+  tauSec: 600,
+  fp: 0.03,
+  needBothM: 6.1,
+  needOneM: 5.6,
+  sigmaPx: 1.5,
+  minPxPerM: 1.3,
+  goodPxPerM: 3.0,
+  pOccMax: 0.6,
 };
+
+/** Persisted occupancy grid for one lane. */
+export interface LaneState {
+  /** ms since epoch of the last update */
+  t: number;
+  /** Calibration signature; state is discarded when the lane is redrawn. */
+  sig: string;
+  /** log-odds per bin, rounded to 2 decimals */
+  logodds: number[];
+}
+export type LaneStates = Record<string, LaneState>;
 
 export interface GapResult {
   regionId: string;
   streetLabel: string;
+  /** Lane-normalized extent (0..1). */
   start: number;
   end: number;
+  lengthM: number;
+  needM: number;
   slots: number;
   spaces: number;
   confidence: number;
   status: Exclude<ParkingStatus, 'none' | 'unknown'>;
   boundedBothSides: boolean;
+  pLength: number;
+  pFree: number;
+  farFactor: number;
+  /** Normalized image polygon of the gap. */
   polygon: Point[];
   reasons: string[];
 }
@@ -72,10 +140,18 @@ export interface LaneResult {
   regionId: string;
   streetLabel: string;
   capacity: number;
+  lengthM: number;
   parkedVehicles: number;
+  /** Lane-normalized intervals covered by parked footprints. */
   occupied: Interval[];
   blocked: Interval[];
   gaps: GapResult[];
+  /** Calibration sensitivity: metres of position error per pixel of corner error. */
+  calibrationSigmaM: number;
+  /** Pixels per metre along the curb at the near and far ends of the lane. */
+  pxPerMetre: { start: number; end: number };
+  /** Fraction of bins that were observed (visible) in this frame. */
+  observedFraction: number;
   notes: string[];
 }
 
@@ -89,165 +165,284 @@ export interface GapAnalysis {
   confidence: number;
   reason: string | null;
   notes: string[];
+  /** Updated lane grids to persist for the next check. */
+  state: LaneStates;
 }
+
+type Box = DetectedObject['box'];
 
 interface Lane {
   region: Region;
   toLane: Mat3;
   toImage: Mat3;
   capacity: number;
-  slot: number;
+  lengthM: number;
+  widthM: number;
+  bins: number;
+  sig: string;
+  streetLabel: string;
 }
 
 const isVehicle = (o: DetectedObject) => (VEHICLE_LABELS as readonly string[]).includes(o.label);
+const logit = (p: number) => Math.log(p / (1 - p));
+const sigmoid = (l: number) => 1 / (1 + Math.exp(-l));
+/** Normal CDF approximation (|error| < 1e-3). */
+const phi = (z: number) => 0.5 * (1 + Math.tanh(0.7978845608 * (z + 0.044715 * z ** 3)));
+/**
+ * Detector recall vs apparent car length in pixels: ~50% at 10 px, ~90% at
+ * 17 px. On real 352x240 night frames DETR found 9-10 px cars with scores
+ * above 0.9, so this is a moderate guess. Fit it on labelled frames.
+ */
+export const recallAt = (pxPerM: number) => 1 / (1 + Math.exp(-(pxPerM * 4.7 - 10) / 3));
 
-function toLaneUV(lane: Lane, p: Point): Point | null {
-  if (homographyW(lane.toLane, p) <= 0) return null;
-  const uv = applyHomography(lane.toLane, p);
-  return Number.isFinite(uv[0]) && Number.isFinite(uv[1]) ? uv : null;
+const toPx = (p: Point, o: GapOptions): Point => [p[0] * o.imageWidth, p[1] * o.imageHeight];
+const toNorm = (p: Point, o: GapOptions): Point => [clamp(p[0] / o.imageWidth, 0, 1), clamp(p[1] / o.imageHeight, 0, 1)];
+const boxPx = (b: Box, o: GapOptions): Box => ({ xmin: b.xmin * o.imageWidth, xmax: b.xmax * o.imageWidth, ymin: b.ymin * o.imageHeight, ymax: b.ymax * o.imageHeight });
+
+function laneSignature(region: Region, capacity: number, bins: number): string {
+  return `${region.points.map((p) => p.map((v) => v.toFixed(4)).join(',')).join(';')}|${capacity}|${bins}`;
 }
 
-/** Where the vehicle touches the road: just above the bottom-center of its box. */
-function groundPoint(o: DetectedObject): Point {
-  const h = o.box.ymax - o.box.ymin;
-  return [(o.box.xmin + o.box.xmax) / 2, o.box.ymax - 0.04 * h];
+function buildLane(region: Region, o: GapOptions): Lane | null {
+  const h = laneHomography(region.points.map((p) => toPx(p, o)));
+  if (!h) return null;
+  const capacity = Math.max(1, Math.round(region.capacity ?? 6));
+  const lengthM = capacity * o.slotM;
+  const bins = Math.max(4, Math.ceil(lengthM / o.binM));
+  return {
+    region,
+    ...h,
+    capacity,
+    lengthM,
+    widthM: o.widthM,
+    bins,
+    sig: laneSignature(region, capacity, bins),
+    streetLabel: region.streetLabel || region.label || 'Curb lane',
+  };
+}
+
+/** Pixels per metre along the curb at lane position u (centre line). */
+export function pxPerMetre(lane: Pick<Lane, 'toImage' | 'lengthM'>, u: number): number {
+  const du = 0.5 / lane.lengthM;
+  const a = applyHomography(lane.toImage, [u - du, 0.5]);
+  const b = applyHomography(lane.toImage, [u + du, 0.5]);
+  return Math.hypot(a[0] - b[0], a[1] - b[1]);
+}
+
+/** 1-sigma position error (m along the curb) at lane position u from sigmaPx of image noise. */
+function sigmaMetres(lane: Lane, u: number, sigmaPx: number): number {
+  const p = applyHomography(lane.toImage, [u, 0.5]);
+  const J = jacobian(lane.toLane, p);
+  return sigmaPx * Math.hypot(J[0][0], J[0][1]) * lane.lengthM;
+}
+
+/** Max shift (m) of lane positions when any quad corner moves by 1 px. */
+function calibrationSigma(quadPx: Point[], lengthM: number): number {
+  const base = laneHomography(quadPx);
+  if (!base) return Infinity;
+  let worst = 0;
+  for (let i = 0; i < 4; i++) {
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+      const q = quadPx.map((p, j) => (j === i ? ([p[0] + dx, p[1] + dy] as Point) : p));
+      const f = laneHomography(q);
+      if (!f) return Infinity;
+      for (const u of [0.1, 0.3, 0.5, 0.7, 0.9]) {
+        const img = applyHomography(base.toImage, [u, 0.5]);
+        worst = Math.max(worst, Math.abs(applyHomography(f.toLane, img)[0] - u) * lengthM);
+      }
+    }
+  }
+  return worst;
+}
+
+/** Image row of the ground-plane horizon at column x (where toLane's w = 0). */
+function horizonY(lane: Lane, x: number): number {
+  const H = lane.toLane;
+  return Math.abs(H[7]) > 1e-12 ? -(H[6] * x + H[8]) / H[7] : -1e9;
+}
+
+interface Footprint {
+  u0: number;
+  u1: number;
+  v0: number;
+  vC: number;
+  n: number;
+}
+
+/** Image-space mismatch between a ground rectangle and a detection box (px^2). */
+function footprintCost(H: Mat3, b: Box, u0: number, lu: number, v0: number, wv: number): number {
+  let x0 = Infinity;
+  let x1 = -Infinity;
+  let y1 = -Infinity;
+  for (let k = 0; k < 4; k++) {
+    const u = k === 1 || k === 2 ? u0 + lu : u0;
+    const v = k >= 2 ? v0 + wv : v0;
+    const w = H[6] * u + H[7] * v + H[8];
+    const x = (H[0] * u + H[1] * v + H[2]) / w;
+    const y = (H[3] * u + H[4] * v + H[5]) / w;
+    if (x < x0) x0 = x;
+    if (x > x1) x1 = x;
+    if (y > y1) y1 = y;
+  }
+  return (x0 - b.xmin) ** 2 + (x1 - b.xmax) ** 2 + 2 * (y1 - b.ymax) ** 2;
 }
 
 /**
- * Tolerances for "this vehicle is in the lane". Generous on the curb side
- * (a box's bottom edge often sits over the sidewalk line), tight on the traffic
- * side so cars driving in the next lane are not counted as parked.
+ * Fit the ground footprint of 1..maxN vehicles (bumper gap 0.9 m) to a box
+ * using xmin, xmax and ymax. Coarse-to-fine search over u0 and v0.
  */
-const LANE_TOLERANCE = { uMin: -0.08, uMax: 1.08, vMin: -0.4, vMax: 1.1 };
+function fitFootprint(lane: Lane, b: Box, lenM: number, widM: number, maxN: number): Footprint | null {
+  const bc: Point = [(b.xmin + b.xmax) / 2, b.ymax];
+  if (homographyW(lane.toLane, bc) <= 0) return null;
+  const uBc = clamp(applyHomography(lane.toLane, bc)[0], -0.5, 1.5);
+  const wv = Math.min(0.95, widM / lane.widthM);
 
-function inLane(uv: Point | null): boolean {
-  return (
-    !!uv &&
-    uv[0] >= LANE_TOLERANCE.uMin &&
-    uv[0] <= LANE_TOLERANCE.uMax &&
-    uv[1] >= LANE_TOLERANCE.vMin &&
-    uv[1] <= LANE_TOLERANCE.vMax
-  );
-}
-
-/** Interval of u a parked vehicle covers. */
-function vehicleInterval(lane: Lane, o: DetectedObject): Interval | null {
-  const g = groundPoint(o);
-  const center = toLaneUV(lane, g);
-  if (!center) return null;
-  const left = toLaneUV(lane, [o.box.xmin, g[1]]);
-  const right = toLaneUV(lane, [o.box.xmax, g[1]]);
-  const length = lane.slot * (LENGTH_FACTOR[o.label] ?? 1);
-  const span = left && right ? Math.abs(left[0] - right[0]) : 0;
-
-  if (span >= 0.6 * length && left && right) {
-    // Seen from the side: the bottom edge already spans the vehicle's length.
-    return [Math.min(left[0], right[0]) - 0.03 * lane.slot, Math.max(left[0], right[0]) + 0.03 * lane.slot];
-  }
-  // Seen end-on: the bottom of the box is the near end; the body extends away
-  // from the camera, i.e. toward where the image y decreases.
-  const h = o.box.ymax - o.box.ymin;
-  const up = toLaneUV(lane, [g[0], g[1] - 0.25 * h]);
-  const dir = up ? Math.sign(up[0] - center[0]) : 0;
-  const u = center[0];
-  if (dir > 0) return [u - 0.1 * length, u + 0.9 * length];
-  if (dir < 0) return [u - 0.9 * length, u + 0.1 * length];
-  return [u - 0.5 * length, u + 0.5 * length];
-}
-
-/** u-range a region covers inside the lane, if any. */
-function regionInterval(lane: Lane, poly: Point[]): Interval | null {
-  const uvs = poly.map((p) => toLaneUV(lane, p)).filter((p): p is Point => !!p);
-  if (uvs.length < 2) return null;
-  const us = uvs.map((p) => p[0]);
-  const vs = uvs.map((p) => p[1]);
-  if (Math.max(...vs) < -0.3 || Math.min(...vs) > 1.3) return null;
-  if (Math.max(...us) < 0 || Math.min(...us) > 1) return null;
-  return [Math.min(...us), Math.max(...us)];
-}
-
-function boxOverlapFraction(poly: Point[], o: DetectedObject): number {
-  const xs = poly.map((p) => p[0]);
-  const ys = poly.map((p) => p[1]);
-  const gx0 = Math.min(...xs), gx1 = Math.max(...xs), gy0 = Math.min(...ys), gy1 = Math.max(...ys);
-  const ix = Math.max(0, Math.min(gx1, o.box.xmax) - Math.max(gx0, o.box.xmin));
-  const iy = Math.max(0, Math.min(gy1, o.box.ymax) - Math.max(gy0, o.box.ymin));
-  const area = (gx1 - gx0) * (gy1 - gy0);
-  return area > 0 ? (ix * iy) / area : 0;
-}
-
-function pixelDistance(a: Point, b: Point, opts: GapOptions): number {
-  return Math.hypot((a[0] - b[0]) * opts.imageWidth, (a[1] - b[1]) * opts.imageHeight);
-}
-
-export function buildLanes(regions: Region[]): { lanes: Lane[]; notes: string[] } {
-  const lanes: Lane[] = [];
-  const notes: string[] = [];
-  for (const region of regions) {
-    if (region.kind !== 'parking') continue;
-    const h = laneHomography(region.points);
-    if (!h) {
-      notes.push(`Lane "${region.label ?? region.id}" is not a valid 4-point quad; skipped.`);
-      continue;
+  /** Best u0 for a footprint of length lu at lateral offset v0. */
+  const bestU = (lu: number, v0: number) => {
+    const coarse = Math.max(0.002, lu / 12);
+    let bu = uBc;
+    let cost = Infinity;
+    for (let u0 = uBc - 1.6 * lu; u0 <= uBc + 0.6 * lu; u0 += coarse) {
+      const c = footprintCost(lane.toImage, b, u0, lu, v0, wv);
+      if (c < cost) {
+        cost = c;
+        bu = u0;
+      }
     }
-    const capacity = Math.max(1, Math.round(region.capacity ?? 6));
-    lanes.push({ region, ...h, capacity, slot: 1 / capacity });
+    const from = bu - coarse; // bounds fixed up front: bu changes inside the loop
+    const to = bu + coarse;
+    for (let u0 = from; u0 <= to; u0 += coarse / 5) {
+      const c = footprintCost(lane.toImage, b, u0, lu, v0, wv);
+      if (c < cost) {
+        cost = c;
+        bu = u0;
+      }
+    }
+    return { u0: bu, cost };
+  };
+
+  // One vehicle: search across the parking lane AND the next ~2 lane widths, so
+  // vehicles in the travel lane are placed there (traffic), not forced to the curb.
+  const lu1 = lenM / lane.lengthM;
+  let best = { u0: uBc, v0: 0, cost: Infinity };
+  for (let v0 = -0.3; v0 <= 2.5 + 1e-9; v0 += 0.2) {
+    const r = bestU(lu1, v0);
+    if (r.cost < best.cost) best = { u0: r.u0, v0, cost: r.cost };
   }
-  return { lanes, notes };
+  const vFrom = best.v0 - 0.15;
+  const vTo = best.v0 + 0.15;
+  for (let v0 = vFrom; v0 <= vTo + 1e-9; v0 += 0.05) {
+    const r = bestU(lu1, v0);
+    if (r.cost < best.cost) best = { u0: r.u0, v0, cost: r.cost };
+  }
+  let fit: Footprint = { u0: best.u0, u1: best.u0 + lu1, v0: best.v0, vC: best.v0 + wv / 2, n: 1 };
+
+  // Several bumper-to-bumper vehicles merged into one box: same lateral position.
+  // Split only when that explains the box clearly better (end-on views make the
+  // count nearly unidentifiable).
+  for (let n = 2; n <= maxN; n++) {
+    const lu = (n * lenM + (n - 1) * 0.9) / lane.lengthM;
+    const r = bestU(lu, best.v0);
+    if (r.cost < 0.5 * best.cost && r.cost + 4 * (n - 1) < best.cost) {
+      fit = { u0: r.u0, u1: r.u0 + lu, v0: best.v0, vC: best.v0 + wv / 2, n };
+      best = { ...best, cost: r.cost + 4 * (n - 1) };
+    }
+  }
+  return fit;
+}
+
+/** u-range a region covers inside the lane band, if any. */
+function regionInterval(lane: Lane, polyPx: Point[]): Interval | null {
+  if (polyPx.some((p) => homographyW(lane.toLane, p) <= 0)) return null;
+  const uvs = polyPx.map((p) => applyHomography(lane.toLane, p));
+  const vs = uvs.map((p) => p[1]);
+  if (Math.max(...vs) < -0.2 || Math.min(...vs) > 1.2) return null;
+  const us = uvs.map((p) => p[0]);
+  if (Math.max(...us) < 0 || Math.min(...us) > 1) return null;
+  return [clamp(Math.min(...us), 0, 1), clamp(Math.max(...us), 0, 1)];
+}
+
+/** Image box of a hypothetical parked car centred at lane position u. */
+function hypotheticalBox(lane: Lane, u: number, kH: number): Box {
+  const lu = 4.7 / lane.lengthM;
+  const wv = Math.min(0.95, 1.85 / lane.widthM);
+  const v0 = 0.08;
+  const c = (
+    [
+      [u - lu / 2, v0],
+      [u + lu / 2, v0],
+      [u + lu / 2, v0 + wv],
+      [u - lu / 2, v0 + wv],
+    ] as Point[]
+  ).map((q) => applyHomography(lane.toImage, q));
+  const ymax = Math.max(...c.map((q) => q[1]));
+  const xmin = Math.min(...c.map((q) => q[0]));
+  const xmax = Math.max(...c.map((q) => q[0]));
+  return { xmin, xmax, ymax, ymin: ymax - kH * (ymax - horizonY(lane, (xmin + xmax) / 2)) };
+}
+
+/** Fraction of a box (5x5 samples) not covered by any of `boxes`. */
+function visibleFraction(b: Box, boxes: Box[]): number {
+  let seen = 0;
+  for (let a = 0; a < 5; a++) {
+    for (let c = 0; c < 5; c++) {
+      const x = b.xmin + ((a + 0.5) / 5) * (b.xmax - b.xmin);
+      const y = b.ymin + ((c + 0.5) / 5) * (b.ymax - b.ymin);
+      if (!boxes.some((o) => x >= o.xmin && x <= o.xmax && y >= o.ymin && y <= o.ymax)) seen++;
+    }
+  }
+  return seen / 25;
+}
+
+interface Placed {
+  obj: DetectedObject;
+  px: Box;
+  lane: Lane | null;
+  fp: Footprint | null;
 }
 
 /**
  * Analyze one frame. `objects` must use normalized coordinates (0..1).
+ * Pass `state` from the previous check to fuse evidence over time.
  */
-export function analyzeCurbGaps(
-  objects: DetectedObject[],
-  regions: Region[],
-  options: Partial<GapOptions> = {},
-): GapAnalysis {
-  const opts = { ...DEFAULT_GAP_OPTIONS, ...options };
-  const { lanes, notes } = buildLanes(regions);
-  const ignore = regions.filter((r) => r.kind === 'ignore');
-  const roadway = regions.filter((r) => r.kind === 'roadway');
-  const restricted = regions.filter((r) => r.kind === 'restricted');
+export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], options: Partial<GapOptions> = {}): GapAnalysis {
+  const o: GapOptions = { ...DEFAULT_GAP_OPTIONS, nowMs: Date.now(), ...options };
+  const notes: string[] = [];
+  const lanes: Lane[] = [];
+  for (const region of regions) {
+    if (region.kind !== 'parking') continue;
+    const lane = buildLane(region, o);
+    if (lane) lanes.push(lane);
+    else notes.push(`Lane "${region.label ?? region.id}" is not a valid 4-point quad; skipped.`);
+  }
+  const ignorePx = regions.filter((r) => r.kind === 'ignore').map((r) => r.points.map((p) => toPx(p, o)));
+  const blockingPx = regions.filter((r) => r.kind === 'restricted' || r.kind === 'ignore').map((r) => ({ kind: r.kind, poly: r.points.map((p) => toPx(p, o)) }));
 
-  const vehicles = objects.filter((o) => isVehicle(o) && o.score >= opts.minVehicleScore);
-  const annotated: DetectedObject[] = [];
-  const parkedByLane = new Map<string, DetectedObject[]>();
-
-  for (const o of vehicles) {
-    const g = groundPoint(o);
-    let role: DetectedObject['role'] = 'outside';
-    if (ignore.some((r) => pointInPolygon(g, r.points))) {
-      role = 'ignored';
-    } else {
-      // Pick the lane whose v-center is closest to the vehicle footprint.
-      let best: { lane: Lane; score: number } | null = null;
-      for (const lane of lanes) {
-        const uv = toLaneUV(lane, g);
-        if (!inLane(uv)) continue;
-        const score = Math.abs(uv![1] - 0.5);
-        if (!best || score < best.score) best = { lane, score };
-      }
-      const onRoadway = roadway.some((r) => pointInPolygon(g, r.points));
-      if (best && onRoadway && best.score > 0.35) {
-        // Straddling the lane edge and inside the marked roadway: treat as traffic.
-        role = 'roadway';
-      } else if (best) {
-        role = 'parked';
-        const list = parkedByLane.get(best.lane.region.id) ?? [];
-        list.push(o);
-        parkedByLane.set(best.lane.region.id, list);
-      } else if (onRoadway) {
-        role = 'roadway';
+  // 1. Place vehicles: ignored, parked in a lane, in the roadway, or outside.
+  const vehicles = objects.filter((v) => isVehicle(v) && v.score >= o.minVehicleScore);
+  const placed: Placed[] = vehicles.map((obj) => {
+    const px = boxPx(obj.box, o);
+    const ground: Point = [(px.xmin + px.xmax) / 2, px.ymax];
+    if (ignorePx.some((poly) => pointInPolygon(ground, poly))) return { obj: { ...obj, role: 'ignored' }, px, lane: null, fp: null };
+    const size = VEHICLE_SIZE[obj.label] ?? VEHICLE_SIZE.car!;
+    let roadway = false;
+    let best: { lane: Lane; fp: Footprint } | null = null;
+    for (const lane of lanes) {
+      const fp = fitFootprint(lane, px, size.lenM, size.widM, obj.label === 'car' ? 3 : 1);
+      if (!fp || fp.u1 < -0.02 || fp.u0 > 1.02) continue;
+      if (fp.vC <= 0.95) {
+        if (!best || Math.abs(fp.vC - 0.5) < Math.abs(best.fp.vC - 0.5)) best = { lane, fp };
+      } else {
+        roadway = true; // double-parked or traffic: occludes the curb only
       }
     }
-    annotated.push({ ...o, role });
-  }
-  // Keep non-vehicle objects out of the stored result; they are noise for parking.
+    if (best) return { obj: { ...obj, role: 'parked' }, px, lane: best.lane, fp: best.fp };
+    return { obj: { ...obj, role: roadway ? 'roadway' : 'outside' }, px, lane: null, fp: null };
+  });
 
   if (lanes.length === 0) {
     return {
-      objects: annotated,
+      objects: placed.map((p) => p.obj),
       vehicles: vehicles.length,
       parkedVehicles: 0,
       lanes: [],
@@ -256,123 +451,155 @@ export function analyzeCurbGaps(
       confidence: 0,
       reason: 'needs_calibration',
       notes: [...notes, 'No parking lane is calibrated for this camera.'],
+      state: {},
     };
   }
 
+  const occluders = placed.filter((p) => p.obj.role !== 'ignored').map((p) => p.px);
+  const state: LaneStates = {};
   const laneResults: LaneResult[] = [];
-  const occluders = annotated.filter((o) => o.role === 'roadway' || o.role === 'outside');
 
   for (const lane of lanes) {
-    const parked = parkedByLane.get(lane.region.id) ?? [];
     const laneNotes: string[] = [];
-    const streetLabel = lane.region.streetLabel || lane.region.label || 'Curb lane';
+    const parked = placed.filter((p) => p.lane === lane && p.fp);
+    const quadPx = lane.region.points.map((p) => toPx(p, o));
+    const calSigmaM = calibrationSigma(quadPx, lane.lengthM);
+    const qCal = calSigmaM <= 1 ? 1 : calSigmaM <= 2 ? 0.8 : 0;
+    if (qCal === 0) laneNotes.push('Lane is drawn too thin to measure reliably; redraw it wider (include the travel lane edge).');
+    else if (qCal < 1) laneNotes.push(`Lane drawing is sensitive (${calSigmaM.toFixed(1)} m per pixel); measurements are less precise.`);
 
-    const occupied = mergeIntervals(
-      parked.map((o) => vehicleInterval(lane, o)).filter((iv): iv is Interval => !!iv),
-      0.02 * lane.slot,
-    );
-    const blocked = mergeIntervals(
-      [...restricted, ...ignore]
-        .map((r) => regionInterval(lane, r.points))
-        .filter((iv): iv is Interval => !!iv),
-    );
-    const open = subtractIntervals(complementIntervals(occupied, 0, 1), blocked);
-    const emptyLane = parked.length === 0 && lane.capacity >= 3;
-    if (emptyLane) {
-      laneNotes.push('No parked vehicles detected in this lane; may be a detection failure (night, glare, occlusion).');
+    // 2. Restore the grid and decay it toward the prior.
+    const prior = logit(o.priorOcc);
+    const prev = o.state?.[lane.region.id];
+    const grid = new Float64Array(lane.bins).fill(prior);
+    if (prev && prev.sig === lane.sig && prev.logodds.length === lane.bins) {
+      const k = Math.exp(-Math.max(0, o.nowMs - prev.t) / 1000 / o.tauSec);
+      for (let i = 0; i < lane.bins; i++) grid[i] = prior + (prev.logodds[i]! - prior) * k;
     }
 
+    // 3. Update with this frame. With no parked cars detected at all in a lane
+    // that should hold several, assume a detector failure (night, glare): no update.
+    const detectorBlind = parked.length === 0 && lane.capacity >= 3;
+    if (detectorBlind) laneNotes.push('No parked vehicles detected in this lane; likely a detection failure (night, glare, occlusion).');
+
+    const ks = parked
+      .map((p) => {
+        const d = p.px.ymax - horizonY(lane, (p.px.xmin + p.px.xmax) / 2);
+        return d > 2 ? (p.px.ymax - p.px.ymin) / d : NaN;
+      })
+      .filter(Number.isFinite)
+      .sort((a, b) => a - b);
+    const kH = ks[Math.floor(ks.length / 2)] ?? 0.3;
+    let observed = 0;
+    if (!detectorBlind) {
+      for (let i = 0; i < lane.bins; i++) {
+        const u = (i + 0.5) / lane.bins;
+        const recall = recallAt(pxPerMetre(lane, u));
+        const hit = parked.find((p) => u >= p.fp!.u0 && u <= p.fp!.u1);
+        let llr: number;
+        if (hit) {
+          llr = Math.log((recall * hit.obj.score + 1e-3) / o.fp);
+          observed++;
+        } else {
+          const fVis = visibleFraction(hypotheticalBox(lane, u, kH), occluders);
+          if (fVis >= 0.67) observed++;
+          const rEff = recall * fVis;
+          llr = Math.log((1 - rEff) / (1 - o.fp));
+        }
+        grid[i] = clamp(grid[i]! + llr, -4, 4);
+      }
+    }
+    state[lane.region.id] = { t: o.nowMs, sig: lane.sig, logodds: Array.from(grid, (l) => Math.round(l * 100) / 100) };
+
+    // 4. Gaps: runs of likely-free bins not blocked by RESTRICTED/IGNORE zones.
+    const blocked = mergeIntervals(blockingPx.map((r) => regionInterval(lane, r.poly)).filter((iv): iv is Interval => !!iv));
+    const isBlocked = (u: number) => blocked.some(([a, b]) => u >= a && u <= b);
+    const pOcc = Array.from(grid, sigmoid);
     const gaps: GapResult[] = [];
-    for (const [a, b] of open) {
-      const slots = (b - a) / lane.slot;
-      if (slots < opts.possibleGapSlots) continue;
+    let i = 0;
+    while (i < lane.bins) {
+      const uMid = (i + 0.5) / lane.bins;
+      if (pOcc[i]! >= o.pOccMax || isBlocked(uMid)) {
+        i++;
+        continue;
+      }
+      let j = i;
+      while (j + 1 < lane.bins && pOcc[j + 1]! < o.pOccMax && !isBlocked((j + 1.5) / lane.bins)) j++;
+      const a = i / lane.bins;
+      const b = (j + 1) / lane.bins;
+      i = j + 1;
+      const lengthM = (b - a) * lane.lengthM;
+      const startPhysical = a > 0 && isBlocked(a - 0.5 / lane.bins);
+      const endPhysical = b < 1 && isBlocked(b + 0.5 / lane.bins);
+      const atEdge = a <= 0 || b >= 1;
+      const needM = startPhysical || endPhysical ? o.needOneM : o.needBothM;
+      if (lengthM < 0.7 * needM) continue;
+
+      const sEnd = (u: number) => Math.hypot(sigmaMetres(lane, u, o.sigmaPx), 0.35, Number.isFinite(calSigmaM) ? calSigmaM : 2);
+      const sigma = Math.hypot(sEnd(a), sEnd(b));
+      const pLength = phi((lengthM - needM) / sigma);
+      const pFree = pOcc.slice(Math.round(a * lane.bins), Math.round(b * lane.bins)).reduce((s, p) => s + (1 - p), 0) / Math.max(1, j - Math.round(a * lane.bins) + 1);
+      const ppm = pxPerMetre(lane, (a + b) / 2);
+      const farFactor = clamp((ppm - o.minPxPerM) / (o.goodPxPerM - o.minPxPerM), 0, 1);
+      if (farFactor <= 0) continue;
+      const confidence = pLength * pFree * (0.4 + 0.6 * farFactor) * qCal;
+      if (confidence < o.reportConfidence) continue;
+
       const reasons: string[] = [];
-      const atStart = a <= 0.001;
-      const atEnd = b >= 0.999;
-      const boundedBothSides = !atStart && !atEnd && !blocked.some(([x, y]) => Math.abs(x - b) < 1e-6 || Math.abs(y - a) < 1e-6);
+      const boundedBothSides = !atEdge && !startPhysical && !endPhysical;
+      if (boundedBothSides) reasons.push('Opening between two parked vehicles');
+      else if (atEdge) reasons.push('Opening runs to the edge of the visible lane; it may be longer');
+      else reasons.push('Opening next to a no-parking zone');
+      reasons.push(`About ${lengthM.toFixed(1)} m of open curb (a car needs ~${needM.toFixed(1)} m)`);
+      if (farFactor < 1) reasons.push('Far from the camera; less precise');
+      if (pFree < 0.75) reasons.push('Partly hidden or seen only briefly');
 
-      let confidence = 0.5;
-      confidence += clamp((slots - 1) * 0.25, -0.15, 0.15);
-      if (boundedBothSides) {
-        confidence += 0.15;
-        reasons.push('Opening between two parked vehicles');
-      } else if (atStart && atEnd) {
-        confidence -= 0.2;
-        reasons.push('Whole lane looks empty');
-      } else {
-        reasons.push('Opening at the edge of the visible lane');
-      }
-
-      const pStart = applyHomography(lane.toImage, [a, 0.5]);
-      const pEnd = applyHomography(lane.toImage, [b, 0.5]);
-      const px = pixelDistance(pStart, pEnd, opts);
-      const pxPerSlot = px / slots;
-      if (px < opts.minGapPixels) {
-        confidence -= 0.25;
-        reasons.push(`Opening is only ${px.toFixed(0)} px on screen`);
-      } else if (pxPerSlot < 8) {
-        confidence -= 0.15;
-        reasons.push('Far from the camera; hard to measure');
-      } else if (px > 30) {
-        confidence += 0.05;
-      }
-
-      const polygon: Point[] = [
-        applyHomography(lane.toImage, [a, 0]),
-        applyHomography(lane.toImage, [a, 1]),
-        applyHomography(lane.toImage, [b, 1]),
-        applyHomography(lane.toImage, [b, 0]),
-      ];
-      const occluded = occluders.some((o) => boxOverlapFraction(polygon, o) > 0.3);
-      if (occluded) {
-        confidence -= 0.3;
-        reasons.push('A vehicle in the roadway may be hiding the curb');
-      }
-      if (emptyLane) confidence = Math.min(confidence, 0.3);
-
-      const neighbors = parked.filter((o) => {
-        const iv = vehicleInterval(lane, o);
-        return !!iv && (Math.abs(iv[1] - a) < 0.5 * lane.slot || Math.abs(iv[0] - b) < 0.5 * lane.slot);
-      });
-      if (neighbors.length && neighbors.every((o) => o.score >= 0.85)) confidence += 0.05;
-
-      confidence = clamp(confidence, 0.05, 0.95);
-      const spaces = Math.max(1, Math.floor(slots + 0.15));
-      const status = confidence >= opts.minConfidence && slots >= opts.likelyGapSlots ? 'likely_available' : 'possible';
+      const polygon = ([[a, 0], [a, 1], [b, 1], [b, 0]] as Point[]).map((q) => toNorm(applyHomography(lane.toImage, q), o));
+      const status = confidence >= o.minConfidence && pLength >= 0.5 ? 'likely_available' : 'possible';
       gaps.push({
         regionId: lane.region.id,
-        streetLabel,
-        start: clamp(a, 0, 1),
-        end: clamp(b, 0, 1),
-        slots: Number(slots.toFixed(2)),
-        spaces,
-        confidence: Number(confidence.toFixed(3)),
+        streetLabel: lane.streetLabel,
+        start: a,
+        end: b,
+        lengthM: Number(lengthM.toFixed(1)),
+        needM,
+        slots: Number((lengthM / o.slotM).toFixed(2)),
+        spaces: Math.max(1, Math.floor(lengthM / needM + 0.05)),
+        confidence: Number(clamp(confidence, 0, 0.95).toFixed(3)),
         status,
         boundedBothSides,
+        pLength: Number(pLength.toFixed(3)),
+        pFree: Number(pFree.toFixed(3)),
+        farFactor: Number(farFactor.toFixed(3)),
         polygon,
         reasons,
       });
     }
+
     laneResults.push({
       regionId: lane.region.id,
-      streetLabel,
+      streetLabel: lane.streetLabel,
       capacity: lane.capacity,
+      lengthM: lane.lengthM,
       parkedVehicles: parked.length,
-      occupied,
+      occupied: mergeIntervals(parked.map((p) => [clamp(p.fp!.u0, 0, 1), clamp(p.fp!.u1, 0, 1)] as Interval)),
       blocked,
-      gaps,
+      gaps: detectorBlind ? [] : gaps,
+      calibrationSigmaM: Number(Math.min(calSigmaM, 99).toFixed(2)),
+      pxPerMetre: { start: Number(pxPerMetre(lane, 0.02).toFixed(2)), end: Number(pxPerMetre(lane, 0.98).toFixed(2)) },
+      observedFraction: Number((observed / lane.bins).toFixed(2)),
       notes: laneNotes,
     });
   }
 
   const candidates = laneResults.flatMap((l) => l.gaps).sort((p, q) => q.confidence - p.confidence);
   const parkedVehicles = laneResults.reduce((s, l) => s + l.parkedVehicles, 0);
-  const allLanesEmpty = laneResults.every((l) => l.parkedVehicles === 0) && laneResults.some((l) => l.capacity >= 3);
+  const allBlind = laneResults.every((l) => l.parkedVehicles === 0 && l.capacity >= 3);
 
   let status: ParkingStatus;
   let confidence: number;
   let reason: string | null = null;
-  if (allLanesEmpty) {
+  if (allBlind) {
     status = 'unknown';
     confidence = 0.2;
     reason = 'no_vehicles_detected';
@@ -381,12 +608,13 @@ export function analyzeCurbGaps(
     confidence = candidates[0]!.confidence;
   } else {
     status = 'none';
-    // More parked cars seen => more sure the curb is full.
-    confidence = clamp(0.5 + 0.08 * parkedVehicles, 0.5, 0.9);
+    // More of the curb actually seen => more sure it is full.
+    const observedFraction = laneResults.reduce((s, l) => s + l.observedFraction, 0) / laneResults.length;
+    confidence = clamp(0.5 + 0.45 * observedFraction, 0.5, 0.95);
   }
 
   return {
-    objects: annotated,
+    objects: placed.map((p) => p.obj),
     vehicles: vehicles.length,
     parkedVehicles,
     lanes: laneResults,
@@ -395,34 +623,19 @@ export function analyzeCurbGaps(
     confidence: Number(confidence.toFixed(3)),
     reason,
     notes: [...notes, ...laneResults.flatMap((l) => l.notes)],
+    state,
   };
 }
 
-/**
- * Raise confidence for gaps that were also open in the previous analysis
- * (same lane, overlapping position). A gap that persists across frames is less
- * likely to be a car passing through or a detector miss.
- */
-export function applyTemporalConsistency(
-  current: GapResult[],
-  previous: Pick<GapResult, 'regionId' | 'start' | 'end'>[],
-  minConfidence: number,
-  likelyGapSlots = DEFAULT_GAP_OPTIONS.likelyGapSlots,
-): GapResult[] {
-  return current.map((gap) => {
-    const seen = previous.some((p) => {
-      if (p.regionId !== gap.regionId) return false;
-      const overlap = Math.min(p.end, gap.end) - Math.max(p.start, gap.start);
-      const union = Math.max(p.end, gap.end) - Math.min(p.start, gap.start);
-      return union > 0 && overlap / union > 0.3;
-    });
-    if (!seen) return gap;
-    const confidence = Number(clamp(gap.confidence + 0.1, 0.05, 0.95).toFixed(3));
-    return {
-      ...gap,
-      confidence,
-      status: confidence >= minConfidence && gap.slots >= likelyGapSlots ? 'likely_available' : 'possible',
-      reasons: [...gap.reasons, 'Also open in the previous check'],
-    };
-  });
+/** Geometry diagnostics for the calibration screen. */
+export function laneDiagnostics(region: Region, imageWidth = 352, imageHeight = 240) {
+  const o = { ...DEFAULT_GAP_OPTIONS, imageWidth, imageHeight, nowMs: 0 };
+  const lane = buildLane(region, o);
+  if (!lane) return null;
+  return {
+    lengthM: lane.lengthM,
+    pxPerMetreStart: pxPerMetre(lane, 0.02),
+    pxPerMetreEnd: pxPerMetre(lane, 0.98),
+    calibrationSigmaM: calibrationSigma(region.points.map((p) => toPx(p, o)), lane.lengthM),
+  };
 }

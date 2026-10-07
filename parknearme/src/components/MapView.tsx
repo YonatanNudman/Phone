@@ -1,6 +1,9 @@
 // Leaflet map (no react-leaflet): the map is created once and layers are
 // rebuilt imperatively when data changes. Callbacks go through refs so
 // markers don't need rebuilding when handlers change identity.
+//
+// Framing: until the user pans, the map keeps home + parking + watched cameras
+// in the part of the screen not covered by the status pill and bottom sheet.
 
 import L from 'leaflet';
 import { useEffect, useRef } from 'react';
@@ -27,15 +30,22 @@ interface Props {
   onCandidateTap: (index: number) => void;
   /** Pixels covered by floating UI, so "center" means the visible part of the map. */
   insets: MapInsets;
-  /** Increment to recenter on home. */
+  /** Increment to re-frame home and the results. */
   recenterToken: number;
 }
 
-const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+export const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+export const TILE_ATTRIBUTION = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
+
+/** Honour "Reduce Motion" for map pans and zooms too. */
+const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HOME_ZOOM = 16;
+const MAX_FIT_ZOOM = 17;
 const MI_TO_M = 1609.344;
 /** How far an "approximate" parking marker is pushed away from its camera. */
 const APPROX_OFFSET_M = 25;
+/** Room for the right-hand control column when framing. */
+const CONTROLS_W = 96;
 
 /** Move `p` by `meters` toward `bearingDeg` (small-distance approximation). */
 function offsetLatLng(p: LatLon, meters: number, bearingDeg: number): L.LatLng {
@@ -45,17 +55,39 @@ function offsetLatLng(p: LatLon, meters: number, bearingDeg: number): L.LatLng {
   return L.latLng(p.lat + dLat, p.lon + dLon);
 }
 
-/** Center `target` within the part of the map not covered by `insets`. */
-function centerIn(map: L.Map, target: L.LatLngExpression, insets: MapInsets, zoom?: number, animate = true) {
-  const z = zoom ?? map.getZoom();
-  const shift = (insets.bottom - insets.top) / 2;
-  const center = map.unproject(map.project(target, z).add([0, shift]), z);
-  map.setView(center, z, { animate });
-}
-
 /** Where a candidate's marker goes; approximate ones are fanned out around the camera. */
 export function candidateMarkerPosition(c: ParkingCandidate, indexAtCamera: number): L.LatLng {
   return c.approximateLocation ? offsetLatLng(c, APPROX_OFFSET_M, 40 + indexAtCamera * 55) : L.latLng(c.lat, c.lon);
+}
+
+/** Candidate marker positions, fanning out several approximate ones at the same camera. */
+function candidatePositions(candidates: ParkingCandidate[]): L.LatLng[] {
+  const perCamera = new Map<string, number>();
+  return candidates.map((c) => {
+    const k = perCamera.get(c.cameraId) ?? 0;
+    perCamera.set(c.cameraId, k + 1);
+    return candidateMarkerPosition(c, k);
+  });
+}
+
+/** Center `target` within the part of the map not covered by `insets`. */
+function centerIn(map: L.Map, target: L.LatLngExpression, insets: MapInsets, zoom?: number) {
+  const z = zoom ?? map.getZoom();
+  const shift = (insets.bottom - insets.top) / 2;
+  const center = map.unproject(map.project(target, z).add([0, shift]), z);
+  map.setView(center, z, { animate: !reducedMotion() });
+}
+
+/** Fit points into the uncovered part of the map. Skips when that area is too small to be useful. */
+function frame(map: L.Map, points: L.LatLng[], insets: MapInsets, animate: boolean) {
+  const size = map.getSize();
+  if (size.y - insets.top - insets.bottom < 150 || points.length === 0) return;
+  map.fitBounds(L.latLngBounds(points), {
+    paddingTopLeft: [36, insets.top + 44],
+    paddingBottomRight: [CONTROLS_W, insets.bottom + 40],
+    maxZoom: points.length === 1 ? HOME_ZOOM : MAX_FIT_ZOOM,
+    animate: animate && !reducedMotion(),
+  });
 }
 
 export function MapView(props: Props) {
@@ -63,19 +95,29 @@ export function MapView(props: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layers = useRef<{ home: L.LayerGroup; cameras: L.LayerGroup; parking: L.LayerGroup } | null>(null);
+  const parkingMarkers = useRef(new Map<string, { marker: L.Marker; tether: L.Polyline | null; sig: string; index: number }>());
   const handlers = useRef({ onCameraTap: props.onCameraTap, onCandidateTap: props.onCandidateTap });
   const insetsRef = useRef(insets);
   const initialHome = useRef(home);
-  const homeRef = useRef(home);
   const camerasRef = useRef(cameras);
-  /** Set once the user pans the map, so we stop auto-centering on home. */
+  /** Set once the user pans, so we stop re-framing automatically. */
   const userMoved = useRef(false);
+  const firstFrame = useRef(true);
+
+  // What "the interesting area" is: home, parking markers, watched cameras.
+  const focus: L.LatLng[] = [
+    L.latLng(home.lat, home.lon),
+    ...candidatePositions(candidates),
+    ...cameras.filter((c) => watchedIds.has(c.id)).map((c) => L.latLng(c.lat, c.lon)),
+  ];
+  const focusRef = useRef(focus);
+  const focusKey = focus.map((p) => `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`).join('|');
 
   useEffect(() => {
     handlers.current = { onCameraTap: props.onCameraTap, onCandidateTap: props.onCandidateTap };
     insetsRef.current = insets;
-    homeRef.current = home;
     camerasRef.current = cameras;
+    focusRef.current = focus;
   });
 
   // Create the map once.
@@ -91,9 +133,11 @@ export function MapView(props: Props) {
       minZoom: 11,
       zoomSnap: 0.25,
       tapTolerance: 20,
+      zoomAnimation: !reducedMotion(),
+      markerZoomAnimation: !reducedMotion(),
     });
     map.attributionControl.setPrefix(false);
-    L.tileLayer(TILE_URL, { maxZoom: 19, attribution: '© OpenStreetMap', crossOrigin: true }).addTo(map);
+    L.tileLayer(TILE_URL, { maxZoom: 19, attribution: TILE_ATTRIBUTION }).addTo(map);
     layers.current = {
       home: L.layerGroup().addTo(map),
       cameras: L.layerGroup().addTo(map),
@@ -103,9 +147,10 @@ export function MapView(props: Props) {
       userMoved.current = true;
     });
     mapRef.current = map;
-    centerIn(map, [h.lat, h.lon], insetsRef.current, HOME_ZOOM, false);
+    const markers = parkingMarkers.current;
     return () => {
       map.remove();
+      markers.clear();
       mapRef.current = null;
       layers.current = null;
     };
@@ -143,44 +188,71 @@ export function MapView(props: Props) {
   }, [cameras, watchedIds, selectedCameraId]);
 
   // Parking markers (+ dashed tether to the camera when the position is approximate).
+  // Diffed by key so the per-second re-render doesn't recreate (and re-animate) them.
   useEffect(() => {
     const g = layers.current?.parking;
     if (!g) return;
-    g.clearLayers();
-    const perCamera = new Map<string, number>();
+    const existing = parkingMarkers.current;
+    const positions = candidatePositions(candidates);
+    const seen = new Set<string>();
     candidates.forEach((c, i) => {
-      const k = perCamera.get(c.cameraId) ?? 0;
-      perCamera.set(c.cameraId, k + 1);
-      const pos = candidateMarkerPosition(c, k);
-      if (c.approximateLocation) {
-        L.polyline([[c.lat, c.lon], pos], { className: 'mk-tether', interactive: false, weight: 2, dashArray: '3 5' }).addTo(g);
+      const key = `${c.cameraId}|${c.regionId ?? ''}|${c.gapStart}|${c.gapEnd}`;
+      const pos = positions[i]!;
+      const selected = i === selectedCandidate;
+      const sig = `${c.status}|${c.spaces}|${selected}|${pos.lat},${pos.lng}`;
+      seen.add(key);
+      const entry = existing.get(key);
+      if (entry) {
+        entry.index = i;
+        if (entry.sig === sig) return;
+        entry.sig = sig;
+        entry.marker.setLatLng(pos);
+        entry.marker.setIcon(parkingIcon({ status: c.status, spaces: c.spaces, selected, animate: false }));
+        entry.marker.setZIndexOffset(selected ? 1800 : 1000 - i);
+        entry.tether?.setLatLngs([[c.lat, c.lon], pos]);
+        return;
       }
+      const tether = c.approximateLocation
+        ? L.polyline([[c.lat, c.lon], pos], { className: 'mk-tether', interactive: false, weight: 2, dashArray: '3 5' }).addTo(g)
+        : null;
       const marker = L.marker(pos, {
-        icon: parkingIcon({ status: c.status, spaces: c.spaces, selected: i === selectedCandidate }),
+        icon: parkingIcon({ status: c.status, spaces: c.spaces, selected, animate: true }),
         title: `Parking: ${c.streetLabel}, ${c.spaces} possible ${c.spaces === 1 ? 'space' : 'spaces'}`,
-        zIndexOffset: i === selectedCandidate ? 1800 : 1000 - i,
+        zIndexOffset: selected ? 1800 : 1000 - i,
         riseOnHover: true,
-      });
-      marker.on('click', () => handlers.current.onCandidateTap(i));
-      marker.addTo(g);
+      }).addTo(g);
+      const created = { marker, tether, sig, index: i };
+      marker.on('click', () => handlers.current.onCandidateTap(created.index));
+      existing.set(key, created);
     });
+    for (const [key, entry] of existing) {
+      if (seen.has(key)) continue;
+      g.removeLayer(entry.marker);
+      if (entry.tether) g.removeLayer(entry.tether);
+      existing.delete(key);
+    }
   }, [candidates, selectedCandidate]);
 
-  // Recenter on request (and when home moves after a re-geocode).
+  // Recenter button: frame everything again and resume auto-framing.
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!map || recenterToken === 0) return;
     userMoved.current = false;
-    centerIn(map, [home.lat, home.lon], insetsRef.current, Math.max(map.getZoom(), 15.5));
-  }, [recenterToken, home.lat, home.lon]);
+    frame(map, focusRef.current, insetsRef.current, true);
+  }, [recenterToken]);
 
-  // Until the user pans, keep home centered in the visible area as the sheet moves.
+  // Auto-frame when the results change, or when the sheet grows over them,
+  // until the user takes over. (Shrinking the sheet leaves the map alone.)
+  const lastFramed = useRef({ key: '', bottom: 0 });
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || userMoved.current) return;
-    const h = homeRef.current;
-    centerIn(map, [h.lat, h.lon], { top: insets.top, bottom: insets.bottom });
-  }, [insets.top, insets.bottom]);
+    if (!map || userMoved.current || selectedCameraId) return;
+    const last = lastFramed.current;
+    if (focusKey === last.key && insets.bottom <= last.bottom + 8) return;
+    lastFramed.current = { key: focusKey, bottom: insets.bottom };
+    frame(map, focusRef.current, { top: insets.top, bottom: insets.bottom }, !firstFrame.current);
+    firstFrame.current = false;
+  }, [insets.top, insets.bottom, focusKey, selectedCameraId]);
 
   // Bring the selected camera into view above the (half-height) sheet.
   const camerasReady = cameras.length > 0;
@@ -190,7 +262,7 @@ export function MapView(props: Props) {
     if (!map || !cam) return;
     userMoved.current = true;
     const bottom = Math.min(insetsRef.current.bottom, window.innerHeight * 0.55);
-    centerIn(map, [cam.lat, cam.lon], { top: insetsRef.current.top, bottom });
+    centerIn(map, [cam.lat, cam.lon], { top: insetsRef.current.top, bottom }, Math.max(map.getZoom(), HOME_ZOOM));
   }, [selectedCameraId, camerasReady]);
 
   return <div ref={containerRef} className="map" role="application" aria-label="Map of parking and cameras near home" />;

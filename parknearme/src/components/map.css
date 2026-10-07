@@ -3,6 +3,9 @@
 .map {
   position: absolute;
   inset: 0;
+  /* Contain Leaflet's pane z-indexes (up to 1000) below the app chrome. */
+  z-index: 0;
+  isolation: isolate;
   background: var(--map-bg);
   font-family: var(--font);
 }
@@ -78,7 +81,10 @@
   color: #fff;
   background: linear-gradient(180deg, #3b8cff 0%, #0a5fd8 100%);
   border: 3px solid #fff;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 6px 16px rgba(0, 64, 160, 0.4), 0 0 0 10px rgba(0, 122, 255, 0.14);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.08),
+    0 6px 16px rgba(0, 64, 160, 0.4),
+    0 0 0 10px rgba(0, 122, 255, 0.14);
 }
 
 /* Cameras */
@@ -110,7 +116,9 @@
 
 .mk-cam.is-selected {
   transform: scale(1.22);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--blue) 30%, transparent), 0 6px 16px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--blue) 30%, transparent),
+    0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 .mk-cam-dot {
@@ -136,6 +144,9 @@
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.28));
   transform-origin: 50% 100%;
   transition: transform 200ms var(--ease);
+}
+
+.mk-park.is-new {
   animation: mk-pop 320ms var(--ease) both;
 }
 

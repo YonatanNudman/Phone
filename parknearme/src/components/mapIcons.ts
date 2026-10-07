@@ -42,12 +42,12 @@ export function cameraIcon(opts: { freshness: Freshness; watched: boolean; selec
   });
 }
 
-export function parkingIcon(opts: { status: ParkingStatus; spaces: number; selected: boolean }): L.DivIcon {
+export function parkingIcon(opts: { status: ParkingStatus; spaces: number; selected: boolean; animate: boolean }): L.DivIcon {
   const tone = STATUS_TONE[opts.status];
   return L.divIcon({
     className: 'mk',
     html:
-      `<div class="mk-park tone-${tone}${opts.selected ? ' is-selected' : ''}">` +
+      `<div class="mk-park tone-${tone}${opts.selected ? ' is-selected' : ''}${opts.animate ? ' is-new' : ''}">` +
       `<span class="mk-park-pill"><b>P</b><span class="mk-park-n">${opts.spaces}</span></span>` +
       `<span class="mk-park-tail"></span></div>`,
     iconSize: [64, 44],

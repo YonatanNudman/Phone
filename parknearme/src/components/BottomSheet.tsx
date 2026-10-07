@@ -37,7 +37,16 @@ interface DragState {
   active: boolean;
 }
 
-export function BottomSheet({ snap, onSnapChange, onVisibleHeightChange, header, children, label, peekHeight = 132, maxHalfFraction = 0.6 }: Props) {
+export function BottomSheet({
+  snap,
+  onSnapChange,
+  onVisibleHeightChange,
+  header,
+  children,
+  label,
+  peekHeight = 132,
+  maxHalfFraction = 0.6,
+}: Props) {
   const sheetRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -51,13 +60,19 @@ export function BottomSheet({ snap, onSnapChange, onVisibleHeightChange, header,
     const sheet = sheetRef.current;
     const content = contentRef.current;
     if (!sheet || !content) return;
-    const measure = () =>
-      setDims({
+    const measure = () => {
+      const next = {
         full: sheet.offsetHeight,
         content: content.offsetHeight + (topRef.current?.offsetHeight ?? 0),
         viewport: window.innerHeight,
         safeBottom: probeRef.current?.offsetHeight ?? 0,
-      });
+      };
+      setDims((prev) =>
+        prev.full === next.full && prev.content === next.content && prev.viewport === next.viewport && prev.safeBottom === next.safeBottom
+          ? prev
+          : next,
+      );
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(sheet);
@@ -140,6 +155,8 @@ export function BottomSheet({ snap, onSnapChange, onVisibleHeightChange, header,
     if (!d || d.pointerId !== e.pointerId) return;
     drag.current = null;
     if (!d.active) return;
+    // A finger that stopped before lifting isn't a flick.
+    if (e.timeStamp - d.lastT > 120) d.velocity = 0;
     if (sheetRef.current?.hasPointerCapture(e.pointerId)) sheetRef.current.releasePointerCapture(e.pointerId);
     const visible = heightFor(snap) - (e.clientY - d.startY);
     const snaps = ORDER.filter((s, i) => i === 0 || heightFor(s) - heightFor(ORDER[i - 1]!) > 24);

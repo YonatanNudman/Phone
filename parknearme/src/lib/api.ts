@@ -131,7 +131,11 @@ async function errorFrom(res: Response): Promise<ApiError> {
   const code = typeof body?.error === 'string' ? body.error : `http_${res.status}`;
   const message =
     FRIENDLY[code] ??
-    (typeof body?.message === 'string' && body.message ? body.message : res.status >= 500 ? 'The server had a problem. Try again.' : `Request failed (${res.status}).`);
+    (typeof body?.message === 'string' && body.message
+      ? body.message
+      : res.status >= 500
+        ? 'The server had a problem. Try again.'
+        : `Request failed (${res.status}).`);
   return new ApiError(res.status, code, message, body?.details);
 }
 

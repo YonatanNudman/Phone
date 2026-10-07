@@ -1,7 +1,18 @@
 // Camera details inside the bottom sheet: live frame, latest analysis,
 // actions, debug overlays and recent history.
 
-import { CircleCheck, CircleQuestionMark, CircleSlash, Info, Layers, Navigation, PencilRuler, RefreshCw, SquareParking, X } from 'lucide-react';
+import {
+  CircleCheck,
+  CircleQuestionMark,
+  CircleSlash,
+  Info,
+  Layers,
+  Navigation,
+  PencilRuler,
+  RefreshCw,
+  SquareParking,
+  X,
+} from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'wouter';
 import type { CameraDetail, CameraSummary, Detection, DetectionHistoryItem } from '../../shared/types';
@@ -23,7 +34,15 @@ import { IconButton } from './IconButton';
 import { LockNote } from './LockNote';
 import { Toggle } from './Toggle';
 
-export function CameraSheetHeader({ camera, home, onClose }: { camera: Pick<CameraSummary, 'name' | 'lat' | 'lon' | 'area' | 'preference'> | null; home: LatLon; onClose: () => void }) {
+export function CameraSheetHeader({
+  camera,
+  home,
+  onClose,
+}: {
+  camera: Pick<CameraSummary, 'name' | 'lat' | 'lon' | 'area' | 'preference'> | null;
+  home: LatLon;
+  onClose: () => void;
+}) {
   return (
     <div className="cs-header">
       <div className="cs-title">
@@ -99,7 +118,9 @@ export function CameraSheet({ cameraId, detail, summary, now, isAdmin, onDetecti
     try {
       const det = await analyzeCamera(cameraId, { force: isAdmin });
       detail.mutate((d) =>
-        d ? { ...d, latest: det, latestAgeSeconds: 0, previous: d.latest && d.latest.id !== det.id ? toHistoryItem(d.latest) : d.previous } : d,
+        d
+          ? { ...d, latest: det, latestAgeSeconds: 0, previous: d.latest && d.latest.id !== det.id ? toHistoryItem(d.latest) : d.previous }
+          : d,
       );
       history.reload();
       frame.reload();
@@ -115,7 +136,9 @@ export function CameraSheet({ cameraId, detail, summary, now, isAdmin, onDetecti
     if (detail.error) {
       return (
         <div className="panel">
-          <p className="banner tone-red">{detail.error.status === 404 ? 'This camera is no longer in the catalog.' : detail.error.message}</p>
+          <p className="banner tone-red">
+            {detail.error.status === 404 ? 'This camera is no longer in the catalog.' : detail.error.message}
+          </p>
         </div>
       );
     }
@@ -215,7 +238,17 @@ export function CameraSheet({ cameraId, detail, summary, now, isAdmin, onDetecti
   );
 }
 
-function ResultBlock({ latest, current, previous, now }: { latest: Detection | null; current: boolean; previous: DetectionHistoryItem | null; now: number }) {
+function ResultBlock({
+  latest,
+  current,
+  previous,
+  now,
+}: {
+  latest: Detection | null;
+  current: boolean;
+  previous: DetectionHistoryItem | null;
+  now: number;
+}) {
   if (!latest) {
     return (
       <section className="cs-result tone-gray">
@@ -232,7 +265,14 @@ function ResultBlock({ latest, current, previous, now }: { latest: Detection | n
     );
   }
   const tone = current ? STATUS_TONE[latest.status] : 'gray';
-  const Icon = latest.status === 'likely_available' || latest.status === 'possible' ? SquareParking : latest.status === 'none' ? CircleSlash : current ? CircleQuestionMark : CircleCheck;
+  const Icon =
+    latest.status === 'likely_available' || latest.status === 'possible'
+      ? SquareParking
+      : latest.status === 'none'
+        ? CircleSlash
+        : current
+          ? CircleQuestionMark
+          : CircleCheck;
   const age = formatAge(ageSeconds(latest.timestamp, now));
   const reason = latest.status === 'unknown' ? reasonText(latest.reason) : null;
 
@@ -244,9 +284,7 @@ function ResultBlock({ latest, current, previous, now }: { latest: Detection | n
         </span>
         <div>
           <h3>{current ? STATUS_LABEL[latest.status] : 'No current result'}</h3>
-          <p className="tabular">
-            {current ? `Checked ${age}` : `Last check ${age}: ${historySummary(latest)}`}
-          </p>
+          <p className="tabular">{current ? `Checked ${age}` : `Last check ${age}: ${historySummary(latest)}`}</p>
         </div>
       </div>
       <dl className="cs-stats">

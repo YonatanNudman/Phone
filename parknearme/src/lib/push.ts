@@ -7,9 +7,7 @@
 
 import { isAppleMobile, isStandalone } from './platform';
 
-export type PushSupport =
-  | { ok: true }
-  | { ok: false; reason: 'ios_install' | 'unsupported' | 'denied'; message: string };
+export type PushSupport = { ok: true } | { ok: false; reason: 'ios_install' | 'unsupported' | 'denied'; message: string };
 
 export function pushSupport(): PushSupport {
   const hasApis = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
@@ -38,7 +36,9 @@ async function registration(): Promise<ServiceWorkerRegistration> {
   // `ready` never settles if registration failed, so bound the wait.
   return Promise.race([
     navigator.serviceWorker.ready,
-    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Service worker is not active yet. Reload and try again.')), 10_000)),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Service worker is not active yet. Reload and try again.')), 10_000),
+    ),
   ]);
 }
 

@@ -14,7 +14,7 @@ import { ErrorBanner } from './ErrorBanner';
 import { ParkingCard } from './ParkingCard';
 
 /** Must match `.pager { gap }` in sheet.css. */
-const PAGER_GAP = 10;
+const PAGER_GAP = 32;
 
 export interface ShownCandidate {
   candidate: ParkingCandidate;
@@ -92,7 +92,13 @@ export function ParkingPanel({ data, error, working, now, shown, selected, onSel
   return <NothingOpen data={data} now={now} onOpenCamera={onOpenCamera} />;
 }
 
-function CandidatePager({ data, shown, selected, onSelect, onOpenCamera }: Pick<Props, 'selected' | 'onSelect' | 'onOpenCamera'> & { data: ParkingCurrentResponse; shown: ShownCandidate[] }) {
+function CandidatePager({
+  data,
+  shown,
+  selected,
+  onSelect,
+  onOpenCamera,
+}: Pick<Props, 'selected' | 'onSelect' | 'onOpenCamera'> & { data: ParkingCurrentResponse; shown: ShownCandidate[] }) {
   const scroller = useRef<HTMLDivElement>(null);
   const multiple = shown.length > 1;
 
@@ -122,30 +128,30 @@ function CandidatePager({ data, shown, selected, onSelect, onOpenCamera }: Pick<
     <>
       <div ref={scroller} className={`pager${multiple ? ' is-multiple' : ''}`} onScroll={multiple ? onScroll : undefined}>
         {shown.map(({ candidate, ageSeconds: age }, i) => (
-          <div className="pager-slide" key={`${candidate.cameraId}:${candidate.regionId}:${candidate.gapStart}:${i}`} aria-roledescription="slide" aria-label={`${i + 1} of ${shown.length}`}>
+          <div
+            className="pager-slide"
+            key={`${candidate.cameraId}:${candidate.regionId}:${candidate.gapStart}:${i}`}
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${shown.length}`}
+          >
             <ParkingCard
               candidate={candidate}
               ageSeconds={age}
               distanceMi={haversineMiles(data.home, candidate)}
               onViewCamera={() => onOpenCamera(candidate.cameraId)}
+              position={multiple ? `${i + 1} of ${shown.length}` : undefined}
             />
           </div>
         ))}
       </div>
-      {multiple && (
-        <div className="pager-dots" role="tablist" aria-label="Parking options">
-          {shown.map((_, i) => (
-            <button key={i} type="button" role="tab" aria-selected={i === selected} aria-label={`Option ${i + 1}`} onClick={() => onSelect(i)} />
-          ))}
-        </div>
-      )}
     </>
   );
 }
 
 function NothingOpen({ data, now, onOpenCamera }: { data: ParkingCurrentResponse; now: number; onOpenCamera: (id: string) => void }) {
   const watched = useMemo(() => [...data.watched].sort((a, b) => a.distanceMi - b.distanceMi), [data.watched]);
-  const current = watched.filter((c) => isCurrent(c.latest, now));
+  // Cameras that actually looked at the curb just now (not "unknown").
+  const current = watched.filter((c) => isCurrent(c.latest, now) && c.latest?.status !== 'unknown');
   const { title, detail, tone, Icon } = describeNothing(watched, current.length, data, now);
 
   return (
@@ -179,7 +185,10 @@ function describeNothing(watched: CameraSummary[], currentCount: number, data: P
     const updated = ageSeconds(data.summary.updatedAt, now);
     return {
       title: `No open curb seen on ${currentCount} ${currentCount === 1 ? 'camera' : 'cameras'}`,
-      detail: updated !== null && updated < 90 ? 'Cars are filling the visible parking lanes.' : 'Cars are filling the visible lanes. Refresh for a new look.',
+      detail:
+        updated !== null && updated < 90
+          ? 'Cars are filling the visible parking lanes.'
+          : 'Cars are filling the visible lanes. Refresh for a new look.',
       tone: 'red' as const,
       Icon: CircleSlash,
     };

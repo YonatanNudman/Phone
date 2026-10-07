@@ -84,7 +84,9 @@
   color: var(--blue);
   background: color-mix(in srgb, var(--blue) 12%, transparent);
   cursor: pointer;
-  transition: transform 120ms var(--ease), opacity var(--dur) var(--ease);
+  transition:
+    transform 120ms var(--ease),
+    opacity var(--dur) var(--ease);
 }
 
 .status-refresh:active:not(:disabled) {

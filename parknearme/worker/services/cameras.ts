@@ -35,9 +35,9 @@ import { frameStateFromRow } from './frames';
 import { readSettingsState, saveHome } from './settings';
 
 const CATALOG_MAX_AGE_MS = 12 * 3600_000;
-/** After a failed automatic sync, wait this long before trying again (per isolate). */
+/** Automatic syncs are attempted at most this often (per database binding, per isolate). */
 const SYNC_RETRY_DELAY_MS = 60_000;
-const lastFailedSync = new WeakMap<D1Database, number>();
+const lastSyncAttempt = new WeakMap<D1Database, number>();
 
 const isFallbackHome = (home: HomeLocation) => home.source.startsWith('fallback');
 
@@ -82,13 +82,12 @@ export async function ensureCatalogFresh(env: Env): Promise<void> {
   const { count, lastSyncedAt } = await catalogStats(env.DB);
   const age = lastSyncedAt ? Date.now() - Date.parse(lastSyncedAt) : Infinity;
   if (count > 0 && age < CATALOG_MAX_AGE_MS) return;
-  const failedAt = lastFailedSync.get(env.DB);
-  if (failedAt !== undefined && Date.now() - failedAt < SYNC_RETRY_DELAY_MS) return;
+  const attemptedAt = lastSyncAttempt.get(env.DB);
+  if (attemptedAt !== undefined && Date.now() - attemptedAt < SYNC_RETRY_DELAY_MS) return;
+  lastSyncAttempt.set(env.DB, Date.now());
   try {
     await syncCatalog(env);
-    lastFailedSync.delete(env.DB);
   } catch (e) {
-    lastFailedSync.set(env.DB, Date.now());
     console.error(`catalog: automatic sync failed: ${errorMessage(e)}`);
   }
 }

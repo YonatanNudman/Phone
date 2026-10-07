@@ -73,8 +73,8 @@ function OverlaySvg({ overlay }: { overlay: FrameOverlay }) {
           key={r.id}
           points={pointsAttr(r.points)}
           className={`ov-region ov-${r.kind}`}
-          style={{ stroke: REGION_STYLE[r.kind].color }}
-          fill={r.kind === 'ignore' ? `url(#${hatch})` : undefined}
+          // Inline style (not the fill attribute) so it wins over the class's fill.
+          style={{ stroke: REGION_STYLE[r.kind].color, fill: r.kind === 'ignore' ? `url(#${hatch})` : undefined }}
         />
       ))}
       {(overlay.candidates ?? []).map((c, i) => (
@@ -98,12 +98,34 @@ function OverlaySvg({ overlay }: { overlay: FrameOverlay }) {
 export function OverlayLegend({ showRegions = true }: { showRegions?: boolean }) {
   return (
     <ul className="legend" aria-label="Overlay key">
-      <li><i className="lg-box lg-parked" />Parked</li>
-      <li><i className="lg-box lg-roadway" />In roadway</li>
-      <li><i className="lg-box lg-ignored" />Ignored</li>
-      <li><i className="lg-fill lg-gap" />Open curb</li>
-      {showRegions && <li><i className="lg-box lg-lane" />Parking lane</li>}
-      {showRegions && <li><i className="lg-box lg-restricted" />Restricted</li>}
+      <li>
+        <i className="lg-box lg-parked" />
+        Parked
+      </li>
+      <li>
+        <i className="lg-box lg-roadway" />
+        In roadway
+      </li>
+      <li>
+        <i className="lg-box lg-ignored" />
+        Ignored
+      </li>
+      <li>
+        <i className="lg-fill lg-gap" />
+        Open curb
+      </li>
+      {showRegions && (
+        <li>
+          <i className="lg-box lg-lane" />
+          Parking lane
+        </li>
+      )}
+      {showRegions && (
+        <li>
+          <i className="lg-box lg-restricted" />
+          Restricted
+        </li>
+      )}
     </ul>
   );
 }

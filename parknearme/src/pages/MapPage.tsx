@@ -12,6 +12,7 @@ import { MapView, type MapInsets } from '../components/MapView';
 import { currentCandidates, ParkingPanel } from '../components/ParkingPanel';
 import { StatusPill } from '../components/StatusPill';
 import { useAdmin } from '../hooks/useAdmin';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import { useNow } from '../hooks/useNow';
 import { useParking } from '../hooks/useParking';
 import { useResource } from '../hooks/useResource';
@@ -78,7 +79,7 @@ export function MapPage() {
     [cameraId, setParams],
   );
 
-  const wide = typeof window !== 'undefined' && window.matchMedia(WIDE_QUERY).matches;
+  const wide = useMediaQuery(WIDE_QUERY);
   const insets: MapInsets = useMemo(() => ({ top: topInset, bottom: wide ? 0 : sheetVisible }), [topInset, sheetVisible, wide]);
 
   const headline = data ? data.summary.headline : parking.error ? "Can't reach ParkNearMe" : 'Checking parking…';
@@ -123,7 +124,13 @@ export function MapPage() {
             <Settings size={21} strokeWidth={2.2} aria-hidden="true" />
           </button>
         </div>
-        <button type="button" className="ctl-single glass" aria-label="Center on home" title="Center on home" onClick={() => setRecenter((n) => n + 1)}>
+        <button
+          type="button"
+          className="ctl-single glass"
+          aria-label="Center on home"
+          title="Center on home"
+          onClick={() => setRecenter((n) => n + 1)}
+        >
           <LocateFixed size={21} strokeWidth={2.2} aria-hidden="true" />
         </button>
       </div>

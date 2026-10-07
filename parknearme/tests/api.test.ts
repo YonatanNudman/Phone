@@ -151,8 +151,8 @@ describe('camera catalog', () => {
 
   it('returns camera detail and 404 for unknown cameras', async () => {
     await sync();
-    const detail = await json<CameraDetail>(await h.call(`/api/cameras/${CAM.audubon}`));
-    expect(detail).toMatchObject({ id: CAM.audubon, calibration: null, previous: null, imageUrl: `/api/cameras/${CAM.audubon}/image` });
+    const detail = await json<CameraDetail>(await h.call(`/api/cameras/${CAM.amsterdam}`));
+    expect(detail).toMatchObject({ id: CAM.amsterdam, calibration: null, previous: null, imageUrl: `/api/cameras/${CAM.amsterdam}/image` });
     const missing = await h.call(`/api/cameras/${CAM.centralParkWest}`);
     expect(missing.status).toBe(404);
     expect((await json<ApiError>(missing)).error).toBe('camera_not_found');
@@ -366,6 +366,24 @@ describe('image proxy', () => {
     }
   });
 
+  it('reports a camera that is being serviced as unavailable', async () => {
+    h.frameMode.set(CAM.audubon, 'serviced');
+    const res = await h.call(`/api/cameras/${CAM.audubon}/image`);
+    expect(res.status).toBe(502);
+    expect(await res.json()).toEqual({ error: 'camera_unavailable', message: 'This camera is being serviced right now' });
+  });
+
+  it('marks frames whose EXIF capture time is old as stale', async () => {
+    h.frameMode.set(CAM.audubon, 'old_exif');
+    const res = await h.call(`/api/cameras/${CAM.audubon}/image`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get('X-Frame-Freshness')).toBe('stale');
+    const stored = h.db.sqlite.prepare('SELECT last_capture_at FROM camera_frame_state WHERE camera_id = ?').get(CAM.audubon);
+    expect(stored).toEqual({ last_capture_at: '2026-10-07T04:26:29.000Z' });
+    const detail = await json<CameraDetail>(await h.call(`/api/cameras/${CAM.audubon}`));
+    expect(detail.frame.freshness).toBe('stale');
+  });
+
   it('reports catalog-offline cameras as offline', async () => {
     const res = await h.call(`/api/cameras/${CAM.stNicholas}/image`);
     expect(res.status).toBe(200);
@@ -396,7 +414,7 @@ describe('analysis', () => {
       error: null,
     });
     expect(d.id).toEqual(expect.any(Number));
-    expect(d.vehiclesDetected).toBeGreaterThan(5);
+    expect(d.vehiclesDetected).toBe(4); // the synthetic street has 4 parked cars
     expect(d.objects.every((o) => o.box.xmax <= 1)).toBe(true);
     expect(d.candidates.length).toBeGreaterThan(0);
     expect(d.candidates[0]).toMatchObject({ cameraId: CAM.audubon, regionId: 'lane-181-south', streetLabel: 'W 181st St at Audubon Ave', id: expect.any(Number) });
@@ -471,6 +489,12 @@ describe('analysis', () => {
       .run(FRAME_HASH, old, new Date(Date.now() - 30_000).toISOString(), CAM.audubon);
     const stale = await json<Detection>(await analyze(CAM.audubon, { admin: true }));
     expect(stale).toMatchObject({ status: 'unknown', reason: 'stale_frame', freshness: 'stale', frameHash: FRAME_HASH });
+
+    // Bytes change but the camera's own clock (EXIF) is far behind => also stale.
+    ageDetections(h, CAM.audubon, 60);
+    h.frameMode.set(CAM.audubon, 'old_exif');
+    const oldExif = await json<Detection>(await analyze(CAM.audubon, { admin: true }));
+    expect(oldExif).toMatchObject({ status: 'unknown', reason: 'stale_frame', freshness: 'stale' });
     expect(h.ai.run).not.toHaveBeenCalled();
   });
 
@@ -492,8 +516,11 @@ describe('analysis', () => {
     ageDetections(h, CAM.audubon, 120);
     const second = await json<Detection>(await analyze(CAM.audubon));
     expect(second.id).not.toBe(first.id);
-    // The second run saw the first one's gaps within 5 minutes: temporal consistency raises confidence.
-    expect(second.candidates[0]!.reasons).toContain('Also open in the previous check');
+    // Evidence is fused across checks via the persisted lane grid: the opening seen twice is more certain.
+    expect(second.candidates[0]!.confidence).toBeGreaterThan(first.candidates[0]!.confidence);
+    const stored = h.db.sqlite.prepare('SELECT state_json FROM camera_lane_state WHERE camera_id = ?').get(CAM.audubon) as { state_json: string } | undefined;
+    expect(Object.keys(JSON.parse(stored!.state_json))).toEqual(['lane-181-south']);
+    expect(second).not.toHaveProperty('laneState');
 
     const history = await json<DetectionHistoryItem[]>(await h.call(`/api/cameras/${CAM.audubon}/history`));
     expect(history.map((i) => i.id)).toEqual([second.id, first.id]);

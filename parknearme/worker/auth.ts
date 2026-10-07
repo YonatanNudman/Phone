@@ -6,7 +6,7 @@ import type { Env } from './env';
 import { apiError, type AppContext, type AppEnv } from './http';
 
 /** Shorter tokens are treated as "not configured" so a weak secret never unlocks admin routes. */
-export const MIN_ADMIN_TOKEN_LENGTH = 16;
+const MIN_ADMIN_TOKEN_LENGTH = 16;
 
 const encoder = new TextEncoder();
 

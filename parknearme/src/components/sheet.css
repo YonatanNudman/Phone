@@ -6,12 +6,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: calc(100% - var(--safe-top) - 68px);
+  height: calc(100% - var(--safe-top) - 82px);
   display: flex;
   flex-direction: column;
   border-radius: 20px 20px 0 0;
   background: var(--surface);
-  box-shadow: 0 -0.5px 0 var(--separator), 0 -10px 40px rgba(0, 0, 0, 0.14);
+  box-shadow:
+    0 -0.5px 0 var(--separator),
+    0 -10px 40px rgba(0, 0, 0, 0.14);
   transform: translate3d(0, 100%, 0);
   transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
@@ -21,7 +23,9 @@
 @media (prefers-color-scheme: dark) {
   .sheet {
     background: #1c1c1e;
-    box-shadow: 0 -0.5px 0 rgba(255, 255, 255, 0.08), 0 -10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow:
+      0 -0.5px 0 rgba(255, 255, 255, 0.08),
+      0 -10px 40px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -48,16 +52,20 @@
 
 .sheet-top {
   flex: none;
+  display: flex;
+  flex-direction: column;
   touch-action: none;
 }
 
 .sheet-grabber {
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-self: center;
+  width: 96px;
   height: 22px;
   padding: 7px 0 0;
   border: 0;
+  border-radius: 11px;
   background: none;
   cursor: grab;
 }
@@ -93,6 +101,22 @@
 
 /* ---- Parking card ---------------------------------------------------------- */
 
+.pcard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pcard-count {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label-2);
+  background: var(--fill);
+}
+
 .pcard-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -124,43 +148,43 @@
   color: var(--label-2);
 }
 
-.pcard-rows {
+.pcard-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
   margin: 14px 0 0;
-  padding: 0 14px;
-  list-style: none;
-  border-radius: 14px;
+}
+
+.pcard-stats div {
+  padding: 9px 12px 10px;
+  border-radius: 12px;
   background: var(--surface-2);
 }
 
 @media (prefers-color-scheme: dark) {
-  .pcard-rows {
+  .pcard-stats div {
     background: #2c2c2e;
   }
 }
 
-.pcard-rows li {
+.pcard-stats dt {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 44px;
-  font-size: 16px;
-}
-
-.pcard-rows li + li {
-  border-top: 0.5px solid var(--separator);
-}
-
-.pcard-rows svg {
-  flex: none;
+  gap: 5px;
+  font-size: 13px;
   color: var(--label-2);
 }
 
-.pcard-rows span {
-  flex: 1;
+.pcard-stats dt svg {
+  flex: none;
 }
 
-.pcard-rows strong {
-  font-weight: 600;
+.pcard-stats dd {
+  margin: 3px 0 0;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .pcard-actions {
@@ -186,9 +210,12 @@
 /* Carousel of candidates */
 .pager {
   display: flex;
-  gap: 10px;
+  /* = both side paddings, so the next card never peeks in as a sliver */
+  gap: 32px;
   margin: 0 -16px;
   padding: 0 16px;
+  /* keeps card shadows/focus rings from being clipped */
+  padding-block: 2px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-padding: 0 16px;
@@ -203,42 +230,6 @@
 .pager-slide {
   flex: 0 0 100%;
   scroll-snap-align: start;
-}
-
-.pager.is-multiple .pager-slide {
-  flex-basis: calc(100% - 22px);
-}
-
-.pager-dots {
-  display: flex;
-  justify-content: center;
-  gap: 2px;
-  margin-top: 8px;
-}
-
-.pager-dots button {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.pager-dots button::after {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--label-3);
-  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-
-.pager-dots button[aria-selected='true']::after {
-  background: var(--label);
-  transform: scale(1.1);
 }
 
 /* ---- Nothing open ---------------------------------------------------------- */
@@ -415,8 +406,10 @@
 }
 
 .cs-frame-badge {
+  /* bottom: the burned-in camera clock lives along the top edge */
   position: absolute;
-  top: 8px;
+  z-index: 1;
+  bottom: 8px;
   right: 8px;
 }
 
