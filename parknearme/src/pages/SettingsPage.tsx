@@ -64,6 +64,13 @@ export function SettingsPage() {
   const s = settings.data;
   const { mutate } = settings;
 
+  /** The page loads three things; retry whichever failed along with settings. */
+  const retryLoad = () => {
+    settings.reload();
+    if (pushConfig.error) pushConfig.reload();
+    if (health.error) health.reload();
+  };
+
   /** Optimistic PUT with rollback. */
   const update = async (patch: SettingsPatch): Promise<boolean> => {
     const before = s;
@@ -121,7 +128,7 @@ export function SettingsPage() {
 
       {settings.error && !s && (
         <div className="settings-banner">
-          <ErrorBanner title="Couldn't load settings" message={settings.error.message} onRetry={settings.reload} />
+          <ErrorBanner title="Couldn't load settings" message={settings.error.message} onRetry={retryLoad} />
         </div>
       )}
 
@@ -197,7 +204,7 @@ export function SettingsPage() {
         <p className="group-footer">Spots below the minimum show as “possible” and never trigger alerts.</p>
       </section>
 
-      <NotificationsSection settings={s} pushConfig={pushConfig.data} isAdmin={isAdmin} update={update} />
+      <NotificationsSection settings={s} pushConfig={pushConfig} isAdmin={isAdmin} update={update} />
 
       <section className="section" aria-labelledby="sec-device">
         <h2 className="group-title" id="sec-device">

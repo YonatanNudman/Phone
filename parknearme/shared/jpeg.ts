@@ -92,11 +92,16 @@ function readExifDateTime(b: Uint8Array, start: number, length: number): string 
   }
 }
 
+const DAY_MS = 86_400_000;
+
 /**
  * Convert a wall-clock time in a time zone (default America/New_York, where the
- * cameras are) to a UTC ISO string. Handles DST via Intl.
+ * cameras are) to a UTC ISO string. Handles DST via Intl. A wall time that
+ * happens twice (the repeated hour when clocks fall back) resolves to the
+ * occurrence closest to `nearMs` (e.g. when the frame was fetched), or to the
+ * first occurrence without it.
  */
-export function zonedTimeToUtc(exif: string, timeZone = 'America/New_York'): string | null {
+export function zonedTimeToUtc(exif: string, timeZone = 'America/New_York', nearMs?: number): string | null {
   const m = /^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/.exec(exif);
   if (!m) return null;
   const [y, mo, d, h, mi, s] = m.slice(1).map(Number) as [number, number, number, number, number, number];
@@ -115,7 +120,21 @@ export function zonedTimeToUtc(exif: string, timeZone = 'America/New_York'): str
     const p = Object.fromEntries(fmt.formatToParts(new Date(t)).map((x) => [x.type, x.value]));
     return Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day), Number(p.hour), Number(p.minute), Number(p.second)) - t;
   };
-  let utc = wall - offsetAt(wall);
-  utc = wall - offsetAt(utc); // second pass settles DST transitions
+  // The offsets in force a day before and a day after (at most one transition in between);
+  // each gives a candidate instant, valid when that offset really applies at it.
+  const candidates = [...new Set([offsetAt(wall - DAY_MS), offsetAt(wall + DAY_MS)])]
+    .map((offset) => wall - offset)
+    .filter((t) => offsetAt(t) === wall - t)
+    .sort((a, b) => a - b);
+  let utc: number;
+  if (candidates.length === 0) {
+    // A wall time skipped when clocks spring forward: settle on the offset found by iterating.
+    utc = wall - offsetAt(wall);
+    utc = wall - offsetAt(utc);
+  } else if (nearMs !== undefined && Number.isFinite(nearMs)) {
+    utc = candidates.reduce((best, t) => (Math.abs(t - nearMs) < Math.abs(best - nearMs) ? t : best));
+  } else {
+    utc = candidates[0]!;
+  }
   return Number.isFinite(utc) ? new Date(utc).toISOString() : null;
 }

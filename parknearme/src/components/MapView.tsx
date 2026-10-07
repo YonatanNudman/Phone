@@ -7,10 +7,11 @@
 
 import L from 'leaflet';
 import { useEffect, useRef } from 'react';
-import type { CameraSummary, ParkingCandidate } from '../../shared/types';
+import type { CameraSummary, ParkingCandidate, ParkingStatus } from '../../shared/types';
 import type { LatLon } from '../../shared/geo';
 import { cameraLabel } from '../lib/format';
 import { cameraIcon, cameraTitle, homeIcon, parkingIcon } from './mapIcons';
+import { candidateMarkerPositions, onMarkerActivate, type MarkerPosition } from './mapMarkers';
 import './map.css';
 
 export interface MapInsets {
@@ -23,6 +24,8 @@ interface Props {
   radiusMi: number | null;
   cameras: CameraSummary[];
   watchedIds: ReadonlySet<string>;
+  /** Status dot per watched camera, already checked for age/freshness (see cameraMarkerStatus). */
+  cameraStatus: ReadonlyMap<string, ParkingStatus | null>;
   candidates: ParkingCandidate[];
   selectedCameraId: string | null;
   selectedCandidate: number | null;
@@ -42,32 +45,21 @@ const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia('
 const HOME_ZOOM = 16;
 const MAX_FIT_ZOOM = 17;
 const MI_TO_M = 1609.344;
-/** How far an "approximate" parking marker is pushed away from its camera. */
-const APPROX_OFFSET_M = 25;
 /** Room for the right-hand control column when framing. */
 const CONTROLS_W = 96;
 
-/** Move `p` by `meters` toward `bearingDeg` (small-distance approximation). */
-function offsetLatLng(p: LatLon, meters: number, bearingDeg: number): L.LatLng {
-  const b = (bearingDeg * Math.PI) / 180;
-  const dLat = (meters * Math.cos(b)) / 111_320;
-  const dLon = (meters * Math.sin(b)) / (111_320 * Math.cos((p.lat * Math.PI) / 180));
-  return L.latLng(p.lat + dLat, p.lon + dLon);
-}
-
-/** Where a candidate's marker goes; approximate ones are fanned out around the camera. */
-export function candidateMarkerPosition(c: ParkingCandidate, indexAtCamera: number): L.LatLng {
-  return c.approximateLocation ? offsetLatLng(c, APPROX_OFFSET_M, 40 + indexAtCamera * 55) : L.latLng(c.lat, c.lon);
-}
-
-/** Candidate marker positions, fanning out several approximate ones at the same camera. */
-function candidatePositions(candidates: ParkingCandidate[]): L.LatLng[] {
-  const perCamera = new Map<string, number>();
-  return candidates.map((c) => {
-    const k = perCamera.get(c.cameraId) ?? 0;
-    perCamera.set(c.cameraId, k + 1);
-    return candidateMarkerPosition(c, k);
-  });
+/** Dashed line from a moved parking marker back to the candidate's own point (camera or lane anchor). */
+function syncTether(g: L.LayerGroup, tether: L.Polyline | null, c: ParkingCandidate, pos: MarkerPosition): L.Polyline | null {
+  if (!pos.moved) {
+    if (tether) g.removeLayer(tether);
+    return null;
+  }
+  const points: L.LatLngExpression[] = [
+    [c.lat, c.lon],
+    [pos.lat, pos.lon],
+  ];
+  if (tether) return tether.setLatLngs(points);
+  return L.polyline(points, { className: 'mk-tether', interactive: false, weight: 2, dashArray: '3 5' }).addTo(g);
 }
 
 /** Center `target` within the part of the map not covered by `insets`. */
@@ -91,7 +83,7 @@ function frame(map: L.Map, points: L.LatLng[], insets: MapInsets, animate: boole
 }
 
 export function MapView(props: Props) {
-  const { home, radiusMi, cameras, watchedIds, candidates, selectedCameraId, selectedCandidate, insets, recenterToken } = props;
+  const { home, radiusMi, cameras, watchedIds, cameraStatus, candidates, selectedCameraId, selectedCandidate, insets, recenterToken } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layers = useRef<{ home: L.LayerGroup; cameras: L.LayerGroup; parking: L.LayerGroup } | null>(null);
@@ -107,7 +99,7 @@ export function MapView(props: Props) {
   // What "the interesting area" is: home, parking markers, watched cameras.
   const focus: L.LatLng[] = [
     L.latLng(home.lat, home.lon),
-    ...candidatePositions(candidates),
+    ...candidateMarkerPositions(candidates).map((p) => L.latLng(p.lat, p.lon)),
     ...cameras.filter((c) => watchedIds.has(c.id)).map((c) => L.latLng(c.lat, c.lon)),
   ];
   const focusRef = useRef(focus);
@@ -175,54 +167,52 @@ export function MapView(props: Props) {
     for (const cam of cameras) {
       const watched = watchedIds.has(cam.id);
       const freshness = cam.frame.freshness;
-      const status = watched && cam.latest ? cam.latest.status : null;
+      const status = cameraStatus.get(cam.id) ?? null;
       const marker = L.marker([cam.lat, cam.lon], {
         icon: cameraIcon({ freshness, watched, selected: cam.id === selectedCameraId, status }),
         title: cameraTitle(cameraLabel(cam), freshness, status),
         zIndexOffset: cam.id === selectedCameraId ? 1500 : watched ? 200 : 0,
         riseOnHover: true,
       });
-      marker.on('click', () => handlers.current.onCameraTap(cam.id));
+      onMarkerActivate(marker, () => handlers.current.onCameraTap(cam.id));
       marker.addTo(g);
     }
-  }, [cameras, watchedIds, selectedCameraId]);
+  }, [cameras, watchedIds, cameraStatus, selectedCameraId]);
 
-  // Parking markers (+ dashed tether to the camera when the position is approximate).
+  // Parking markers (+ dashed tether when the marker was moved off its own point).
   // Diffed by key so the per-second re-render doesn't recreate (and re-animate) them.
   useEffect(() => {
     const g = layers.current?.parking;
     if (!g) return;
     const existing = parkingMarkers.current;
-    const positions = candidatePositions(candidates);
+    const positions = candidateMarkerPositions(candidates);
     const seen = new Set<string>();
     candidates.forEach((c, i) => {
       const key = `${c.cameraId}|${c.regionId ?? ''}|${c.gapStart}|${c.gapEnd}`;
       const pos = positions[i]!;
       const selected = i === selectedCandidate;
-      const sig = `${c.status}|${c.spaces}|${selected}|${pos.lat},${pos.lng}`;
+      const sig = `${c.status}|${c.spaces}|${selected}|${pos.lat},${pos.lon}`;
       seen.add(key);
       const entry = existing.get(key);
       if (entry) {
         entry.index = i;
         if (entry.sig === sig) return;
         entry.sig = sig;
-        entry.marker.setLatLng(pos);
+        entry.marker.setLatLng([pos.lat, pos.lon]);
         entry.marker.setIcon(parkingIcon({ status: c.status, spaces: c.spaces, selected, animate: false }));
         entry.marker.setZIndexOffset(selected ? 1800 : 1000 - i);
-        entry.tether?.setLatLngs([[c.lat, c.lon], pos]);
+        entry.tether = syncTether(g, entry.tether, c, pos);
         return;
       }
-      const tether = c.approximateLocation
-        ? L.polyline([[c.lat, c.lon], pos], { className: 'mk-tether', interactive: false, weight: 2, dashArray: '3 5' }).addTo(g)
-        : null;
-      const marker = L.marker(pos, {
+      const tether = syncTether(g, null, c, pos);
+      const marker = L.marker([pos.lat, pos.lon], {
         icon: parkingIcon({ status: c.status, spaces: c.spaces, selected, animate: true }),
         title: `Parking: ${c.streetLabel}, ${c.spaces} possible ${c.spaces === 1 ? 'space' : 'spaces'}`,
         zIndexOffset: selected ? 1800 : 1000 - i,
         riseOnHover: true,
       }).addTo(g);
       const created = { marker, tether, sig, index: i };
-      marker.on('click', () => handlers.current.onCandidateTap(created.index));
+      onMarkerActivate(marker, () => handlers.current.onCandidateTap(created.index));
       existing.set(key, created);
     });
     for (const [key, entry] of existing) {

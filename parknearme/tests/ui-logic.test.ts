@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { editorReducer, initialEditor, regionProblem, regionsForSave } from '../src/pages/calibrate/editor';
 import { mergeDetection } from '../src/hooks/useParking';
-import { detectionChip, historySummary } from '../src/lib/detection';
-import { base64UrlToBytes } from '../src/lib/push';
+import { currentCandidates, detectionChip, historySummary, isCurrent, maxDetectionAge } from '../src/lib/detection';
+import { base64UrlToBytes, pushBlock } from '../src/lib/push';
 import { reasonText, formatClock } from '../src/lib/format';
+import { statusPillText } from '../src/components/statusPillText';
+import type { ParkingCurrentResponse } from '../shared/types';
 
 describe('editor', () => {
   it('creates a parking lane after 4 clicks and ignores duplicate clicks', () => {
@@ -57,6 +59,83 @@ describe('mergeDetection', () => {
     expect(r.summary.state).toBe('none');
     r = mergeDetection(r, det('b', 1, { freshness: 'stale' }));
     expect(r.candidates).toHaveLength(0);
+  });
+  it('only updates the marker for an unwatched camera (admin analysis)', () => {
+    const data = { ...(base as ParkingCurrentResponse), nearby: [cam('a'), cam('b'), cam('u')] };
+    const r = mergeDetection(data, det('u', 2));
+    expect(r.candidates).toHaveLength(0);
+    expect(r.summary).toEqual(data.summary);
+    expect(r.watched).toEqual(data.watched);
+    expect(r.nearby.find((c) => c.id === 'u')!.latest).not.toBeNull();
+    expect(currentCandidates(r, Date.now())).toEqual([]);
+  });
+  it("follows the server's maxDetectionAgeSeconds", () => {
+    const ago = new Date(Date.now() - 200_000).toISOString();
+    expect(mergeDetection(base, det('a', 2, { timestamp: ago })).candidates).toHaveLength(1);
+    const strict = { ...(base as ParkingCurrentResponse), maxDetectionAgeSeconds: 120 };
+    const r = mergeDetection(strict, det('a', 2, { timestamp: ago }));
+    expect(r.candidates).toHaveLength(0);
+    expect(r.summary.state).toBe('unknown');
+  });
+});
+
+describe('detection age limit', () => {
+  const nowMs = Date.parse('2026-10-07T12:00:00Z');
+  const at = (secondsAgo: number) => new Date(nowMs - secondsAgo * 1000).toISOString();
+  const det = (secondsAgo: number) =>
+    ({ id: 1, cameraId: 'a', timestamp: at(secondsAgo), freshness: 'live', status: 'likely_available', candidateSpaces: 2, reason: null, candidates: [] }) as never;
+  const candidate = { cameraId: 'a', regionId: 'r', streetLabel: 'X', spaces: 2, confidence: 0.8, status: 'likely_available', gapStart: 0, gapEnd: 0.2, polygon: [], lat: 1, lon: 2, approximateLocation: false, reasons: [] };
+  const response = (secondsAgo: number, maxDetectionAgeSeconds?: number) =>
+    ({ generatedAt: at(secondsAgo), candidates: [candidate], watched: [{ id: 'a', latest: det(secondsAgo) }], maxDetectionAgeSeconds }) as unknown as ParkingCurrentResponse;
+
+  it('defaults to 300 s and uses the server value when present', () => {
+    expect(maxDetectionAge(null)).toBe(300);
+    expect(maxDetectionAge({})).toBe(300);
+    expect(maxDetectionAge({ maxDetectionAgeSeconds: 120 })).toBe(120);
+    expect(maxDetectionAge({ maxDetectionAgeSeconds: 0 })).toBe(300);
+  });
+  it('drops candidates older than the configured limit', () => {
+    expect(currentCandidates(response(150), nowMs)).toHaveLength(1);
+    expect(currentCandidates(response(150, 120), nowMs)).toEqual([]);
+    expect(currentCandidates(response(100, 120), nowMs)).toHaveLength(1);
+  });
+  it('isCurrent and chips honour the limit', () => {
+    expect(isCurrent(det(240), nowMs)).toBe(true);
+    expect(isCurrent(det(240), nowMs, 120)).toBe(false);
+    expect(detectionChip(det(240), nowMs).text).toBe('2 spots');
+    expect(detectionChip(det(240), nowMs, 120).text).toBe('Old result');
+  });
+});
+
+describe('status pill', () => {
+  const nowMs = Date.parse('2026-10-07T12:00:00Z');
+  const base = { updatedAt: new Date(nowMs - 6000).toISOString(), working: false, message: null, errorText: null, failed: 0, now: nowMs };
+  it('keeps the ticking age line out of the live region', () => {
+    const a = statusPillText(base);
+    const b = statusPillText({ ...base, now: nowMs + 1000 });
+    expect(a).toEqual({ sub: 'Updated 6 sec ago', subIsLive: false });
+    expect(b).toEqual({ sub: 'Updated 7 sec ago', subIsLive: false });
+  });
+  it('announces progress and errors', () => {
+    expect(statusPillText({ ...base, working: true, message: 'Analyzing W 181st…' })).toEqual({ sub: 'Analyzing W 181st…', subIsLive: true });
+    expect(statusPillText({ ...base, errorText: "Couldn't refresh" })).toEqual({ sub: "Couldn't refresh", subIsLive: true });
+    expect(statusPillText({ ...base, updatedAt: null })).toEqual({ sub: 'No recent camera checks', subIsLive: true });
+  });
+});
+
+describe('push block', () => {
+  const ok = { ok: true } as const;
+  const ready = { enabled: true, publicKey: 'k' };
+  it('blocks the alerts toggle until push config has loaded, with a retry when it failed', () => {
+    expect(pushBlock(undefined, false, ok)?.kind).toBe('loading');
+    expect(pushBlock(undefined, true, ok)).toEqual({ kind: 'retry', message: "Couldn't load notification settings" });
+  });
+  it('explains server and device problems, else allows subscribing', () => {
+    expect(pushBlock({ enabled: false, publicKey: null }, false, ok)?.kind).toBe('server');
+    const denied = { ok: false, reason: 'denied', message: 'Notifications are blocked.' } as const;
+    expect(pushBlock(ready, false, denied)).toEqual({ kind: 'device', message: 'Notifications are blocked.' });
+    expect(pushBlock(undefined, true, denied)?.kind).toBe('device');
+    expect(pushBlock(ready, false, ok)).toBeNull();
   });
 });
 

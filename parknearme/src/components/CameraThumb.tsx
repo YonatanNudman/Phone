@@ -12,17 +12,19 @@ import { FreshnessBadge } from './FreshnessBadge';
 interface Props {
   camera: CameraSummary;
   now: number;
+  /** Server's settings.maxDetectionAgeSeconds (defaults to the shared default). */
+  maxAgeSeconds?: number;
   index: number;
   onOpen: () => void;
 }
 
 /** Watched-camera thumbnail for the "nothing open" state of the sheet. */
-export function CameraThumb({ camera, now, index, onOpen }: Props) {
+export function CameraThumb({ camera, now, maxAgeSeconds, index, onOpen }: Props) {
   const ref = useRef<HTMLButtonElement>(null);
   const inView = useInView(ref);
   const visible = usePageVisible();
   const frame = useFrame(camera.id, { intervalMs: 30_000, active: inView && visible, initialDelayMs: index * 400 });
-  const chip = detectionChip(camera.latest, now);
+  const chip = detectionChip(camera.latest, now, maxAgeSeconds);
   const name = cameraLabel(camera);
   const age = ageSeconds(camera.latest?.timestamp, now);
 

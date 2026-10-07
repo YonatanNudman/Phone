@@ -26,6 +26,8 @@ export interface AnalysisContext {
   /** @deprecated Superseded by laneState; ignored. */
   previousCandidates?: Pick<ParkingCandidate, 'regionId' | 'gapStart' | 'gapEnd'>[];
   minConfidence: number;
+  /** settings.maxDetectionAgeSeconds: evidence older than this must not count as current, so the lane grid forgets it. */
+  maxDetectionAgeSeconds?: number;
   camera: { lat: number; lon: number; name: string };
 }
 

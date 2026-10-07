@@ -201,6 +201,8 @@ export interface ParkingCurrentResponse {
   watched: CameraSummary[];
   /** Every camera within the radius (for map markers). */
   nearby: CameraSummary[];
+  /** settings.maxDetectionAgeSeconds the response was built with. Optional: clients fall back to the default. */
+  maxDetectionAgeSeconds?: number;
 }
 
 export type BackgroundMode = 'off' | 'when_alerts_on' | 'always';

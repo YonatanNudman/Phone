@@ -15,10 +15,14 @@
 //     parked there would be: detector recall at that distance x the fraction
 //     of a hypothetical car box not covered by other vehicles. Curb hidden
 //     behind a parked car or a bus therefore stays unknown, never "free".
-//     The grid is persisted between checks and decays toward the prior.
+//     The grid is persisted between checks and decays toward the prior. A
+//     frame identical to the one fused last time (frozen camera) adds no
+//     evidence.
 //  4. Runs of likely-free bins minus RESTRICTED/IGNORE zones are gaps. A gap's
 //     confidence = P(long enough | measurement noise) x mean P(free) x a
-//     far-field factor (pixels per metre along the curb).
+//     far-field factor (pixels per metre along the curb). A gap is only
+//     reported when enough of it is seen free in THIS frame, so curb that is
+//     hidden right now is never reported from remembered evidence alone.
 //
 // It only says "the curb looks open". Hydrants, driveways and signs are known
 // only if the user marked them RESTRICTED during calibration.
@@ -78,10 +82,19 @@ export interface GapOptions {
   goodPxPerM: number;
   /** A bin counts as free when P(occupied) is below this. */
   pOccMax: number;
+  /**
+   * How much of a gap the current frame must show free (mean visible fraction
+   * of a car parked there, 0 under detected cars) for it to be reported at all.
+   */
+  minSeenNow: number;
+  /** Visible share needed for "likely_available"; below it the gap is at most "possible". */
+  likelySeenNow: number;
   /** Current time (ms since epoch), for decaying persisted state. */
   nowMs: number;
   /** Persisted lane grids from the previous check, keyed by region id. */
   state?: LaneStates;
+  /** Hash of the frame being analyzed. A frame already fused into a lane grid is not fused again. */
+  frameHash?: string;
 }
 
 export const DEFAULT_GAP_OPTIONS: Omit<GapOptions, 'nowMs'> = {
@@ -102,6 +115,8 @@ export const DEFAULT_GAP_OPTIONS: Omit<GapOptions, 'nowMs'> = {
   minPxPerM: 1.3,
   goodPxPerM: 3.0,
   pOccMax: 0.6,
+  minSeenNow: 0.35,
+  likelySeenNow: 0.6,
 };
 
 /** Persisted occupancy grid for one lane. */
@@ -112,6 +127,8 @@ export interface LaneState {
   sig: string;
   /** log-odds per bin, rounded to 2 decimals */
   logodds: number[];
+  /** Hash of the last frame fused into this grid (a frozen camera repeats it). */
+  frame?: string;
 }
 export type LaneStates = Record<string, LaneState>;
 
@@ -131,6 +148,8 @@ export interface GapResult {
   pLength: number;
   pFree: number;
   farFactor: number;
+  /** How much of the gap the current frame shows free (0..1, see GapOptions.minSeenNow). */
+  seenNow: number;
   /** Normalized image polygon of the gap. */
   polygon: Point[];
   reasons: string[];
@@ -181,6 +200,8 @@ interface Lane {
   bins: number;
   sig: string;
   streetLabel: string;
+  /** Smallest projective w treated as "on the ground" (tiny vs. w inside the lane quad). */
+  wEps: number;
 }
 
 const isVehicle = (o: DetectedObject) => (VEHICLE_LABELS as readonly string[]).includes(o.label);
@@ -204,7 +225,8 @@ function laneSignature(region: Region, capacity: number, bins: number): string {
 }
 
 function buildLane(region: Region, o: GapOptions): Lane | null {
-  const h = laneHomography(region.points.map((p) => toPx(p, o)));
+  const quadPx = region.points.map((p) => toPx(p, o));
+  const h = laneHomography(quadPx);
   if (!h) return null;
   const capacity = Math.max(1, Math.round(region.capacity ?? 6));
   const lengthM = capacity * o.slotM;
@@ -218,6 +240,7 @@ function buildLane(region: Region, o: GapOptions): Lane | null {
     bins,
     sig: laneSignature(region, capacity, bins),
     streetLabel: region.streetLabel || region.label || 'Curb lane',
+    wEps: 1e-6 * Math.max(...quadPx.map((p) => Math.abs(homographyW(h.toLane, p)))),
   };
 }
 
@@ -351,13 +374,42 @@ function fitFootprint(lane: Lane, b: Box, lenM: number, widM: number, maxN: numb
   return fit;
 }
 
-/** u-range a region covers inside the lane band, if any. */
-function regionInterval(lane: Lane, polyPx: Point[]): Interval | null {
-  if (polyPx.some((p) => homographyW(lane.toLane, p) <= 0)) return null;
-  const uvs = polyPx.map((p) => applyHomography(lane.toLane, p));
-  const vs = uvs.map((p) => p[1]);
-  if (Math.max(...vs) < -0.2 || Math.min(...vs) > 1.2) return null;
-  const us = uvs.map((p) => p[0]);
+/** Sutherland-Hodgman: the part of `poly` where f >= 0 (f must be affine in the polygon's coordinates). */
+function clipPolygon(poly: Point[], f: (p: Point) => number): Point[] {
+  const out: Point[] = [];
+  for (let i = 0; i < poly.length; i++) {
+    const a = poly[i]!;
+    const b = poly[(i + 1) % poly.length]!;
+    const fa = f(a);
+    const fb = f(b);
+    if (fa >= 0) out.push(a);
+    if (fa >= 0 !== fb >= 0) {
+      const t = fa / (fa - fb);
+      out.push([a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]);
+    }
+  }
+  return out;
+}
+
+/**
+ * u-range a region covers inside the lane band (v in [-0.2, 1.2]): null when
+ * it misses the band, 'unmappable' when it cannot be placed on the ground.
+ * Zones are free-drawn, so parts above the horizon (a tall box around a sign,
+ * an IGNORE band up to the top of the frame) are cut off at the horizon
+ * instead of discarding the whole zone. Points just below the horizon map very
+ * far along the lane, which only makes the zone block more (the safe side).
+ */
+function regionInterval(lane: Lane, polyPx: Point[]): Interval | 'unmappable' | null {
+  const ground = clipPolygon(polyPx, (p) => homographyW(lane.toLane, p) - lane.wEps);
+  if (ground.length < 3) return null;
+  const uv = ground.map((p) => applyHomography(lane.toLane, p));
+  if (uv.some(([u, v]) => !Number.isFinite(u) || !Number.isFinite(v))) return 'unmappable';
+  const band = clipPolygon(
+    clipPolygon(uv, (p) => p[1] + 0.2),
+    (p) => 1.2 - p[1],
+  );
+  if (band.length < 3) return null;
+  const us = band.map((p) => p[0]);
   if (Math.max(...us) < 0 || Math.min(...us) > 1) return null;
   return [clamp(Math.min(...us), 0, 1), clamp(Math.max(...us), 0, 1)];
 }
@@ -416,7 +468,9 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
     else notes.push(`Lane "${region.label ?? region.id}" is not a valid 4-point quad; skipped.`);
   }
   const ignorePx = regions.filter((r) => r.kind === 'ignore').map((r) => r.points.map((p) => toPx(p, o)));
-  const blockingPx = regions.filter((r) => r.kind === 'restricted' || r.kind === 'ignore').map((r) => ({ kind: r.kind, poly: r.points.map((p) => toPx(p, o)) }));
+  const blockingPx = regions
+    .filter((r) => r.kind === 'restricted' || r.kind === 'ignore')
+    .map((r) => ({ name: r.label ?? r.id, poly: r.points.map((p) => toPx(p, o)) }));
 
   // 1. Place vehicles: ignored, parked in a lane, in the roadway, or outside.
   const vehicles = objects.filter((v) => isVehicle(v) && v.score >= o.minVehicleScore);
@@ -455,7 +509,9 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
     };
   }
 
-  const occluders = placed.filter((p) => p.obj.role !== 'ignored').map((p) => p.px);
+  // Every detected box hides what is behind it, including vehicles in IGNORE
+  // zones: IGNORE only stops them from counting as parked.
+  const occluders = placed.map((p) => p.px);
   const state: LaneStates = {};
   const laneResults: LaneResult[] = [];
 
@@ -472,10 +528,14 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
     const prior = logit(o.priorOcc);
     const prev = o.state?.[lane.region.id];
     const grid = new Float64Array(lane.bins).fill(prior);
-    if (prev && prev.sig === lane.sig && prev.logodds.length === lane.bins) {
+    const restored = !!prev && prev.sig === lane.sig && prev.logodds.length === lane.bins;
+    if (restored) {
       const k = Math.exp(-Math.max(0, o.nowMs - prev.t) / 1000 / o.tauSec);
       for (let i = 0; i < lane.bins; i++) grid[i] = prior + (prev.logodds[i]! - prior) * k;
     }
+    // A frozen camera serves identical bytes: the same picture is no new evidence.
+    const sameFrame = restored && !!o.frameHash && prev.frame === o.frameHash;
+    if (sameFrame) laneNotes.push('Same camera image as the last check; not counted again.');
 
     // 3. Update with this frame. With no parked cars detected at all in a lane
     // that should hold several, assume a detector failure (night, glare): no update.
@@ -491,6 +551,8 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
       .sort((a, b) => a - b);
     const kH = ks[Math.floor(ks.length / 2)] ?? 0.3;
     let observed = 0;
+    /** Per bin: how visible a car parked there would be in THIS frame (0 under a detected parked car). */
+    const visibleNow = new Float64Array(lane.bins);
     if (!detectorBlind) {
       for (let i = 0; i < lane.bins; i++) {
         const u = (i + 0.5) / lane.bins;
@@ -503,16 +565,31 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
         } else {
           const fVis = visibleFraction(hypotheticalBox(lane, u, kH), occluders);
           if (fVis >= 0.67) observed++;
+          visibleNow[i] = fVis;
           const rEff = recall * fVis;
           llr = Math.log((1 - rEff) / (1 - o.fp));
         }
-        grid[i] = clamp(grid[i]! + llr, -4, 4);
+        if (!sameFrame) grid[i] = clamp(grid[i]! + llr, -4, 4);
       }
     }
-    state[lane.region.id] = { t: o.nowMs, sig: lane.sig, logodds: Array.from(grid, (l) => Math.round(l * 100) / 100) };
+    state[lane.region.id] = {
+      t: o.nowMs,
+      sig: lane.sig,
+      logodds: Array.from(grid, (l) => Math.round(l * 100) / 100),
+      ...(o.frameHash ? { frame: o.frameHash } : {}),
+    };
 
     // 4. Gaps: runs of likely-free bins not blocked by RESTRICTED/IGNORE zones.
-    const blocked = mergeIntervals(blockingPx.map((r) => regionInterval(lane, r.poly)).filter((iv): iv is Interval => !!iv));
+    const zoneIntervals: Interval[] = [];
+    for (const zone of blockingPx) {
+      const iv = regionInterval(lane, zone.poly);
+      if (iv === 'unmappable') {
+        // Never drop a zone silently: block the whole lane instead.
+        laneNotes.push(`Zone "${zone.name}" could not be placed on this lane; the whole lane is treated as blocked.`);
+        zoneIntervals.push([0, 1]);
+      } else if (iv) zoneIntervals.push(iv);
+    }
+    const blocked = mergeIntervals(zoneIntervals);
     const isBlocked = (u: number) => blocked.some(([a, b]) => u >= a && u <= b);
     const pOcc = Array.from(grid, sigmoid);
     const gaps: GapResult[] = [];
@@ -527,7 +604,12 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
       while (j + 1 < lane.bins && pOcc[j + 1]! < o.pOccMax && !isBlocked((j + 1.5) / lane.bins)) j++;
       const a = i / lane.bins;
       const b = (j + 1) / lane.bins;
+      let seen = 0;
+      for (let k = i; k <= j; k++) seen += visibleNow[k]!;
+      const seenNow = seen / (j - i + 1);
       i = j + 1;
+      // Remembered evidence alone never makes a current candidate.
+      if (seenNow < o.minSeenNow) continue;
       const lengthM = (b - a) * lane.lengthM;
       const startPhysical = a > 0 && isBlocked(a - 0.5 / lane.bins);
       const endPhysical = b < 1 && isBlocked(b + 0.5 / lane.bins);
@@ -553,9 +635,11 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
       reasons.push(`About ${lengthM.toFixed(1)} m of open curb (a car needs ~${needM.toFixed(1)} m)`);
       if (farFactor < 1) reasons.push('Far from the camera; less precise');
       if (pFree < 0.75) reasons.push('Partly hidden or seen only briefly');
+      const partlyHiddenNow = seenNow < o.likelySeenNow;
+      if (partlyHiddenNow) reasons.push('Partly hidden in the current camera image');
 
       const polygon = ([[a, 0], [a, 1], [b, 1], [b, 0]] as Point[]).map((q) => toNorm(applyHomography(lane.toImage, q), o));
-      const status = confidence >= o.minConfidence && pLength >= 0.5 ? 'likely_available' : 'possible';
+      const status = confidence >= o.minConfidence && pLength >= 0.5 && !partlyHiddenNow ? 'likely_available' : 'possible';
       gaps.push({
         regionId: lane.region.id,
         streetLabel: lane.streetLabel,
@@ -571,6 +655,7 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
         pLength: Number(pLength.toFixed(3)),
         pFree: Number(pFree.toFixed(3)),
         farFactor: Number(farFactor.toFixed(3)),
+        seenNow: Number(seenNow.toFixed(2)),
         polygon,
         reasons,
       });

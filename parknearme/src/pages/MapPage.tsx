@@ -4,12 +4,12 @@
 import { List, LocateFixed, Settings } from 'lucide-react';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { useLocation, useSearchParams } from 'wouter';
-import type { CameraDetail } from '../../shared/types';
+import type { CameraDetail, ParkingStatus } from '../../shared/types';
 import { FALLBACK_HOME } from '../../shared/settings';
 import { BottomSheet, type Snap } from '../components/BottomSheet';
 import { CameraSheet, CameraSheetHeader } from '../components/CameraSheet';
 import { MapView, type MapInsets } from '../components/MapView';
-import { currentCandidates, ParkingPanel } from '../components/ParkingPanel';
+import { ParkingPanel } from '../components/ParkingPanel';
 import { StatusPill } from '../components/StatusPill';
 import { useAdmin } from '../hooks/useAdmin';
 import { useMediaQuery } from '../hooks/useMediaQuery';
@@ -17,6 +17,7 @@ import { useNow } from '../hooks/useNow';
 import { useParking } from '../hooks/useParking';
 import { useResource } from '../hooks/useResource';
 import { getCamera } from '../lib/api';
+import { cameraMarkerStatus, currentCandidates, maxDetectionAge } from '../lib/detection';
 import { usePrefs } from '../lib/prefs';
 import './map-page.css';
 
@@ -58,6 +59,11 @@ export function MapPage() {
   const shown = useMemo(() => (data ? currentCandidates(data, now) : []), [data, now]);
   const shownCandidates = useMemo(() => shown.map((s) => s.candidate), [shown]);
   const watchedIds = useMemo(() => new Set(data?.watched.map((c) => c.id) ?? []), [data]);
+  const maxAge = maxDetectionAge(data);
+  // Camera status dots expire like everything else. Keyed on the resulting
+  // statuses so the marker layer only rebuilds when one flips, not every second.
+  const statusKey = JSON.stringify((data?.watched ?? []).map((c) => [c.id, cameraMarkerStatus(c, true, now, maxAge)]));
+  const cameraStatus = useMemo(() => new Map(JSON.parse(statusKey) as [string, ParkingStatus | null][]), [statusKey]);
   const cameras = useMemo(() => {
     // Watched cameras outside `nearby` (shouldn't happen) still get a marker.
     const list = [...(data?.nearby ?? [])];
@@ -102,6 +108,7 @@ export function MapPage() {
         radiusMi={data?.radiusMi ?? null}
         cameras={cameras}
         watchedIds={watchedIds}
+        cameraStatus={cameraStatus}
         candidates={shownCandidates}
         selectedCameraId={cameraId}
         selectedCandidate={cameraId ? null : selectedIndex}
@@ -159,6 +166,7 @@ export function MapPage() {
             detail={detail}
             summary={parkingCamera}
             now={now}
+            maxAgeSeconds={maxAge}
             isAdmin={isAdmin}
             onDetection={parking.applyDetection}
           />

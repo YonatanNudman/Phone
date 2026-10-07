@@ -1,6 +1,7 @@
 // TMC client: catalog parsing, JPEG validation, error mapping.
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { frameFreshness } from '../shared/freshness';
 import type { Env } from '../worker/env';
 import { fetchCatalog, fetchFrame, frameFromBytes, parseCatalogEntry, TmcError } from '../worker/tmc';
 import { FRAME, FRAME_HASH, FRAME_WITH_EXIF } from './helpers/harness';
@@ -59,6 +60,19 @@ describe('frames', () => {
     });
     await expect(frameFromBytes(FRAME.slice(0, 1000), 'x')).rejects.toMatchObject({ code: 'bad_image' });
     await expect(frameFromBytes(new Uint8Array(5000).fill(7), 'x')).rejects.toMatchObject({ code: 'bad_image' });
+  });
+
+  it('keeps EXIF frames live during the repeated hour when clocks fall back', async () => {
+    // The fixture's EXIF time rewritten to 01:30 New York time on 2026-11-01, captured in the EST hour (06:30Z).
+    const bytes = FRAME_WITH_EXIF.slice();
+    const at = Buffer.from(bytes).indexOf('2026:10:07 00:26:29');
+    expect(at).toBeGreaterThan(0);
+    bytes.set(new TextEncoder().encode('2026:11:01 01:30:00'), at);
+    const fetchedAt = '2026-11-01T06:30:01.000Z';
+    const frame = await frameFromBytes(bytes, fetchedAt);
+    expect(frame.capturedAt).toBe('2026-11-01T06:30:00.000Z');
+    const observed = { catalogOnline: true, lastFetchedAt: fetchedAt, lastChangedAt: fetchedAt, consecutiveFailures: 0, lastCaptureAt: frame.capturedAt };
+    expect(frameFreshness(observed, new Date(fetchedAt))).toBe('live');
   });
 
   it('recognizes the "camera being serviced" PNG placeholder', async () => {

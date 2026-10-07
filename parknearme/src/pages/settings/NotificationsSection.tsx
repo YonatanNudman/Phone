@@ -5,13 +5,15 @@ import { useEffect, useState } from 'react';
 import type { AppSettings, PushConfigResponse } from '../../../shared/types';
 import { SectionTitle } from './SectionTitle';
 import { Toggle } from '../../components/Toggle';
+import type { Resource } from '../../hooks/useResource';
 import { pushSubscribe, pushTest, pushUnsubscribe, toApiError } from '../../lib/api';
-import { currentSubscription, pushSupport, subscribePush, unsubscribePush } from '../../lib/push';
+import { currentSubscription, pushBlock, pushSupport, subscribePush, unsubscribePush } from '../../lib/push';
 import { toast } from '../../lib/toast';
 
 interface Props {
   settings: AppSettings | undefined;
-  pushConfig: PushConfigResponse | undefined;
+  /** GET /api/push/config (needed for the VAPID key; retried from here if it failed). */
+  pushConfig: Resource<PushConfigResponse>;
   isAdmin: boolean;
   /** Saves a settings patch (optimistic, with rollback). Resolves false on failure. */
   update: (patch: Partial<Pick<AppSettings, 'notificationsEnabled'>>) => Promise<boolean>;
@@ -34,26 +36,24 @@ export function NotificationsSection({ settings, pushConfig, isAdmin, update }: 
   }, []);
 
   const enabled = settings?.notificationsEnabled ?? false;
-  const serverReady = pushConfig?.enabled === true && Boolean(pushConfig.publicKey);
-
-  // Why the toggle can't be used, in priority order.
-  let blocked: string | null = null;
-  if (pushConfig && !serverReady) blocked = 'Server notifications not configured';
-  else if (!support.ok) blocked = support.message;
+  const config = pushConfig.data;
+  // Why the toggle can't be used (including "push config didn't load").
+  const block = pushBlock(config, pushConfig.error !== null, support);
+  const blocked = block?.message ?? null;
 
   const subscribeDevice = async () => {
-    if (!pushConfig?.publicKey) return false;
-    const sub = await subscribePush(pushConfig.publicKey);
+    if (!config) throw new Error("Notification settings didn't load. Try again.");
+    if (!config.publicKey) throw new Error('Server notifications not configured');
+    const sub = await subscribePush(config.publicKey);
     await pushSubscribe(sub);
     setDeviceSubscribed(true);
-    return true;
   };
 
   const onToggle = async (on: boolean) => {
     setBusy(true);
     try {
       if (on) {
-        if (!(await subscribeDevice())) return;
+        await subscribeDevice();
         if (await update({ notificationsEnabled: true })) toast('Parking alerts are on');
       } else {
         const endpoint = await unsubscribePush();
@@ -71,7 +71,8 @@ export function NotificationsSection({ settings, pushConfig, isAdmin, update }: 
   const addThisDevice = async () => {
     setBusy(true);
     try {
-      if (await subscribeDevice()) toast('This device will get alerts');
+      await subscribeDevice();
+      toast('This device will get alerts');
     } catch (err) {
       toast(err instanceof Error ? err.message : 'Could not subscribe', 'error');
     } finally {
@@ -114,7 +115,7 @@ export function NotificationsSection({ settings, pushConfig, isAdmin, update }: 
           </span>
           <span className="row-label">
             Parking alerts
-            <small className={blocked ? 'is-warning' : undefined}>{detail}</small>
+            <small className={block && block.kind !== 'loading' ? 'is-warning' : undefined}>{detail}</small>
           </span>
           <Toggle
             checked={enabled}
@@ -124,6 +125,11 @@ export function NotificationsSection({ settings, pushConfig, isAdmin, update }: 
             busy={busy}
           />
         </div>
+        {block?.kind === 'retry' && (
+          <button type="button" className="row" onClick={pushConfig.reload} disabled={pushConfig.loading}>
+            <span className="row-label row-action">{pushConfig.loading ? 'Loading…' : 'Try again'}</span>
+          </button>
+        )}
         {enabled && !blocked && deviceSubscribed === false && (
           <button type="button" className="row" onClick={addThisDevice} disabled={!isAdmin || busy}>
             <span className="row-label row-action">Add this device</span>

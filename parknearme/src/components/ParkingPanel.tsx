@@ -4,10 +4,10 @@
 import { CameraOff, Cctv, CircleSlash } from 'lucide-react';
 import { useEffect, useMemo, useRef } from 'react';
 import { Link } from 'wouter';
-import type { CameraSummary, ParkingCandidate, ParkingCurrentResponse } from '../../shared/types';
+import type { CameraSummary, ParkingCurrentResponse } from '../../shared/types';
 import { haversineMiles } from '../../shared/geo';
 import type { ApiError } from '../lib/api';
-import { isCurrent, MAX_DETECTION_AGE_SECONDS } from '../lib/detection';
+import { isCurrent, maxDetectionAge, type ShownCandidate } from '../lib/detection';
 import { ageSeconds, reasonText } from '../lib/format';
 import { CameraThumb } from './CameraThumb';
 import { ErrorBanner } from './ErrorBanner';
@@ -15,29 +15,6 @@ import { ParkingCard } from './ParkingCard';
 
 /** Must match `.pager { gap }` in sheet.css. */
 const PAGER_GAP = 32;
-
-export interface ShownCandidate {
-  candidate: ParkingCandidate;
-  ageSeconds: number | null;
-}
-
-/** Candidates that are still current on this device's clock (the server filtered at response time). */
-export function currentCandidates(data: ParkingCurrentResponse, now: number): ShownCandidate[] {
-  const byId = new Map(data.watched.map((c) => [c.id, c]));
-  const out: ShownCandidate[] = [];
-  for (const candidate of data.candidates) {
-    const latest = byId.get(candidate.cameraId)?.latest ?? null;
-    if (latest) {
-      if (!isCurrent(latest, now)) continue;
-      out.push({ candidate, ageSeconds: ageSeconds(latest.timestamp, now) });
-    } else {
-      const age = ageSeconds(data.generatedAt, now);
-      if (age !== null && age > MAX_DETECTION_AGE_SECONDS) continue;
-      out.push({ candidate, ageSeconds: null });
-    }
-  }
-  return out;
-}
 
 interface Props {
   data: ParkingCurrentResponse | null;
@@ -151,7 +128,8 @@ function CandidatePager({
 function NothingOpen({ data, now, onOpenCamera }: { data: ParkingCurrentResponse; now: number; onOpenCamera: (id: string) => void }) {
   const watched = useMemo(() => [...data.watched].sort((a, b) => a.distanceMi - b.distanceMi), [data.watched]);
   // Cameras that actually looked at the curb just now (not "unknown").
-  const current = watched.filter((c) => isCurrent(c.latest, now) && c.latest?.status !== 'unknown');
+  const maxAge = maxDetectionAge(data);
+  const current = watched.filter((c) => isCurrent(c.latest, now, maxAge) && c.latest?.status !== 'unknown');
   const { title, detail, tone, Icon } = describeNothing(watched, current.length, data, now);
 
   return (
@@ -167,7 +145,7 @@ function NothingOpen({ data, now, onOpenCamera }: { data: ParkingCurrentResponse
       </div>
       <div className="thumb-strip" aria-label="Watched cameras">
         {watched.map((cam, i) => (
-          <CameraThumb key={cam.id} camera={cam} now={now} index={i} onOpen={() => onOpenCamera(cam.id)} />
+          <CameraThumb key={cam.id} camera={cam} now={now} maxAgeSeconds={maxAge} index={i} onOpen={() => onOpenCamera(cam.id)} />
         ))}
         <Link href="/cameras" className="thumb thumb-more">
           <span className="thumb-more-icon">

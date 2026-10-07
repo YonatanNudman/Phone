@@ -10,7 +10,7 @@
 //                             (DETR run offline on real frames) keyed by frame hash.
 // CurbGapParkingDetector    - ParkingDetector: vehicles + calibration -> open curb.
 
-import { analyzeCurbGaps } from '../../shared/curb-gaps';
+import { analyzeCurbGaps, DEFAULT_GAP_OPTIONS } from '../../shared/curb-gaps';
 import type { ParkingCandidate } from '../../shared/types';
 import type { Env } from '../env';
 import type { AnalysisContext, Frame, ParkingDetector, VehicleDetector } from './detector';
@@ -150,6 +150,9 @@ export class CurbGapParkingDetector implements ParkingDetector {
       minConfidence: ctx.minConfidence,
       nowMs: Date.parse(frame.fetchedAt) || Date.now(),
       state: ctx.laneState,
+      frameHash: frame.hash,
+      // Evidence older than maxDetectionAgeSeconds decays to ~5% (e^-3), i.e. back to the prior.
+      ...(ctx.maxDetectionAgeSeconds ? { tauSec: Math.min(DEFAULT_GAP_OPTIONS.tauSec, ctx.maxDetectionAgeSeconds / 3) } : {}),
     });
 
     const regionById = new Map(regions.map((r) => [r.id, r]));

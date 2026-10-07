@@ -129,7 +129,8 @@ export async function frameFromBytes(bytes: Uint8Array<ArrayBuffer>, fetchedAt: 
   if (bytes.length < MIN_FRAME_BYTES) throw new TmcError('bad_image', `Camera image too small (${bytes.length} bytes)`);
   const info = inspectJpeg(bytes);
   if (!info) throw new TmcError('bad_image', 'Camera did not return a valid JPEG');
-  const capturedAt = info.exifDateTime ? zonedTimeToUtc(info.exifDateTime) : null;
+  // Near the fetch time, so the repeated hour when clocks fall back maps to the right occurrence.
+  const capturedAt = info.exifDateTime ? zonedTimeToUtc(info.exifDateTime, 'America/New_York', Date.parse(fetchedAt)) : null;
   return { bytes, width: info.width, height: info.height, hash, fetchedAt, capturedAt };
 }
 

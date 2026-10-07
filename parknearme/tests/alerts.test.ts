@@ -7,7 +7,7 @@ import { DEFAULT_SETTINGS } from '../shared/settings';
 import type { Detection, ParkingCandidate } from '../shared/types';
 import { insertDetection } from '../worker/db';
 import { sendPush, type PushResult } from '../worker/push';
-import { alertCandidates, alertKey, alertMessage, evaluateAlerts, pickForSubscription } from '../worker/services/alerts';
+import { alertCandidates, alertKey, alertMessage, evaluateAlerts, pickForSubscription, recentSpots } from '../worker/services/alerts';
 import { CAM, createHarness, HOME, type Harness } from './helpers/harness';
 
 vi.mock('../worker/push', async (importOriginal) => ({
@@ -96,6 +96,21 @@ describe('alert rules', () => {
     const other = candidate({ gapStart: 0.1 });
     expect(pickForSubscription({ last_notified_at: ago(10), last_notified_key: alertKey(c) }, [c, other], now)).toBe(other);
   });
+
+  it('remembers every spot alerted in the last 30 min, not only the last one', () => {
+    const now = new Date('2026-10-07T12:00:00Z');
+    const ago = (min: number) => new Date(now.getTime() - min * 60_000).toISOString();
+    const a = candidate({ gapStart: 0.1 });
+    const b = candidate({ gapStart: 0.6 });
+    const history = (spots: [ParkingCandidate, number][]) => JSON.stringify(spots.map(([c, min]) => ({ key: alertKey(c), at: ago(min) })));
+    // A was sent 12 min ago, B 6 min ago: A must not come back yet.
+    const sub = { last_notified_at: ago(6), last_notified_key: alertKey(b), notified_spots_json: history([[a, 12], [b, 6]]) };
+    expect(pickForSubscription(sub, [a, b], now)).toBeNull();
+    expect(recentSpots(sub, now).map((s) => s.key)).toEqual([alertKey(a), alertKey(b)]);
+    // After 30 min a spot may be alerted again; unreadable history falls back to the last alert.
+    expect(pickForSubscription({ ...sub, notified_spots_json: history([[a, 31], [b, 6]]) }, [a, b], now)).toBe(a);
+    expect(pickForSubscription({ ...sub, notified_spots_json: '{oops' }, [b, a], now)).toBe(a);
+  });
 });
 
 describe('evaluateAlerts', () => {
@@ -140,6 +155,38 @@ describe('evaluateAlerts', () => {
 
     expect(await evaluateAlerts(h.env, await store([candidate({ gapStart: 0.1 })]))).toBe(0);
     expect(send).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends one push per subscription when several detections are evaluated at once', async () => {
+    send.mockImplementation(async () => {
+      await new Promise((r) => setTimeout(r, 20));
+      return { ok: true, status: 201, gone: false };
+    });
+    const ds = await Promise.all(Array.from({ length: 10 }, () => store([candidate()])));
+    const sent = await Promise.all(ds.map((d) => evaluateAlerts(h.env, d)));
+    expect(sent.reduce((a, b) => a + b, 0)).toBe(2);
+    expect(send).toHaveBeenCalledTimes(2);
+    expect(new Set(send.mock.calls.map(([, sub]) => sub.endpoint)).size).toBe(2);
+  });
+
+  it('does not alternate between two spots that stay open', async () => {
+    send.mockResolvedValue({ ok: true, status: 201, gone: false });
+    const a = candidate({ gapStart: 0.1 });
+    const b = candidate({ gapStart: 0.6, confidence: 0.8 });
+    const t0 = Date.parse('2026-10-07T12:00:00Z');
+    const sends: string[] = [];
+    // The cron cadence: both gaps in every detection, every 2 minutes, for 40 minutes.
+    for (let min = 0; min <= 40; min += 2) {
+      const now = new Date(t0 + min * 60_000);
+      const d = await insertDetection(h.env.DB, detection([a, b], { timestamp: now.toISOString() }));
+      const before = send.mock.calls.length;
+      if ((await evaluateAlerts(h.env, d, now)) > 0) {
+        const [, , message] = send.mock.calls[before]!;
+        sends.push(`${min}:${message.body === alertMessage(a).body ? 'A' : 'B'}:${send.mock.calls.length - before}`);
+      }
+    }
+    // Each spot once per 30 minutes (both subscriptions each time); never A, B, A, B every 6 minutes.
+    expect(sends).toEqual(['0:A:2', '6:B:2', '30:A:2', '36:B:2']);
   });
 
   it('disables gone subscriptions and ones that keep failing', async () => {

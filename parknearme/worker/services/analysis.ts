@@ -2,6 +2,10 @@
 // calibration gate, vehicle detection + curb-gap analysis, optional VLM second
 // opinion, then persist and (in the background) evaluate push alerts.
 //
+// The cooldown is enforced with an atomic claim in D1 (analysis_slots) taken
+// before any upstream fetch or AI call, so a burst of concurrent requests
+// costs one analysis. Concurrent callers in the same isolate share that run.
+//
 // Every outcome is stored as a detection, including failures (status
 // "unknown" with a machine-readable reason), so history shows why a check
 // produced nothing. AI is only called for live frames.
@@ -11,9 +15,10 @@ import { secondsSince } from '../../shared/freshness';
 import type { AppSettings, Calibration, Camera, Detection, Freshness, ParkingAnalysis } from '../../shared/types';
 import { createVehicleDetector, CurbGapParkingDetector } from '../analysis/detectors';
 import { applyVerdict, GemmaCandidateVerifier } from '../analysis/vlm';
-import { getCalibrationRow, getLaneState, insertDetection, putLaneState, recentDetections, toCalibration } from '../db';
+import { claimAnalysisSlot, getCalibrationRow, getLaneState, insertDetection, putLaneState, recentDetections, toCalibration } from '../db';
 import type { Env } from '../env';
-import { errorMessage, type Background } from '../http';
+import { errorMessage, HttpError, type Background } from '../http';
+import { InFlight } from '../inflight';
 import { TmcError } from '../tmc';
 import { evaluateAlerts } from './alerts';
 import { hasParkingLane, requireCamera } from './cameras';
@@ -54,10 +59,14 @@ interface AnalysisOutput {
 
 const truncate = (s: string, n = MAX_ERROR_LENGTH) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 
+/** Minimum seconds between two analyses of a camera for this caller. */
+function cooldownSeconds(settings: AppSettings, opts: AnalyzeOptions): number {
+  return opts.admin && opts.force ? ADMIN_FORCE_MIN_SECONDS : settings.analysisCooldownSeconds;
+}
+
 function inCooldown(latest: Detection, settings: AppSettings, opts: AnalyzeOptions): boolean {
   const age = secondsSince(latest.timestamp) ?? Infinity;
-  const minAge = opts.admin && opts.force ? ADMIN_FORCE_MIN_SECONDS : settings.analysisCooldownSeconds;
-  return age < minAge;
+  return age < cooldownSeconds(settings, opts);
 }
 
 /** An analysis that stopped before (or instead of) running the detector. */
@@ -134,6 +143,7 @@ async function runAnalysis(env: Env, ctx: Background, camera: Camera, input: Ana
       calibration: input.calibration,
       laneState: input.laneState,
       minConfidence: input.settings.minConfidence,
+      maxDetectionAgeSeconds: input.settings.maxDetectionAgeSeconds,
       camera: { lat: camera.lat, lon: camera.lon, name: camera.name },
     });
     const analysis: ParkingAnalysis = { ...result, freshness: state.freshness };
@@ -147,22 +157,39 @@ async function runAnalysis(env: Env, ctx: Background, camera: Camera, input: Ana
   }
 }
 
+/** Analyses running in this isolate, per database and camera. */
+const analyses = new InFlight<Detection>();
+
 /**
  * Analyze a stored camera and persist the result. Inside the cooldown the
  * latest stored detection is returned unchanged (no frame fetch, no AI call).
- * Throws HttpError 404 for unknown cameras.
+ * A caller arriving while the same camera is being analyzed in this isolate
+ * gets that run's result.
+ * Throws HttpError 404 for unknown cameras, and 429 when another isolate holds
+ * the slot of a camera that has no stored detection yet.
  */
-export async function analyzeCamera(env: Env, ctx: Background, cameraId: string, opts: AnalyzeOptions = {}): Promise<Detection> {
+export function analyzeCamera(env: Env, ctx: Background, cameraId: string, opts: AnalyzeOptions = {}): Promise<Detection> {
+  return analyses.run(env.DB, cameraId, ctx, () => analyzeOnce(env, ctx, cameraId, opts));
+}
+
+async function analyzeOnce(env: Env, ctx: Background, cameraId: string, opts: AnalyzeOptions): Promise<Detection> {
   const camera = await requireCamera(env, cameraId);
-  const [settings, calibrationRow, recent, laneState] = await Promise.all([
-    readSettings(env),
-    getCalibrationRow(env.DB, cameraId),
-    recentDetections(env.DB, cameraId, 1),
-    getLaneState(env.DB, cameraId),
-  ]);
+  const [settings, recent] = await Promise.all([readSettings(env), recentDetections(env.DB, cameraId, 1)]);
   const latest = recent[0] ?? null;
   if (latest && inCooldown(latest, settings, opts)) return latest;
 
+  // Claim the slot before any upstream fetch or AI call. Only one concurrent
+  // caller wins; the others get the newest stored result, as in the cooldown.
+  const now = Date.now();
+  const cutoff = new Date(now - cooldownSeconds(settings, opts) * 1000).toISOString();
+  if (!(await claimAnalysisSlot(env.DB, cameraId, new Date(now).toISOString(), cutoff))) {
+    const [newest] = await recentDetections(env.DB, cameraId, 1);
+    if (newest) return newest;
+    throw new HttpError(429, 'analysis_in_progress', 'This camera is being analyzed right now. Try again in a few seconds.');
+  }
+
+  // Read after the claim, so an analysis that just finished elsewhere is built upon.
+  const [calibrationRow, laneState] = await Promise.all([getCalibrationRow(env.DB, cameraId), getLaneState(env.DB, cameraId)]);
   const calibration = calibrationRow ? toCalibration(calibrationRow) : null;
   const out = await runAnalysis(env, ctx, camera, { settings, calibration, laneState, admin: !!opts.admin });
   const [detection] = await Promise.all([

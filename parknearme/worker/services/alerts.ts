@@ -4,12 +4,24 @@
 // the detection is current (live frame, younger than maxDetectionAgeSeconds),
 // it has spaces, meets minConfidence and lies within the radius of home.
 // Per subscription: the same spot (camera + lane + position) is not repeated
-// within 30 min, and there is at most one push every 5 min.
+// within 30 min (every spot alerted in that window is remembered, not only the
+// last one), and there is at most one push every 5 min. The push slot is
+// claimed atomically in D1 before sending, so concurrent detections cannot
+// both send.
 
 import { isDetectionCurrent } from '../../shared/freshness';
 import { haversineMiles } from '../../shared/geo';
 import type { AppSettings, Detection, ParkingCandidate } from '../../shared/types';
-import { disableSubscription, listEnabledSubscriptions, markNotified, recordPushFailure, type SubscriptionRow } from '../db';
+import {
+  claimNotification,
+  clearPushFailures,
+  disableSubscription,
+  listEnabledSubscriptions,
+  recordPushFailure,
+  releaseNotification,
+  type NotifiedState,
+  type SubscriptionRow,
+} from '../db';
 import type { Env } from '../env';
 import { pushConfigured, sendPush, type PushMessage } from '../push';
 import { readSettingsState } from './settings';
@@ -44,16 +56,41 @@ export function alertCandidates(detection: Detection, settings: AppSettings, now
     .sort((a, b) => b.confidence - a.confidence);
 }
 
+type AlertHistory = Pick<SubscriptionRow, 'last_notified_at' | 'last_notified_key'> & Partial<Pick<SubscriptionRow, 'notified_spots_json'>>;
+
+export interface NotifiedSpot {
+  key: string;
+  /** ISO time of the alert */
+  at: string;
+}
+
+/** Spots alerted to this subscription within the last 30 min (the window in which they are not repeated). */
+export function recentSpots(sub: AlertHistory, now = new Date()): NotifiedSpot[] {
+  let stored: unknown = [];
+  try {
+    stored = JSON.parse(sub.notified_spots_json ?? '[]');
+  } catch {
+    // Unreadable history: fall back to the last alert only.
+  }
+  const spots = (Array.isArray(stored) ? stored : []).filter(
+    (s): s is NotifiedSpot => !!s && typeof (s as NotifiedSpot).key === 'string' && typeof (s as NotifiedSpot).at === 'string',
+  );
+  if (sub.last_notified_key && sub.last_notified_at) spots.push({ key: sub.last_notified_key, at: sub.last_notified_at });
+  const recent = new Map<string, NotifiedSpot>();
+  for (const s of spots) {
+    const age = now.getTime() - Date.parse(s.at);
+    if (age < SAME_SPOT_REPEAT_MS && (recent.get(s.key)?.at ?? '') < s.at) recent.set(s.key, s);
+  }
+  return [...recent.values()].sort((a, b) => a.at.localeCompare(b.at));
+}
+
 /** The candidate to send to this subscription now, or null when rate limits say wait. */
-export function pickForSubscription(
-  sub: Pick<SubscriptionRow, 'last_notified_at' | 'last_notified_key'>,
-  candidates: ParkingCandidate[],
-  now = new Date(),
-): ParkingCandidate | null {
+export function pickForSubscription(sub: AlertHistory, candidates: ParkingCandidate[], now = new Date()): ParkingCandidate | null {
   const last = sub.last_notified_at ? Date.parse(sub.last_notified_at) : NaN;
   const since = Number.isFinite(last) ? now.getTime() - last : Infinity;
   if (since < MIN_PUSH_INTERVAL_MS) return null;
-  return candidates.find((c) => !(alertKey(c) === sub.last_notified_key && since < SAME_SPOT_REPEAT_MS)) ?? null;
+  const alerted = new Set(recentSpots(sub, now).map((s) => s.key));
+  return candidates.find((c) => !alerted.has(alertKey(c))) ?? null;
 }
 
 /** Send one push and keep the subscription's health up to date. Returns true when delivered. */
@@ -74,12 +111,21 @@ export async function evaluateAlerts(env: Env, detection: Detection, now = new D
   if (candidates.length === 0) return 0;
 
   let sent = 0;
+  const at = now.toISOString();
   for (const sub of await listEnabledSubscriptions(env.DB)) {
     const pick = pickForSubscription(sub, candidates, now);
     if (!pick) continue;
+    const key = alertKey(pick);
+    const previous: NotifiedState = { at: sub.last_notified_at, key: sub.last_notified_key, spotsJson: sub.notified_spots_json };
+    const claim: NotifiedState = { at, key, spotsJson: JSON.stringify([...recentSpots(sub, now).filter((s) => s.key !== key), { key, at }]) };
+    // Take the slot first: a concurrent evaluation that read the same row loses here instead of sending a duplicate.
+    if (!(await claimNotification(env.DB, sub.id, claim, new Date(now.getTime() - MIN_PUSH_INTERVAL_MS).toISOString()))) continue;
     if (await deliverPush(env, sub, alertMessage(pick), appOrigin)) {
-      await markNotified(env.DB, sub.id, alertKey(pick), now.toISOString());
+      if (sub.failure_count > 0) await clearPushFailures(env.DB, sub.id);
       sent++;
+    } else {
+      // Not delivered: give the slot back so the next detection can try again.
+      await releaseNotification(env.DB, sub.id, claim, previous);
     }
   }
   if (sent > 0) console.log(`alerts: camera ${detection.cameraId} detection ${detection.id}: sent ${sent} push(es)`);

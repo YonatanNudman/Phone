@@ -14,6 +14,7 @@ import type {
   HealthResponse,
   ParkingCurrentResponse,
 } from '../shared/types';
+import { claimAnalysisSlot } from '../worker/db';
 import { createApp } from '../worker/index';
 import { ADMIN_TOKEN, ageDetections, AUDUBON, CAM, createHarness, FRAME, FRAME_HASH, watchAndCalibrate, type Harness } from './helpers/harness';
 
@@ -447,6 +448,65 @@ describe('analysis', () => {
     expect(publicForce.id).toBe(forcedLater.id);
   });
 
+  it('runs one analysis for a burst of concurrent public requests', async () => {
+    const results = await Promise.all(Array.from({ length: 20 }, () => analyze(CAM.audubon)));
+    expect(results.map((r) => r.status)).toEqual(Array(20).fill(200));
+    const ids = new Set(await Promise.all(results.map(async (r) => (await json<Detection>(r)).id)));
+    expect(ids.size).toBe(1);
+    expect(h.ai.run).toHaveBeenCalledTimes(1);
+    expect(h.fetch.mock.calls.filter(([u]) => String(u).includes('/image'))).toHaveLength(1);
+    expect(h.db.sqlite.prepare('SELECT COUNT(*) AS n FROM detections').get()).toEqual({ n: 1 });
+  });
+
+  it('claims the cooldown slot atomically in D1 (one winner across isolates)', async () => {
+    const now = new Date().toISOString();
+    const cutoff = new Date(Date.now() - 45_000).toISOString();
+    const claims = await Promise.all(Array.from({ length: 5 }, () => claimAnalysisSlot(h.env.DB, CAM.amsterdam, now, cutoff)));
+    expect(claims.filter(Boolean)).toHaveLength(1);
+    // Once the cooldown has passed, the next claim wins again.
+    expect(await claimAnalysisSlot(h.env.DB, CAM.amsterdam, new Date(Date.now() + 46_000).toISOString(), new Date(Date.now() + 1000).toISOString())).toBe(true);
+  });
+
+  it('does not analyze while another isolate holds the slot', async () => {
+    // Another isolate claimed the slot a moment ago and is still running.
+    const holdSlot = () =>
+      h.db.sqlite.prepare('INSERT OR REPLACE INTO analysis_slots (camera_id, claimed_at) VALUES (?, ?)').run(CAM.audubon, new Date().toISOString());
+    holdSlot();
+    const busy = await analyze(CAM.audubon);
+    expect(busy.status).toBe(429);
+    expect((await json<ApiError>(busy)).error).toBe('analysis_in_progress');
+
+    // With an older stored result, callers get that one, as inside the cooldown.
+    h.db.sqlite.prepare('DELETE FROM analysis_slots').run();
+    const old = await json<Detection>(await analyze(CAM.audubon));
+    ageDetections(h, CAM.audubon, 600);
+    holdSlot();
+    const again = await json<Detection>(await analyze(CAM.audubon));
+    expect(again.id).toBe(old.id);
+    expect(h.ai.run).toHaveBeenCalledTimes(1);
+    expect(h.fetch.mock.calls.filter(([u]) => String(u).includes('/image'))).toHaveLength(1);
+  });
+
+  it('does not count an unchanged (frozen) camera image twice', async () => {
+    // FRAME never changes in "ok" mode: still LIVE for 2 minutes, but no new information.
+    const first = await json<Detection>(await analyze(CAM.audubon));
+    const confidences = [first.candidates[0]!.confidence];
+    for (let i = 0; i < 3; i++) {
+      ageDetections(h, CAM.audubon, 45);
+      const d = await json<Detection>(await analyze(CAM.audubon));
+      expect(d).toMatchObject({ frameHash: FRAME_HASH, freshness: 'live', status: 'possible' });
+      expect(d.notes).toContain('Same camera image as the last check; not counted again.');
+      confidences.push(d.candidates[0]!.confidence);
+    }
+    for (const c of confidences) expect(c).toBeCloseTo(confidences[0]!, 2);
+
+    // A new picture is new evidence again.
+    h.frameMode.set(CAM.audubon, 'ticking');
+    ageDetections(h, CAM.audubon, 45);
+    const next = await json<Detection>(await analyze(CAM.audubon));
+    expect(next.candidates[0]!.confidence).toBeGreaterThan(confidences[0]! + 0.05);
+  });
+
   it('only lets the public analyze watched cameras', async () => {
     const res = await analyze(CAM.amsterdam);
     expect(res.status).toBe(403);
@@ -512,10 +572,12 @@ describe('analysis', () => {
   });
 
   it('lists history newest first and fills detail.previous', async () => {
+    h.frameMode.set(CAM.audubon, 'ticking'); // a live camera: every fetch is a new picture
     const first = await json<Detection>(await analyze(CAM.audubon, { admin: true }));
     ageDetections(h, CAM.audubon, 120);
     const second = await json<Detection>(await analyze(CAM.audubon));
     expect(second.id).not.toBe(first.id);
+    expect(second.frameHash).not.toBe(first.frameHash);
     // Evidence is fused across checks via the persisted lane grid: the opening seen twice is more certain.
     expect(second.candidates[0]!.confidence).toBeGreaterThan(first.candidates[0]!.confidence);
     const stored = h.db.sqlite.prepare('SELECT state_json FROM camera_lane_state WHERE camera_id = ?').get(CAM.audubon) as { state_json: string } | undefined;
@@ -557,6 +619,7 @@ describe('parking/current', () => {
     expect(body.home).toMatchObject({ lat: 40.851304, lon: -73.930153 });
     expect(body.radiusMi).toBe(0.5);
     expect(body.minConfidence).toBe(0.6);
+    expect(body.maxDetectionAgeSeconds).toBe(300);
     expect(body.watched.map((c) => c.id)).toEqual([CAM.audubon]);
     expect(body.nearby.map((c) => c.id)).toEqual([CAM.amsterdam, CAM.audubon, CAM.stNicholas]);
     expect(body.candidates.map((c) => c.id)).toEqual(d.candidates.map((c) => c.id));
@@ -568,6 +631,25 @@ describe('parking/current', () => {
 
     const lastSeen = h.db.sqlite.prepare("SELECT value_json FROM application_settings WHERE key = 'app_last_seen_at'").get() as { value_json: string };
     expect(Date.now() - Date.parse(JSON.parse(lastSeen.value_json))).toBeLessThan(5000);
+  });
+
+  it('says unknown, not "no parking", when watched cameras could not see the curb', async () => {
+    // Night: the detector finds no vehicles at all.
+    h.ai.run.mockResolvedValue([]);
+    const night = await json<Detection>(await h.call(`/api/cameras/${CAM.audubon}/analyze`, { method: 'POST' }));
+    expect(night).toMatchObject({ status: 'unknown', reason: 'no_vehicles_detected', freshness: 'live' });
+    const body = await json<ParkingCurrentResponse>(await h.call('/api/parking/current'));
+    expect(body.summary).toMatchObject({ state: 'unknown', spots: 0, headline: 'No current camera data' });
+
+    // Watched but not calibrated yet.
+    await h.call(`/api/cameras/${CAM.amsterdam}/usefulness`, { method: 'POST', admin: true, json: { usefulness: 'yes' } });
+    const uncalibrated = await json<Detection>(await h.call(`/api/cameras/${CAM.amsterdam}/analyze`, { method: 'POST' }));
+    expect(uncalibrated).toMatchObject({ status: 'unknown', reason: 'needs_calibration', freshness: 'live' });
+    expect((await json<ParkingCurrentResponse>(await h.call('/api/parking/current'))).summary.state).toBe('unknown');
+
+    // One camera that can see its curb and finds it full makes it a definite "none".
+    h.db.sqlite.prepare("UPDATE detections SET status = 'none', reason = NULL WHERE camera_id = ?").run(CAM.audubon);
+    expect((await json<ParkingCurrentResponse>(await h.call('/api/parking/current'))).summary.state).toBe('none');
   });
 
   it('ignores detections older than maxDetectionAgeSeconds', async () => {

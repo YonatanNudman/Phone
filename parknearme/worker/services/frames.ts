@@ -1,7 +1,8 @@
 // Camera frames: fetched from TMC, shared for 3 s through the Workers Cache
 // API (so several viewers, or an analysis right after a view, cost one
 // upstream request), and tracked in camera_frame_state for LIVE / STALE /
-// OFFLINE.
+// OFFLINE. Concurrent requests for the same camera in one isolate share one
+// load, so simultaneous cache misses make one upstream request.
 //
 // Frames from live cameras change every 1-4 s (burned-in clock), so the state
 // row is rewritten only after a failure, when recovering from one, or when the
@@ -14,6 +15,7 @@ import type { Frame } from '../analysis/detector';
 import { getFrameStateRow, putFrameState, type FrameStateRow, type StoredFrameState } from '../db';
 import type { Env } from '../env';
 import { errorMessage, type Background } from '../http';
+import { InFlight } from '../inflight';
 import { fetchFrame, TmcError } from '../tmc';
 
 const CACHE_ORIGIN = 'https://frames.parknearme.internal';
@@ -87,8 +89,15 @@ function shouldWriteState(prev: FrameStateRow | null, now: number): boolean {
   return now - Date.parse(prev.last_fetched_at) > STATE_WRITE_INTERVAL_MS;
 }
 
+/** Frame loads running in this isolate, per database and camera. */
+const frameLoads = new InFlight<CameraFrame>();
+
 /** Current frame for a stored camera. Throws TmcError when the camera can't be fetched. */
-export async function getFrameCached(env: Env, ctx: Background, camera: Pick<Camera, 'id' | 'catalogOnline'>): Promise<CameraFrame> {
+export function getFrameCached(env: Env, ctx: Background, camera: Pick<Camera, 'id' | 'catalogOnline'>): Promise<CameraFrame> {
+  return frameLoads.run(env.DB, camera.id, ctx, () => loadFrame(env, ctx, camera));
+}
+
+async function loadFrame(env: Env, ctx: Background, camera: Pick<Camera, 'id' | 'catalogOnline'>): Promise<CameraFrame> {
   const cache = frameCache();
   const key = `${CACHE_ORIGIN}/${camera.id}`;
   const [prevRow, cached] = await Promise.all([getFrameStateRow(env.DB, camera.id), cache ? readCachedFrame(cache, key, camera.id) : null]);

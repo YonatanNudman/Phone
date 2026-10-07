@@ -18,7 +18,9 @@ parkingRoutes.get('/current', async (c) => {
 
   const nearby = await cameraSummaries(c.env, { radiusMi: settings.radiusMi });
   const watched = nearby.filter((cam) => cam.preference.usefulness === 'yes');
-  const current = watched.filter((cam) => isDetectionCurrent(cam.latest, settings.maxDetectionAgeSeconds, now));
+  // Same rule as the app (mergeDetection, NothingOpen): an 'unknown' result (not calibrated, no cars seen,
+  // detector failed) says nothing about the curb, so it never makes the summary a definite "no parking".
+  const current = watched.filter((cam) => cam.latest?.status !== 'unknown' && isDetectionCurrent(cam.latest, settings.maxDetectionAgeSeconds, now));
   const candidates = current.flatMap((cam) => cam.latest?.candidates ?? []).sort((a, b) => b.confidence - a.confidence);
   const updatedAt = watched.reduce<string | null>((newest, cam) => {
     const t = cam.latest?.timestamp ?? null;
@@ -35,6 +37,7 @@ parkingRoutes.get('/current', async (c) => {
     candidates,
     watched,
     nearby,
+    maxDetectionAgeSeconds: settings.maxDetectionAgeSeconds,
   };
   return c.json(body);
 });

@@ -86,7 +86,21 @@ export const FRAME_WITH_EXIF = new Uint8Array(readFileSync('tests/fixtures/audub
 export const FRAME = withoutExif(FRAME_WITH_EXIF);
 export const FRAME_HASH = createHash('sha256').update(FRAME).digest('hex');
 
-export type FrameMode = 'ok' | 'old_exif' | 'serviced' | 'http_500' | 'html' | 'tiny' | 'timeout';
+/** FRAME with a JPEG comment segment after SOI: same picture, different bytes (like a camera's burned-in clock). */
+export function frameVariant(n: number): Uint8Array<ArrayBuffer> {
+  const text = new TextEncoder().encode(`frame ${n}`);
+  const out = new Uint8Array(FRAME.length + 4 + text.length);
+  out.set(FRAME.subarray(0, 2));
+  out.set([0xff, 0xfe, 0, text.length + 2], 2);
+  out.set(text, 6);
+  out.set(FRAME.subarray(2), 6 + text.length);
+  return out;
+}
+
+/** "ok" always serves the same bytes (a frozen camera, as far as hashes go); "ticking" serves new bytes on every fetch. */
+export type FrameMode = 'ok' | 'ticking' | 'old_exif' | 'serviced' | 'http_500' | 'html' | 'tiny' | 'timeout';
+
+let tick = 0;
 
 export interface Harness {
   db: TestDb;
@@ -109,6 +123,8 @@ function frameResponse(mode: FrameMode): Response {
   switch (mode) {
     case 'ok':
       return new Response(FRAME.slice(), { headers: { 'Content-Type': 'image/jpeg', 'Cache-Control': 'no-store' } });
+    case 'ticking':
+      return new Response(frameVariant(++tick), { headers: { 'Content-Type': 'image/jpeg', 'Cache-Control': 'no-store' } });
     case 'old_exif':
       return new Response(FRAME_WITH_EXIF.slice(), { headers: { 'Content-Type': 'image/jpeg' } });
     case 'serviced': {
@@ -195,9 +211,12 @@ export async function watchAndCalibrate(h: Harness, cameraId: string = CAM.audub
   if (pref.status !== 200) throw new Error(`usefulness failed: ${pref.status} ${await pref.text()}`);
 }
 
-/** Pretend every stored detection of a camera happened `seconds` earlier. */
+/** Pretend every stored detection of a camera (and its last analysis slot claim) happened `seconds` earlier. */
 export function ageDetections(h: Harness, cameraId: string, seconds: number): void {
+  const earlier = (iso: string) => new Date(Date.parse(iso) - seconds * 1000).toISOString();
   const rows = h.db.sqlite.prepare('SELECT id, analyzed_at FROM detections WHERE camera_id = ?').all(cameraId) as { id: number; analyzed_at: string }[];
   const update = h.db.sqlite.prepare('UPDATE detections SET analyzed_at = ? WHERE id = ?');
-  for (const r of rows) update.run(new Date(Date.parse(r.analyzed_at) - seconds * 1000).toISOString(), r.id);
+  for (const r of rows) update.run(earlier(r.analyzed_at), r.id);
+  const slot = h.db.sqlite.prepare('SELECT claimed_at FROM analysis_slots WHERE camera_id = ?').get(cameraId) as { claimed_at: string } | undefined;
+  if (slot) h.db.sqlite.prepare('UPDATE analysis_slots SET claimed_at = ? WHERE camera_id = ?').run(earlier(slot.claimed_at), cameraId);
 }

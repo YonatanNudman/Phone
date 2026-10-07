@@ -108,6 +108,8 @@ export interface SubscriptionRow {
   last_notified_at: string | null;
   last_notified_key: string | null;
   failure_count: number;
+  /** migrations/0006: recently alerted spots, JSON [{ key, at }] (see services/alerts.ts). */
+  notified_spots_json: string | null;
 }
 
 export interface SettingRow {
@@ -376,6 +378,24 @@ export async function putFrameState(db: D1Database, cameraId: string, s: StoredF
     .run();
 }
 
+// ---- analysis slots ---------------------------------------------------------
+
+/**
+ * Claim the right to analyze a camera now. Succeeds only when no analysis was
+ * started after `cutoff` (now minus the cooldown). It is a single conditional
+ * upsert, so of several concurrent callers (in any isolate) exactly one wins.
+ */
+export async function claimAnalysisSlot(db: D1Database, cameraId: string, now: string, cutoff: string): Promise<boolean> {
+  const { meta } = await db
+    .prepare(
+      `INSERT INTO analysis_slots (camera_id, claimed_at) VALUES (?, ?)
+       ON CONFLICT (camera_id) DO UPDATE SET claimed_at = excluded.claimed_at WHERE analysis_slots.claimed_at <= ?`,
+    )
+    .bind(cameraId, now, cutoff)
+    .run();
+  return meta.changes === 1;
+}
+
 // ---- detections -------------------------------------------------------------
 
 /** Id of each stored camera's newest detection (uses idx_detections_camera_time). */
@@ -533,11 +553,37 @@ export async function deleteSubscription(db: D1Database, endpoint: string): Prom
   await db.prepare('DELETE FROM notification_subscriptions WHERE endpoint = ?').bind(endpoint).run();
 }
 
-/** Record a delivered alert (for dedupe and rate limiting) and clear the failure count. */
-export async function markNotified(db: D1Database, id: number, key: string, now: string): Promise<void> {
+/** What a subscription's alert bookkeeping columns hold. */
+export interface NotifiedState {
+  at: string | null;
+  key: string | null;
+  spotsJson: string | null;
+}
+
+/**
+ * Take a subscription's push slot before sending: succeeds only when nothing
+ * was sent after `minIntervalCutoff` (now minus the minimum push interval).
+ * One conditional UPDATE, so concurrent evaluations cannot both send.
+ */
+export async function claimNotification(db: D1Database, id: number, next: NotifiedState, minIntervalCutoff: string): Promise<boolean> {
+  const { meta } = await db
+    .prepare(
+      `UPDATE notification_subscriptions SET last_notified_at = ?, last_notified_key = ?, notified_spots_json = ?
+       WHERE id = ? AND (last_notified_at IS NULL OR last_notified_at <= ?)`,
+    )
+    .bind(next.at, next.key, next.spotsJson, id, minIntervalCutoff)
+    .run();
+  return meta.changes === 1;
+}
+
+/** Undo claimNotification after a failed delivery, unless something newer has replaced the claim. */
+export async function releaseNotification(db: D1Database, id: number, claimed: NotifiedState, previous: NotifiedState): Promise<void> {
   await db
-    .prepare('UPDATE notification_subscriptions SET last_notified_at = ?, last_notified_key = ?, failure_count = 0 WHERE id = ?')
-    .bind(now, key, id)
+    .prepare(
+      `UPDATE notification_subscriptions SET last_notified_at = ?, last_notified_key = ?, notified_spots_json = ?
+       WHERE id = ? AND last_notified_at IS ? AND last_notified_key IS ?`,
+    )
+    .bind(previous.at, previous.key, previous.spotsJson, id, claimed.at, claimed.key)
     .run();
 }
 

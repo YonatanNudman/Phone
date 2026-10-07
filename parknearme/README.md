@@ -33,8 +33,11 @@ NYC TMC camera ──► Worker /api/cameras/:id/image  (same-origin proxy, 3 s 
            checks: parked footprints add "occupied" evidence; elsewhere "free" evidence is weighted by how
            visible a car parked there would be (detector recall at that distance × not hidden behind
            other vehicles). Curb hidden behind a parked car or a bus stays unknown, never "free".
+         • memory follows the "max detection age" setting (default 5 min); an identical (frozen) frame is
+           never fused twice
          • gaps = runs of likely-free curb − RESTRICTED / IGNORE zones; a car needs ~6.1 m (5.6 m next to a
-           no-parking zone)
+           no-parking zone); a gap must be visible in the CURRENT frame (remembered-but-hidden curb is
+           never reported), and a partly hidden one is at most "possible"
          • confidence = P(gap long enough | measurement noise) × mean P(free) × far-field factor
            (pixels per metre along the curb) × calibration quality; optional VLM second opinion
                        │
@@ -172,7 +175,7 @@ The Audubon Ave @ W 181 St camera comes pre-marked as useful, with a starting ca
 ### Admin protection
 Read-only views are public, so anyone with the URL can see the map. Everything that changes state or costs money is protected:
 - calibration, usefulness, settings, catalog resync, push subscribe/test, and forced analysis of any camera require `Authorization: Bearer <ADMIN_TOKEN>` (constant-time comparison).
-- Public analysis is limited to watched cameras and is rate-limited per camera by `analysisCooldownSeconds` (default 45 s). That caps AI spend no matter who calls it.
+- Public analysis is limited to watched cameras and is rate-limited per camera by `analysisCooldownSeconds` (default 45 s). The slot is claimed atomically in D1 before any frame fetch or AI call, and concurrent requests in one isolate share a single run. That caps AI spend and upstream DOT requests no matter who calls it. A caller that loses the race gets the latest stored result, or HTTP 429 `analysis_in_progress` if there is none yet.
 - For stronger privacy, put the whole Worker behind **Cloudflare Access** (Zero Trust → Access → Applications → self-hosted, your email). It's free for up to 50 users and needs no code changes. Note that the Cache API is unavailable behind Access, so frames are simply fetched uncached.
 
 ### Notifications
@@ -183,7 +186,7 @@ Web Push uses VAPID with `aes128gcm` encryption, via `@block65/webcrypto-web-pus
 - confidence ≥ your minimum
 - the detection came from a live frame and is under 5 minutes old
 
-The same spot is not repeated within 30 minutes, and you get at most one push every 5 minutes.
+Each spot is alerted at most once per 30 minutes (several open spots don't take turns re-alerting), and you get at most one push every 5 minutes. Both limits are claimed atomically, so simultaneous analyses can't double-send.
 
 ---
 

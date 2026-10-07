@@ -1,7 +1,7 @@
 import { RefreshCw } from 'lucide-react';
 import type { SummaryState } from '../../shared/types';
-import { formatAge, secondsSince } from '../../shared/freshness';
 import { SUMMARY_TONE } from '../lib/format';
+import { statusPillText } from './statusPillText';
 
 interface Props {
   state: SummaryState | null;
@@ -19,19 +19,19 @@ interface Props {
 /** Floating frosted pill: the one-line answer, its age, and a refresh button. */
 export function StatusPill({ state, headline, updatedAt, working, message, errorText, failed, now, onRefresh }: Props) {
   const tone = state ? SUMMARY_TONE[state] : 'gray';
-  const age = updatedAt ? formatAge(secondsSince(updatedAt, new Date(now))) : null;
-  let sub: string;
-  if (working && message) sub = message;
-  else if (errorText) sub = errorText;
-  else if (age) sub = `Updated ${age}${failed ? ` · ${failed} camera${failed === 1 ? '' : 's'} didn't answer` : ''}`;
-  else sub = failed ? "Cameras didn't answer" : 'No recent camera checks';
+  const { sub, subIsLive } = statusPillText({ updatedAt, working, message, errorText, failed, now });
+  const subLine = <div className={`status-sub tabular${errorText && !working ? ' is-error' : ''}`}>{sub}</div>;
 
   return (
     <div className="status-pill glass">
       <span className={`status-dot tone-${tone}${working ? ' is-working' : ''}`} aria-hidden="true" />
-      <div className="status-text" role="status" aria-live="polite">
-        <div className="status-headline">{headline}</div>
-        <div className={`status-sub tabular${errorText && !working ? ' is-error' : ''}`}>{sub}</div>
+      <div className="status-text">
+        {/* Only state changes are announced; the ticking "Updated …" line stays outside. */}
+        <div role="status" aria-live="polite">
+          <div className="status-headline">{headline}</div>
+          {subIsLive && subLine}
+        </div>
+        {!subIsLive && subLine}
       </div>
       <button
         type="button"

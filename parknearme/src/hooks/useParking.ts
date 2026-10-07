@@ -13,7 +13,7 @@ import type { CameraSummary, Detection, ParkingCurrentResponse } from '../../sha
 import { isDetectionCurrent } from '../../shared/freshness';
 import { summarize } from '../../shared/status';
 import { analyzeCamera, getParkingCurrent, isAbortError, toApiError, type ApiError } from '../lib/api';
-import { MAX_DETECTION_AGE_SECONDS } from '../lib/detection';
+import { maxDetectionAge } from '../lib/detection';
 import { cameraLabel } from '../lib/format';
 import type { AutoRefreshSeconds } from '../lib/prefs';
 import { usePageVisible } from './usePageVisible';
@@ -31,16 +31,22 @@ export interface ParkingState {
   failed: number;
 }
 
-/** Fold a fresh Detection into the current response (markers, candidates, headline). */
+/**
+ * Fold a fresh Detection into the current response (markers, candidates, headline).
+ * Like the server, only watched cameras contribute candidates and the headline;
+ * an analysis of any other camera (admin) just updates its marker.
+ */
 export function mergeDetection(data: ParkingCurrentResponse, det: Detection): ParkingCurrentResponse {
   const update = (c: CameraSummary): CameraSummary =>
     c.id === det.cameraId ? { ...c, latest: det, latestAgeSeconds: 0, frame: { ...c.frame, freshness: det.freshness } } : c;
-  const watched = data.watched.map(update);
   const nearby = data.nearby.map(update);
+  if (!data.watched.some((c) => c.id === det.cameraId)) return { ...data, nearby };
+  const watched = data.watched.map(update);
   const now = new Date();
-  const fresh = isDetectionCurrent(det, MAX_DETECTION_AGE_SECONDS, now) ? det.candidates : [];
+  const maxAge = maxDetectionAge(data);
+  const fresh = isDetectionCurrent(det, maxAge, now) ? det.candidates : [];
   const candidates = [...data.candidates.filter((c) => c.cameraId !== det.cameraId), ...fresh].sort((a, b) => b.confidence - a.confidence);
-  const current = watched.filter((c) => c.latest?.status !== 'unknown' && isDetectionCurrent(c.latest, MAX_DETECTION_AGE_SECONDS, now));
+  const current = watched.filter((c) => c.latest?.status !== 'unknown' && isDetectionCurrent(c.latest, maxAge, now));
   const updatedAt = watched.reduce<string | null>((max, c) => {
     const t = c.latest?.timestamp ?? null;
     return t && (!max || Date.parse(t) > Date.parse(max)) ? t : max;

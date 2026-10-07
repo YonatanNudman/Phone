@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { analyzeCurbGaps, laneDiagnostics, type LaneStates } from '../shared/curb-gaps';
-import type { DetectedObject, Region } from '../shared/types';
+import type { DetectedObject, Point, Region } from '../shared/types';
+import { CurbGapParkingDetector } from '../worker/analysis/detectors';
 import { cleanVehicles, parseObjectDetections } from '../worker/analysis/vehicles';
 import { acrossStreet, downTheCurb } from './helpers/scene';
 
@@ -131,11 +132,118 @@ describe('curb-gap analysis on a synthetic street', () => {
     expect(r.notes.join(' ')).toMatch(/not a valid 4-point quad/);
   });
 
+  it('keeps a RESTRICTED zone drawn partly above the horizon (a tall box around a hydrant and its sign)', () => {
+    const s = downTheCurb();
+    const ground = s.zone('hydrant', 'restricted', 10, 19.5);
+    const xs = ground.points.map((p) => p[0]);
+    const curbY = Math.max(...ground.points.map((p) => p[1]));
+    // From the curb up to near the top of the frame: the top corners lie beyond the horizon.
+    const tall: Region = { id: 'hydrant', kind: 'restricted', points: [[Math.min(...xs), curbY], [Math.max(...xs), curbY], [Math.max(...xs), 0.05], [Math.min(...xs), 0.05]] };
+    const cars = Array(5).fill(gapCars(s));
+    expect(runFrames(cars, [s.lane]).candidates.length).toBeGreaterThan(0); // the opening is there without the zone
+    const r = runFrames(cars, [s.lane, tall]);
+    const blocked = r.lanes[0]!.blocked.map(([a, b]) => [a * s.lengthM, b * s.lengthM]);
+    expect(blocked.some(([a, b]) => a! <= 10.5 && b! >= 19)).toBe(true);
+    expect(r.candidates).toHaveLength(0);
+  });
+
+  it('keeps an IGNORE band that reaches the top of the frame (and never finds a gap on a full curb)', () => {
+    const s = acrossStreet();
+    const band: Region = { id: 'far', kind: 'ignore', points: [[0, 0], [1, 0], [1, 0.5], [0, 0.5]] };
+    const r = runFrames(Array(10).fill(fullCars(s)), [s.lane, band]);
+    expect(r.objects.filter((o) => o.role === 'ignored').length).toBeGreaterThan(0);
+    expect(r.lanes[0]!.blocked.length).toBeGreaterThan(0);
+    expect(r.lanes[0]!.blocked.at(-1)![1]).toBe(1);
+    expect(r).toMatchObject({ status: 'none', candidates: [] });
+  });
+
+  it('vehicles in IGNORE zones still hide the curb behind them', () => {
+    const s = acrossStreet();
+    // Full curb, but a bus in the travel lane hides the cars between 11 and 31 m.
+    const seen = [0.5, 6.6, 31.0].map((m) => s.car(m));
+    const bus: DetectedObject = { label: 'bus', score: 0.9, box: s.cuboidBox(10, 30, 3.2, 5.8, 3.2) };
+    const travelLane: Region = {
+      id: 'travel',
+      kind: 'ignore',
+      points: ([[-5, 3], [45, 3], [45, 9], [-5, 9]] as const).map(([X, Y]) => s.project([X, Y, 0])) as Point[],
+    };
+    const r = runFrames(Array(5).fill([...seen, bus]), [s.lane, travelLane]);
+    expect(r.objects.find((o) => o.label === 'bus')?.role).toBe('ignored');
+    expect(r.candidates.filter((c) => c.start * s.lengthM < 30 && c.end * s.lengthM > 12)).toHaveLength(0);
+  });
+
+  it('does not report curb that is hidden right now from what it looked like minutes ago', () => {
+    const s = acrossStreet();
+    const open = [0.5, 6.0, 24.4, 30.4].map((m) => s.car(m)); // 13.8 m open
+    const seen = runFrames(Array(5).fill(open), [s.lane]);
+    expect(seen.status).toBe('likely_available');
+    // Then a car parks in the opening while a bus in the travel lane hides that stretch.
+    const bus: DetectedObject = { label: 'bus', score: 0.9, box: s.cuboidBox(9, 25, 3.2, 5.8, 3.2) };
+    const t = T0 + 4 * 20_000;
+    for (const minutes of [1, 2, 5, 8]) {
+      const r = analyzeCurbGaps([...open, bus], [s.lane], { nowMs: t + minutes * 60_000, state: seen.state });
+      expect(r.candidates.filter((c) => c.start * s.lengthM < 23 && c.end * s.lengthM > 11)).toHaveLength(0);
+    }
+    // Control: without the bus the opening is still reported.
+    expect(analyzeCurbGaps(open, [s.lane], { nowMs: t + 60_000, state: seen.state }).candidates.length).toBeGreaterThan(0);
+  });
+
+  it('caps a gap that is only partly visible right now at "possible"', () => {
+    const s = downTheCurb(); // parked cars hide about half of the opening behind them
+    const r = runFrames(Array(6).fill(gapCars(s)), [s.lane]);
+    expect(r.candidates.length).toBeGreaterThan(0);
+    for (const c of r.candidates) {
+      expect(c.status).toBe('possible');
+      expect(c.reasons).toContain('Partly hidden in the current camera image');
+    }
+  });
+
+  it('does not fuse the same (frozen) camera image twice', () => {
+    const s = acrossStreet();
+    const cars = [0.5, 6.0, 24.4, 30.4].map((m) => s.car(m));
+    const run = (hash: (k: number) => string) => {
+      let state: LaneStates | undefined;
+      return [0, 1, 2, 3].map((k) => {
+        const r = analyzeCurbGaps(cars, [s.lane], { nowMs: T0 + k * 45_000, state, frameHash: hash(k) });
+        state = r.state;
+        return r;
+      });
+    };
+    const frozen = run(() => 'same-bytes');
+    expect(frozen.map((r) => r.status)).toEqual(['possible', 'possible', 'possible', 'possible']);
+    for (const r of frozen.slice(1)) expect(r.confidence).toBeLessThanOrEqual(frozen[0]!.confidence);
+    expect(frozen[1]!.notes).toContain('Same camera image as the last check; not counted again.');
+    // New pictures are new evidence.
+    expect(run((k) => `frame-${k}`).at(-1)!.status).toBe('likely_available');
+  });
+
   it('reports lane geometry diagnostics for the calibration screen', () => {
     const d = laneDiagnostics(downTheCurb().lane)!;
     expect(d.lengthM).toBeCloseTo(36.6, 5);
     expect(d.pxPerMetreStart).toBeGreaterThan(d.pxPerMetreEnd); // nearer is bigger
     expect(d.calibrationSigmaM).toBeLessThan(2);
+  });
+});
+
+describe('CurbGapParkingDetector', () => {
+  it('forgets evidence older than maxDetectionAgeSeconds', async () => {
+    const s = acrossStreet();
+    const lengthBins = Math.ceil(s.lengthM / 0.25);
+    const fetchedAt = '2026-10-07T12:05:00.000Z';
+    // Five minutes ago every bin looked clearly free; this frame shows no vehicles at all (no update).
+    const laneState: LaneStates = {};
+    const seen = analyzeCurbGaps([], [s.lane], { nowMs: T0 });
+    laneState[s.lane.id] = { ...seen.state[s.lane.id]!, t: Date.parse(fetchedAt) - 300_000, logodds: Array(lengthBins).fill(-4) };
+    const detector = new CurbGapParkingDetector({ name: 'stub', detect: async () => [] });
+    const frame = { cameraId: 'cam', bytes: new Uint8Array(), width: 352, height: 240, fetchedAt, hash: 'h1' };
+    const ctx = { calibration: { cameraId: 'cam', regions: [s.lane], referenceWidth: 352, referenceHeight: 240, updatedAt: fetchedAt }, minConfidence: 0.6, camera: { lat: 0, lon: 0, name: 'cam' } };
+    const prior = Math.log(0.75 / 0.25);
+    const aged = await detector.analyze(frame, { ...ctx, laneState, maxDetectionAgeSeconds: 300 });
+    // e^-3 of the old evidence is left: back near the 75%-occupied prior.
+    expect(aged.laneState![s.lane.id]!.logodds[0]).toBeGreaterThan(prior - 0.3);
+    // A longer max age keeps more of it.
+    const kept = await detector.analyze(frame, { ...ctx, laneState, maxDetectionAgeSeconds: 1800 });
+    expect(kept.laneState![s.lane.id]!.logodds[0]).toBeLessThan(-1);
   });
 });
 

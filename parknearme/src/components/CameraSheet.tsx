@@ -74,6 +74,8 @@ interface Props {
   /** Summary from the parking response, shown while details load. */
   summary: CameraSummary | null;
   now: number;
+  /** Server's settings.maxDetectionAgeSeconds (defaults to the shared default). */
+  maxAgeSeconds?: number;
   isAdmin: boolean;
   onDetection: (det: Detection) => void;
 }
@@ -96,7 +98,7 @@ function toHistoryItem(d: Detection): DetectionHistoryItem {
   };
 }
 
-export function CameraSheet({ cameraId, detail, summary, now, isAdmin, onDetection }: Props) {
+export function CameraSheet({ cameraId, detail, summary, now, maxAgeSeconds, isAdmin, onDetection }: Props) {
   const { debugOverlays } = usePrefs();
   const visible = usePageVisible();
   const history = useResource<DetectionHistoryItem[]>(cameraId, (signal) => getHistory(cameraId, 30, signal));
@@ -149,7 +151,7 @@ export function CameraSheet({ cameraId, detail, summary, now, isAdmin, onDetecti
     );
   }
 
-  const current = isCurrent(latest, now);
+  const current = isCurrent(latest, now, maxAgeSeconds);
   const best = current ? latest?.candidates[0] : undefined;
   const frameAge = frame.fetchedAt ? formatAge(ageSeconds(new Date(frame.fetchedAt).toISOString(), now)) : null;
   const overlay =

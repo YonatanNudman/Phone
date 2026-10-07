@@ -5,9 +5,23 @@
 // `subscribe` must start from a user gesture: Notification.requestPermission
 // is the first await so Safari still sees the tap.
 
+import type { PushConfigResponse } from '../../shared/types';
 import { isAppleMobile, isStandalone } from './platform';
 
 export type PushSupport = { ok: true } | { ok: false; reason: 'ios_install' | 'unsupported' | 'denied'; message: string };
+
+/** Why the alerts toggle can't be turned on right now. `retry`: GET /api/push/config failed. */
+export type PushBlock = { kind: 'server' | 'device' | 'loading' | 'retry'; message: string };
+
+/** In priority order; null when this device can subscribe. */
+export function pushBlock(config: PushConfigResponse | undefined, configFailed: boolean, support: PushSupport): PushBlock | null {
+  if (config && !(config.enabled && config.publicKey)) return { kind: 'server', message: 'Server notifications not configured' };
+  if (!support.ok) return { kind: 'device', message: support.message };
+  if (!config) {
+    return configFailed ? { kind: 'retry', message: "Couldn't load notification settings" } : { kind: 'loading', message: 'Loading…' };
+  }
+  return null;
+}
 
 export function pushSupport(): PushSupport {
   const hasApis = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;

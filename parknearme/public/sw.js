@@ -7,8 +7,10 @@
  * - Notification taps focus an open app window (and route it in place) or open
  *   a new one.
  * - Minimal offline shell: navigations are network-first with the cached shell
- *   as fallback; hashed build assets are cached on first use. /api/* is never
- *   cached — live parking data must never come from a cache.
+ *   as fallback. Install caches the shell and the hashed build assets it
+ *   references (the first page load happens before this worker controls it);
+ *   other assets are cached on first use. /api/* is never cached — live
+ *   parking data must never come from a cache.
  */
 
 const SHELL_CACHE = 'pnm-shell-v1';
@@ -20,13 +22,18 @@ const BADGE = '/icons/badge-96.png';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
-  event.waitUntil(
-    caches
-      .open(SHELL_CACHE)
-      .then((cache) => cache.add(new Request('/', { cache: 'reload' })))
-      .catch(() => undefined),
-  );
+  event.waitUntil(precacheShell().catch(() => undefined));
 });
+
+/** Cache '/' and its /assets/* files, so the app opens offline even after a single online launch. */
+async function precacheShell() {
+  const res = await fetch(new Request('/', { cache: 'reload' }));
+  if (!res.ok) return;
+  await (await caches.open(SHELL_CACHE)).put('/', res.clone());
+  const html = await res.text();
+  const urls = [...new Set([...html.matchAll(/(?:src|href)=["'](\/assets\/[^"']+)["']/g)].map((m) => m[1]))];
+  if (urls.length) await (await caches.open(ASSET_CACHE)).addAll(urls);
+}
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
