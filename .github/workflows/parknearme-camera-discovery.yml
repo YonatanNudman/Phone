@@ -16,6 +16,15 @@ on:
       frames:
         description: "Frames per camera"
         default: "5"
+      focus:
+        description: "Comma-separated camera ids for a long time series (optional)"
+        default: ""
+      focus_frames:
+        description: "Time-series frames per focus camera"
+        default: "30"
+      focus_interval:
+        description: "Seconds between time-series frames"
+        default: "30"
   push:
     paths:
       - "parknearme/scripts/discover-cameras.mjs"
@@ -33,7 +42,7 @@ concurrency:
 jobs:
   discover:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: parknearme
@@ -45,7 +54,11 @@ jobs:
           node-version: 22
 
       - name: Discover cameras and pull frames
-        run: node scripts/discover-cameras.mjs --radius "${{ inputs.radius || '0.75' }}" --frames "${{ inputs.frames || '5' }}" --interval 4
+        env:
+          FOCUS: ${{ inputs.focus || '' }}
+        run: >-
+          node scripts/discover-cameras.mjs --radius "${{ inputs.radius || '0.75' }}" --frames "${{ inputs.frames || '5' }}" --interval 4
+          --focus "$FOCUS" --focus-frames "${{ inputs.focus_frames || '30' }}" --focus-interval "${{ inputs.focus_interval || '30' }}"
 
       - uses: actions/setup-python@v5
         with:

@@ -12,3 +12,13 @@ A tiny, mobile-first single-page site that asks one person on a date:
 ## How responses reach the inbox
 The form posts directly to FormSubmit from the visitor's browser, which
 forwards the answer as an email to `yonatan@thepipelinegroup.io`.
+
+---
+
+# 🅿️ ParkNearMe
+
+A separate project lives in [`parknearme/`](parknearme/): a mobile-first PWA that
+watches public NYC DOT traffic cameras near 403 Audubon Ave for open curb
+space. It runs on Cloudflare Workers + D1 + Workers AI. See
+[`parknearme/README.md`](parknearme/README.md) and
+[`parknearme/CAMERA_FEASIBILITY.md`](parknearme/CAMERA_FEASIBILITY.md).

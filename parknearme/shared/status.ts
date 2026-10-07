@@ -27,6 +27,7 @@ export function summarize(
 /** Prettify TMC names like "Audobon Ave @ W 181 ST" -> "Audubon Ave near W 181st". */
 export function prettyCameraName(name: string): string {
   return name
+    .replace(/_/g, ' ')
     .replace(/\bAudobon\b/gi, 'Audubon')
     .replace(/\s+/g, ' ')
     .trim()

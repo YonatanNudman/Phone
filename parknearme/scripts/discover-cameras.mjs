@@ -8,6 +8,8 @@
 // 5. Writes feasibility/discovery.json plus the frames for inspection.
 //
 // Usage: node scripts/discover-cameras.mjs [--radius 0.75] [--frames 5] [--interval 4]
+//          [--focus id1,id2 --focus-frames 30 --focus-interval 30]
+// --focus records a longer time series for selected cameras (parking turnover).
 // Needs open internet (runs in GitHub Actions; see .github/workflows/parknearme-camera-discovery.yml).
 
 import { createHash } from 'node:crypto';
@@ -29,6 +31,9 @@ const RADIUS_MI = Number(args.radius ?? 0.75);
 const CONTEXT_RADIUS_MI = Number(args.context ?? 1.25);
 const FRAMES = Number(args.frames ?? 5);
 const INTERVAL_S = Number(args.interval ?? 4);
+const FOCUS = String(args.focus ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+const FOCUS_FRAMES = Number(args['focus-frames'] ?? 30);
+const FOCUS_INTERVAL_S = Number(args['focus-interval'] ?? 30);
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = join(root, 'feasibility');
@@ -189,6 +194,17 @@ async function main() {
   // One frame each for the context ring.
   const contextShots = await Promise.all(context.map((c) => grabFrame(c, 0)));
 
+  // Optional long time series for selected cameras (continues the frame numbering).
+  const focusCams = nearby.filter((c) => FOCUS.includes(c.id));
+  if (focusCams.length) {
+    console.log(`Focus: ${focusCams.length} cameras x ${FOCUS_FRAMES} frames every ${FOCUS_INTERVAL_S}s`);
+    for (let k = 0; k < FOCUS_FRAMES; k++) {
+      await sleep(FOCUS_INTERVAL_S * 1000);
+      const shots = await Promise.all(focusCams.map((c) => grabFrame(c, FRAMES + k)));
+      shots.forEach((s, i) => sequences[focusCams[i].id].push(s));
+    }
+  }
+
   const summarize = (c, frames) => {
     const ok = frames.filter((f) => f.status === 200 && f.jpeg);
     const distinct = new Set(ok.map((f) => f.sha256)).size;
@@ -209,6 +225,7 @@ async function main() {
     radiusMi: RADIUS_MI,
     contextRadiusMi: CONTEXT_RADIUS_MI,
     frameSequence: { frames: FRAMES, intervalSeconds: INTERVAL_S },
+    focus: focusCams.length ? { cameraIds: focusCams.map((c) => c.id), frames: FOCUS_FRAMES, intervalSeconds: FOCUS_INTERVAL_S } : null,
     catalog: { status: catRes.status, ms: catMs, count: catalog.length, headers: catalogHeaders, fieldNames, fieldTypes, sample: catalog.slice(0, 2) },
     nearby: nearby.map((c) => summarize(c, sequences[c.id])),
     context: context.map((c, i) => summarize(c, [contextShots[i]])),

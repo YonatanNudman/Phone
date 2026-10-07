@@ -7,13 +7,15 @@
   "assets": {
     "not_found_handling": "single-page-application",
     // API routes always hit the Worker; everything else is the SPA.
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*"],
+    "binding": "ASSETS"
   },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "parknearme",
-      // Replaced by `wrangler d1 create parknearme` output (or by the deploy workflow).
+      // Set by `npm run db:ensure` (finds or creates the "parknearme" D1 database).
+      // The placeholder only works for local development.
       "database_id": "00000000-0000-0000-0000-000000000000",
       "migrations_dir": "migrations"
     }
