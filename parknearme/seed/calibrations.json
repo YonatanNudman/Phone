@@ -8,8 +8,8 @@
         {
           "id": "lane-181-south",
           "kind": "parking",
-          "label": "Left curb lane",
-          "streetLabel": "W 181st St at Audubon Ave",
+          "label": "North curb lane (left in view)",
+          "streetLabel": "W 181st St, Audubon → Amsterdam",
           "capacity": 8,
           "points": [[0.128, 1.0], [0.307, 1.0], [0.432, 0.533], [0.386, 0.533]]
         },

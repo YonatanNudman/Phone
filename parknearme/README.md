@@ -170,7 +170,7 @@ Observability is enabled in `wrangler.jsonc`, so logs are also under Workers & P
 4. **Calibrate** (`/calibrate/:id`, desktop recommended): draw the curb **parking lane** as 4 points (near-curb, near-traffic, far-traffic, far-curb). Set how many cars fit (tick marks preview each car slot). Mark hydrants, driveways, crosswalks and bus stops as **RESTRICTED**, and anything irrelevant as **IGNORE**. Optionally mark the roadway, and place the lane on the mini-map. Use **Test analysis** to check the result.
 5. The main map then checks watched (YES), calibrated cameras when you open the app and on refresh. With alerts on, the cron also checks them every 2 minutes.
 
-The Audubon Ave @ W 181 St camera comes pre-marked as useful, with a starting calibration from `seed/calibrations.json` (migration `0002`). Cameras get re-aimed, so re-check it in `/calibrate`.
+The camera TMC calls "Audobon Ave @ W 181 ST" comes pre-marked as useful, with a starting calibration from `seed/calibrations.json` (migration `0002`). It looks east along W 181st St, at the north curb between Audubon and Amsterdam. Cameras get re-aimed, so re-check it in `/calibrate`.
 
 ### Admin protection
 Read-only views are public, so anyone with the URL can see the map. Everything that changes state or costs money is protected:

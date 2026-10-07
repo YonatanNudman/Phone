@@ -2,16 +2,24 @@
 
 **Question:** can public NYC DOT/TMC cameras around 403 Audubon Ave tell me when to drive toward a particular block because parking looks open?
 
-**Short answer, based on real frames:** yes for one block face, and only one: the W 181st St curb next to Audubon Ave. Every other camera within 0.75 mi points at a highway, ramp, bridge approach or intersection, except one marginal view on St Nicholas Ave. So the MVP watches one camera. It sees about 4 spaces well and another ~4–6 poorly, about 0.2 mi from home.
+**Short answer, based on real frames (night and day):** technically yes, for one block face. Whether it helps in practice is still unproven.
+
+- **The one usable view:** the camera labelled "Audobon Ave @ W 181 ST" looks **east along W 181st St toward Amsterdam Ave**. It shows the **north curb between Audubon and Amsterdam**, about 0.2 mi from 403 Audubon.
+- **What it measures:** about 4 spaces reliably, plus ~4–6 more too small to measure.
+- **The other cameras:** St Nicholas Ave @ 181 St shows a short curb row (2–3 spaces), a maybe. All other cameras within 0.75 mi point at highways, ramps, the Washington Bridge approach or intersections.
+- **The detector works in both darkness and daylight.** The analysis reported the curb correctly as full in all 40 analyzed frames.
+- **But no space opened** in the measurable stretch during a 15-minute morning window (7:41–7:57 AM). Whether openings occur often enough to be useful needs a longer observation.
 
 ## How this was measured
 
 - **Where:** the dev container can't reach `webcams.nyctmc.org`, so discovery runs on GitHub's runners (`.github/workflows/parknearme-camera-discovery.yml`, script `scripts/discover-cameras.mjs`).
-- **Run:** 2026-10-07 04:26 UTC (**12:26 AM EDT, night**).
+- **Runs:**
+  - **Night:** 2026-10-07 04:26 UTC, **12:26 AM EDT**. Archived in `feasibility/night-2026-10-07/`.
+  - **Day:** 11:41–11:57 UTC, **7:41–7:57 AM EDT**. Files are in `feasibility/`. Like the night run, it pulled 5 frames from every camera. It also recorded a **15-minute time series (30 more frames, 30 s apart)** for the three candidate cameras.
   - 403 Audubon Ave was geocoded by **NYC GeoSearch** to **40.851304, -73.930153** (BBL 1021560035). US Census and Nominatim agree within ~25 m.
   - Fetched the full TMC catalog: **976 cameras**.
   - Kept the **16 within 0.75 mi**, plus 9 more out to 1.25 mi for context.
-  - Pulled **5 frames per camera, 4 s apart**.
+  - Pulled **5 frames per camera, 4 s apart** (both runs).
 - **Detectors:** `scripts/detect_vehicles.py` ran **facebook/detr-resnet-50** (the model behind `@cf/facebook/detr-resnet-50` on Workers AI) and YOLOv8n over every frame.
 - **Outputs**, all in `feasibility/`:
   - `discovery.json`: raw catalog sample, headers, per-frame hashes and timings
@@ -25,7 +33,7 @@
 - `GET https://webcams.nyctmc.org/api/cameras/` returns HTTP 200 with JSON array items `{id, name, latitude, longitude, area, isOnline, imageUrl}`. `isOnline` is a **string** (`"true"`/`"false"`). Headers: `cache-control: no-store`, no CORS header.
 - `GET /api/cameras/{id}/image` returns `image/jpeg`, `no-store`, no CORS header.
   - Size: **352×240** for city cameras (13–24 KB), **720×480** for state highway cameras (17–38 KB).
-  - **All 16 nearby cameras were online and returned 5 distinct frames in 5 pulls** (a new frame at least every 4 s).
+  - **All 16 nearby cameras were online in both runs.** At night every camera returned 5 distinct frames in 5 pulls, so a new frame at least every 4 s. In the day run, 2 cameras repeated one frame (St Nicholas 34 of 35 distinct, Amsterdam @ 178 St 4 of 5).
   - Frames carry a burned-in clock, sometimes with a direction ("Facing West").
   - The Audubon camera's EXIF capture time was 1 s behind our fetch.
 - **No CORS header**, so browser-side computer vision is impossible. The Worker proxies frames to the same origin.
@@ -36,9 +44,9 @@
 
 | Camera | ID | Coordinates | From 403 Audubon | Status | Image fetched? | Useful for parking? | DETR vehicles | What's visible / notes |
 |---|---|---|---|---|---|---|---|---|
-| Amsterdam Ave @ 181 St | `4d39d6d1-a009-480f-9851-2571a5df1174` | 40.84833, -73.93087 | 0.21 mi | Online | Yes (5/5, 5 distinct, 352×240, ~16 KB) | No | 5 | Burned-in "Facing West". Wide crosswalk + W 181st St approach to the Washington Bridge (railing on the left); cars queue at the light. No curb parking lane in view. |
-| Audobon Ave @ W 181 ST | `1ccb8d7c-43d4-450e-b40c-79527766db75` | 40.84874, -73.93235 | 0.21 mi | Online | Yes (5/5, 5 distinct, 352×240, ~23 KB) | **Yes** | 13 | Looks along **W 181st St** (bus/truck-only lane markings) from Audubon Ave. A row of ~8–10 parked cars along the left curb is clearly visible; the nearest ~4 spaces are measurable (9 px/m), the far end is not (<1 px/m). DETR found 11–17 vehicles per night frame. |
-| St Nicholas Ave @ 181 St | `3ad126cc-3f99-4626-a229-b9ba4d3f4b63` | 40.84931, -73.93374 | 0.23 mi | Online | Yes (5/5, 5 distinct, 352×240, ~16 KB) | Maybe | 5 | Looks down a wide avenue: construction barrels/trucks along the left side, a storefront with a vendor tent on the right sidewalk and a car at the right curb. Partial right-curb lane; needs a daylight look. |
+| Amsterdam Ave @ 181 St | `4d39d6d1-a009-480f-9851-2571a5df1174` | 40.84833, -73.93087 | 0.21 mi | Online | Yes (5/5, 5 distinct, 352×240, ~16 KB) | No | 5 | Burned-in "Facing West". The W 181st St / Washington Bridge approach at Amsterdam: wide crosswalk, bridge railing, cars queueing at the light (confirmed in daylight). No curb parking lane. |
+| Audobon Ave @ W 181 ST | `1ccb8d7c-43d4-450e-b40c-79527766db75` | 40.84874, -73.93235 | 0.21 mi | Online | Yes (5/5, 5 distinct, 352×240, ~23 KB) | **Yes** | 13 | Despite the name, it looks **east along W 181st St** (busway: BUS/TRUCK ONLY lanes) from Audubon toward Amsterdam. Direction was confirmed by the low morning sun ahead and the lit south-side facades. The left side of the view is the **north curb between Audubon and Amsterdam**: a row of ~8–10 parked cars, with the nearest ~4 spaces measurable (9 px/m) and the far end not (<1 px/m). A few cars are also parked on the far (south) curb. DETR found 11–20 vehicles per frame, day and night. |
+| St Nicholas Ave @ 181 St | `3ad126cc-3f99-4626-a229-b9ba4d3f4b63` | 40.84931, -73.93374 | 0.23 mi | Online | Yes (5/5, 5 distinct, 352×240, ~16 KB) | Maybe | 5 | Looks along a wide avenue past a furniture store. The right curb holds a short row of 2–3 parked cars. The curb nearest the camera stayed empty for the whole 15 minutes, so it is most likely a bus stop or no-standing zone and would need a RESTRICTED mark. The left side has a construction zone (barrels, a parked box truck). Usable for ~2–3 spaces at most. |
 | Amsterdam Ave @ W 180 st | `99bd1846-c0e4-4689-b077-63d2525bf1aa` | 40.84652, -73.93207 | 0.34 mi | Online | Yes (5/5, 5 distinct, 352×240, ~16 KB) | No | 4 | Points at a highway ramp/overpass structure (Trans-Manhattan Expwy / Cross Bronx). No street parking. |
 | C1-CBE-01_N_NB_at_Amsterdam_Ave-Ex-HRD | `749f7d56-21e8-4716-8efc-624723f5b9a8` | 40.84593, -73.93109 | 0.37 mi | Online | Yes (5/5, 5 distinct, 720×480, ~37 KB) | No | 5 | Cross Bronx Expwy camera (720x480). Highway. |
 | Amsterdam @ 178 St | `6728d273-d20b-44b7-868a-d54c00e50fab` | 40.84614, -73.93243 | 0.38 mi | Online | Yes (5/5, 5 distinct, 352×240, ~17 KB) | No | 3 | "Facing West" over the Trans-Manhattan Expwy trench; one car at an intersection in the foreground. No curb lane. |
@@ -63,26 +71,37 @@ Context ring (0.75–1.25 mi): Cross Bronx and Major Deegan expressways, Broadwa
 - **DETR quirks:**
   - It returns duplicate boxes (car 0.96 and truck 0.86 on the same pixels) and part-boxes, which the Worker removes with class-agnostic NMS plus part-box suppression.
   - It also produces stray labels (umbrella, bench, train), which are ignored.
-- **Curb-gap analysis on the 181st St night frames:** 7–10 parked cars counted along the calibrated lane, **no openings**, status *none* at 84–88% confidence across all 5 frames. That fits a full residential curb at 12:30 AM. The car driving in the travel lane was correctly classified as traffic.
+- **Curb-gap analysis on the 181st St night frames** (5 frames; the 35 daytime frames are covered under *Daylight check*): 7–10 parked cars counted along the calibrated lane, **no openings**, status *none* at 84–88% confidence across all 5 frames. That fits a full residential curb at 12:30 AM. The car driving in the travel lane was correctly classified as traffic.
 - **Geometry limit:** along this lane the image gives **9.3 px per metre at the near end and 0.7 px/m at the far end**.
   - The analysis only reports gaps where there are at least 1.3 px/m, so effectively the nearest **~4 spaces (~25 m)** of curb are trustworthy.
   - The calibration error is 0.9 m per pixel of corner error (good).
 
 ## Answer: is this useful?
 
-**Partly. It's useful for one block, and only as a "glance before you drive" hint.**
+**Partly. It's useful for one block, and only as a "glance before you drive" hint. The first 15-minute sample saw no openings at all.**
 
 - **What works:** live frames every few seconds, reliable fetches, a detector that sees parked cars at night, and a measurement model that refuses to report openings it can't see.
 - **What limits it:**
   1. **Coverage.** One usable camera, plus a "maybe" on St Nicholas Ave, out of 16. Most DOT cameras here watch highways and bridge approaches.
-  2. **The useful camera shows W 181st St next to Audubon, not 403 Audubon's own block** (403 is about 3½ blocks north, near W 184th–185th). It answers "is there anything on 181st by Audubon right now?"
+  2. **The useful camera shows the north curb of W 181st St between Audubon and Amsterdam, not 403 Audubon's own block** (403 is about 3½ blocks north, near W 184th–185th). It answers "is there anything on 181st between Audubon and Amsterdam right now?"
   3. **Only ~4 spaces are measurable;** the far end of the block is too small in the image.
-  4. **Legality isn't visible.** The 181st St busway has bus/truck-only lanes and likely loading or time rules on the curb, and hydrants or driveways must be hand-marked RESTRICTED in `/calibrate`.
+  4. **Turnover is unknown.** All 40 analyzed frames (12:26 AM and 7:41–7:57 AM) showed a full curb.
+  5. **Legality isn't visible.** The 181st St busway has bus/truck-only lanes and likely loading or time rules on the curb, and hydrants or driveways must be hand-marked RESTRICTED in `/calibrate`.
 - **Expected value:** on a packed block, an open spot near the camera usually lasts minutes. The app checks on open and on refresh, and every 2 minutes when alerts are on. That's fast enough to catch some openings, but you'll still be driving 2–3 minutes to get there.
 
-## Daylight check
+## Daylight check (7:41–7:57 AM EDT)
 
-*Pending.* A second discovery run (with a 15-minute time series for the Audubon/181st, St Nicholas/181st and Amsterdam/181st cameras) is scheduled for 7:40 AM EDT, 2026-10-07. It will confirm camera directions, the St Nicholas "maybe", and whether openings actually appear and disappear on 181st St.
+![Daylight contact sheet with DETR (green) and YOLOv8n (blue) boxes](feasibility/contact-sheet-annotated.jpg)
+
+- **Camera directions confirmed.** Audubon @ 181 looks east along W 181st St. Amsterdam @ 181 looks west at the bridge approach. St Nicholas @ 181 looks along St Nicholas Ave.
+- **The seed calibration still fits.** The lane drawn on the 12:26 AM frame lines up with the parked row in daylight, so the camera was not re-aimed overnight.
+- **Detection works in daylight.** DETR found 13–20 vehicles per frame on the 181st St camera, including the parked row, a double-parked SUV, buses, a school bus and a box truck. YOLOv8n again found almost nothing (0–3 per frame).
+- **Time series:** the near part of the north curb was **full in all 35 frames** over 15 minutes (checked by eye on a crop of every frame). Cars stopped beside the row and buses passed, but no space opened.
+- **Analysis over the same 35 frames:** `npm run eval` gave status *none* every time, at 77–91% confidence. There were no false openings, including when a bus or the double-parked SUV hid part of the row, and no missed ones.
+- **Implications:**
+  - The sensor and analysis behave correctly.
+  - Usefulness now depends only on turnover. On this block at 7:45 AM on a weekday there was none.
+  - Expect most checks to say "full". The app is worth something only if openings show up at the times you're driving home.
 
 ## Recommended next experiment
 
