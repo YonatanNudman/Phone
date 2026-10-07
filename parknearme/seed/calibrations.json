@@ -1,0 +1,25 @@
+{
+  "_comment": "Starting calibrations drawn on real frames from the 2026-10-07 discovery run. Cameras get re-aimed; re-check in /calibrate/:id. Points are normalized [x, y]; parking lanes are [start-curb, start-traffic, end-traffic, end-curb].",
+  "cameras": {
+    "1ccb8d7c-43d4-450e-b40c-79527766db75": {
+      "referenceWidth": 352,
+      "referenceHeight": 240,
+      "regions": [
+        {
+          "id": "lane-181-south",
+          "kind": "parking",
+          "label": "Left curb lane",
+          "streetLabel": "W 181st St at Audubon Ave",
+          "capacity": 8,
+          "points": [[0.128, 1.0], [0.307, 1.0], [0.432, 0.533], [0.386, 0.533]]
+        },
+        {
+          "id": "roadway-181",
+          "kind": "roadway",
+          "label": "Travel + bus lanes",
+          "points": [[0.307, 1.0], [0.9, 1.0], [0.52, 0.533], [0.432, 0.533]]
+        }
+      ]
+    }
+  }
+}

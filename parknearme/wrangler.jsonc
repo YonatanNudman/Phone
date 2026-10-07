@@ -1,0 +1,34 @@
+// Cloudflare Worker config: React SPA (static assets) + API Worker + D1 + Workers AI + cron.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "parknearme",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    // API routes always hit the Worker; everything else is the SPA.
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "parknearme",
+      // Replaced by `wrangler d1 create parknearme` output (or by the deploy workflow).
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Workers AI always runs on Cloudflare (no local simulation); calls are billed.
+  "ai": { "binding": "AI", "remote": true },
+  "triggers": {
+    // Background analysis + alerts. The handler skips work unless alerts are on
+    // or the app was opened recently (see worker/cron.ts).
+    "crons": ["*/2 * * * *"]
+  },
+  "vars": {
+    "DETECTOR": "auto",
+    "APP_VERSION": "0.1.0",
+    "VAPID_SUBJECT": "mailto:parknearme@example.com"
+  },
+  "observability": { "enabled": true }
+}

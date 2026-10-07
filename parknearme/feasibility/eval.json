@@ -1,0 +1,322 @@
+[
+ {
+  "cameraId": "1ccb8d7c-43d4-450e-b40c-79527766db75",
+  "frame": 0,
+  "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-0.jpg",
+  "status": "possible",
+  "vehicles": 12,
+  "parked": 8,
+  "gaps": [
+   {
+    "regionId": "lane-181-south",
+    "streetLabel": "W 181st St at Audubon Ave",
+    "start": 0.5408294089084148,
+    "end": 0.6494252972893214,
+    "slots": 0.87,
+    "spaces": 1,
+    "confidence": 0.417,
+    "status": "possible",
+    "boundedBothSides": true,
+    "polygon": [
+     [
+      0.3397910439556728,
+      0.6166417925298482
+     ],
+     [
+      0.4096119399010042,
+      0.6166417925298482
+     ],
+     [
+      0.4167718496695373,
+      0.5898923696346087
+     ],
+     [
+      0.354569097717925,
+      0.5898923696346087
+     ]
+    ],
+    "reasons": [
+     "Opening between two parked vehicles",
+     "Opening is only 7 px on screen"
+    ]
+   },
+   {
+    "regionId": "lane-181-south",
+    "streetLabel": "W 181st St at Audubon Ave",
+    "start": 0.8376494266498983,
+    "end": 1,
+    "slots": 1.3,
+    "spaces": 1,
+    "confidence": 0.325,
+    "status": "possible",
+    "boundedBothSides": false,
+    "polygon": [
+     [
+      0.37375929895350846,
+      0.5551566177857037
+     ],
+     [
+      0.4260694277875525,
+      0.5551566177857038
+     ],
+     [
+      0.432,
+      0.5330000000000001
+     ],
+     [
+      0.386,
+      0.5330000000000001
+     ]
+    ],
+    "reasons": [
+     "Opening at the edge of the visible lane",
+     "Opening is only 6 px on screen"
+    ]
+   }
+  ],
+  "roles": [
+   "parked",
+   "roadway",
+   "parked",
+   "roadway",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "roadway",
+   "parked",
+   "roadway"
+  ]
+ },
+ {
+  "cameraId": "1ccb8d7c-43d4-450e-b40c-79527766db75",
+  "frame": 1,
+  "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-1.jpg",
+  "status": "possible",
+  "vehicles": 14,
+  "parked": 9,
+  "gaps": [
+   {
+    "regionId": "lane-181-south",
+    "streetLabel": "W 181st St at Audubon Ave",
+    "start": 0.7798270542004501,
+    "end": 1,
+    "slots": 1.76,
+    "spaces": 1,
+    "confidence": 0.5,
+    "status": "possible",
+    "boundedBothSides": false,
+    "polygon": [
+     [
+      0.36854698830451227,
+      0.564591304115476
+     ],
+     [
+      0.42354408348086836,
+      0.564591304115476
+     ],
+     [
+      0.432,
+      0.5330000000000001
+     ],
+     [
+      0.386,
+      0.5330000000000001
+     ]
+    ],
+    "reasons": [
+     "Opening at the edge of the visible lane",
+     "Opening is only 9 px on screen",
+     "Also open in the previous check"
+    ]
+   }
+  ],
+  "roles": [
+   "parked",
+   "roadway",
+   "parked",
+   "parked",
+   "parked",
+   "roadway",
+   "parked",
+   "parked",
+   "roadway",
+   "parked",
+   "parked",
+   "parked",
+   "roadway",
+   "roadway"
+  ]
+ },
+ {
+  "cameraId": "1ccb8d7c-43d4-450e-b40c-79527766db75",
+  "frame": 2,
+  "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-2.jpg",
+  "status": "possible",
+  "vehicles": 13,
+  "parked": 9,
+  "gaps": [
+   {
+    "regionId": "lane-181-south",
+    "streetLabel": "W 181st St at Audubon Ave",
+    "start": 0.7654727401652875,
+    "end": 1,
+    "slots": 1.88,
+    "spaces": 2,
+    "confidence": 0.55,
+    "status": "possible",
+    "boundedBothSides": false,
+    "polygon": [
+     [
+      0.3671690038150783,
+      0.5670855628618544
+     ],
+     [
+      0.4228764553367627,
+      0.5670855628618544
+     ],
+     [
+      0.432,
+      0.5330000000000001
+     ],
+     [
+      0.386,
+      0.5330000000000001
+     ]
+    ],
+    "reasons": [
+     "Opening at the edge of the visible lane",
+     "Opening is only 10 px on screen",
+     "Also open in the previous check"
+    ]
+   }
+  ],
+  "roles": [
+   "roadway",
+   "roadway",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "roadway",
+   "parked",
+   "parked",
+   "roadway"
+  ]
+ },
+ {
+  "cameraId": "1ccb8d7c-43d4-450e-b40c-79527766db75",
+  "frame": 3,
+  "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-3.jpg",
+  "status": "possible",
+  "vehicles": 11,
+  "parked": 10,
+  "gaps": [
+   {
+    "regionId": "lane-181-south",
+    "streetLabel": "W 181st St at Audubon Ave",
+    "start": 0.8617492331351283,
+    "end": 1,
+    "slots": 1.11,
+    "spaces": 1,
+    "confidence": 0.377,
+    "status": "possible",
+    "boundedBothSides": false,
+    "polygon": [
+     [
+      0.37578436554335953,
+      0.5514910902761673
+     ],
+     [
+      0.4270505647012401,
+      0.5514910902761674
+     ],
+     [
+      0.432,
+      0.5330000000000001
+     ],
+     [
+      0.386,
+      0.5330000000000001
+     ]
+    ],
+    "reasons": [
+     "Opening at the edge of the visible lane",
+     "Opening is only 5 px on screen",
+     "Also open in the previous check"
+    ]
+   }
+  ],
+  "roles": [
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "roadway",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked"
+  ]
+ },
+ {
+  "cameraId": "1ccb8d7c-43d4-450e-b40c-79527766db75",
+  "frame": 4,
+  "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-4.jpg",
+  "status": "possible",
+  "vehicles": 8,
+  "parked": 7,
+  "gaps": [
+   {
+    "regionId": "lane-181-south",
+    "streetLabel": "W 181st St at Audubon Ave",
+    "start": 0.8575358925017219,
+    "end": 1,
+    "slots": 1.14,
+    "spaces": 1,
+    "confidence": 0.435,
+    "status": "possible",
+    "boundedBothSides": false,
+    "polygon": [
+     [
+      0.3754361761399911,
+      0.5521213400876905
+     ],
+     [
+      0.4268818682848794,
+      0.5521213400876906
+     ],
+     [
+      0.432,
+      0.5330000000000001
+     ],
+     [
+      0.386,
+      0.5330000000000001
+     ]
+    ],
+    "reasons": [
+     "Opening at the edge of the visible lane",
+     "Opening is only 5 px on screen",
+     "Also open in the previous check"
+    ]
+   }
+  ],
+  "roles": [
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "parked",
+   "roadway"
+  ]
+ }
+]
