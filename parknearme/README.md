@@ -146,7 +146,7 @@ npm run build
 npm run db:migrate:remote                       # = wrangler d1 migrations apply parknearme --remote
 npx wrangler deploy
 openssl rand -base64 32 | npx wrangler secret put ADMIN_TOKEN
-npm run vapid -- --json > vapid.json && npx wrangler secret bulk vapid.json && rm vapid.json
+node scripts/generate-vapid-keys.mjs --json | npx wrangler secret bulk   # reads stdin; nothing written to disk
 ```
 
 Change `VAPID_SUBJECT` in `wrangler.jsonc` to a `mailto:` address you own (push services use it as a contact).

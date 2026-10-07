@@ -5,3 +5,4 @@ dist
 worker-configuration.d.ts
 *.local
 .DS_Store
+vapid.json

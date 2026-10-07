@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Generates a VAPID key pair for Web Push (base64url, the format used by
 // web-push and @block65/webcrypto-web-push). No dependencies.
-//   npm run vapid            -> prints KEY=value lines
-//   npm run vapid -- --json  -> prints JSON (for `wrangler secret bulk`)
+//   npm run vapid                                                  -> prints KEY=value lines
+//   node scripts/generate-vapid-keys.mjs --json | npx wrangler secret bulk   -> stores them as Worker secrets
 
 import { createECDH } from 'node:crypto';
 

@@ -27,6 +27,7 @@ jobs:
     defaults:
       run:
         working-directory: parknearme
+        shell: bash # = bash -eo pipefail, so piped commands fail the step
     env:
       HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -68,6 +69,7 @@ jobs:
         run: |
           npx wrangler deploy 2>&1 | tee deploy.log
           url=$(grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' deploy.log | head -1 || true)
+          [ -n "$url" ] || { echo "::error::wrangler deploy printed no workers.dev URL"; exit 1; }
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Set secrets
@@ -77,7 +79,15 @@ jobs:
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
         run: |
-          existing=$(npx wrangler secret list --format json 2>/dev/null || echo '[]')
+          # Never treat a failed listing as "no secrets": that would regenerate the
+          # VAPID keys and silently break every existing push subscription.
+          existing=""
+          for i in 1 2 3; do
+            if existing=$(npx wrangler secret list --format json); then break; fi
+            existing=""
+            sleep $((i * 5))
+          done
+          [ -n "$existing" ] || { echo "::error::could not list Worker secrets"; exit 1; }
           has() { echo "$existing" | grep -q "\"name\": *\"$1\""; }
           if [ -n "$ADMIN_TOKEN" ]; then
             printf %s "$ADMIN_TOKEN" | npx wrangler secret put ADMIN_TOKEN
@@ -96,9 +106,17 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+          JOB_STATUS: ${{ job.status }}
         run: |
-          if [ "$HAS_CF" = "true" ]; then
-            echo "### ParkNearMe deployed: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$HAS_CF" = "true" ] && [ "$DEPLOY_OUTCOME" = "success" ] && [ -n "$DEPLOY_URL" ]; then
+            echo "### ParkNearMe deployed: $DEPLOY_URL" >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$HAS_CF" = "true" ]; then
+            echo "### ParkNearMe: deploy skipped or failed (outcome: ${DEPLOY_OUTCOME:-not run})" >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$JOB_STATUS" != "success" ]; then
+            echo "### ParkNearMe: checks failed" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "### ParkNearMe: checks passed, deploy skipped" >> "$GITHUB_STEP_SUMMARY"
             echo "Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repository secrets to deploy (see parknearme/README.md)." >> "$GITHUB_STEP_SUMMARY"
