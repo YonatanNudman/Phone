@@ -24,9 +24,12 @@
 //     reported when enough of it is seen free in THIS frame, so curb that is
 //     hidden right now is never reported from remembered evidence alone.
 //
-// It only says "the curb looks open". Hydrants, driveways and signs are known
-// only if the user marked them RESTRICTED during calibration.
+// It only says "the curb looks open". Hydrants are listed per lane (metres
+// along it) and block HYDRANT_CLEARANCE_M on each side; driveways and signs
+// are known only if marked RESTRICTED during calibration. "Long enough" means
+// long enough for CAR (see car.ts).
 
+import { CAR, feet, HYDRANT_CLEARANCE_M, M_TO_FT } from './car';
 import {
   applyHomography,
   clamp,
@@ -72,8 +75,10 @@ export interface GapOptions {
   fp: number;
   /** Free length needed when the gap is bounded by cars / continues out of view. */
   needBothM: number;
-  /** Free length needed when one end is a physical end (restricted zone). */
+  /** Free length needed when one end is a physical end (hydrant or restricted zone). */
   needOneM: number;
+  /** Curb kept clear on each side of a hydrant (m). */
+  hydrantClearanceM: number;
   /** Detector box-edge noise in pixels. */
   sigmaPx: number;
   /** Below this many pixels per metre along the curb, gaps are not reported. */
@@ -109,8 +114,9 @@ export const DEFAULT_GAP_OPTIONS: Omit<GapOptions, 'nowMs'> = {
   priorOcc: 0.75,
   tauSec: 600,
   fp: 0.03,
-  needBothM: 6.1,
-  needOneM: 5.6,
+  needBothM: CAR.needBetweenCarsM,
+  needOneM: CAR.needOneOpenEndM,
+  hydrantClearanceM: HYDRANT_CLEARANCE_M,
   sigmaPx: 1.5,
   minPxPerM: 1.3,
   goodPxPerM: 3.0,
@@ -589,7 +595,10 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
         zoneIntervals.push([0, 1]);
       } else if (iv) zoneIntervals.push(iv);
     }
-    const blocked = mergeIntervals(zoneIntervals);
+    // Padded by half a bin: bins are blocked by their midpoint, so a gap never starts inside the clearance.
+    const pad = o.hydrantClearanceM + lane.lengthM / lane.bins / 2;
+    const hydrants = (lane.region.hydrantsM ?? []).map((m): Interval => [(m - pad) / lane.lengthM, (m + pad) / lane.lengthM]);
+    const blocked = mergeIntervals([...zoneIntervals, ...hydrants]);
     const isBlocked = (u: number) => blocked.some(([a, b]) => u >= a && u <= b);
     const pOcc = Array.from(grid, sigmoid);
     const gaps: GapResult[] = [];
@@ -629,10 +638,12 @@ export function analyzeCurbGaps(objects: DetectedObject[], regions: Region[], op
 
       const reasons: string[] = [];
       const boundedBothSides = !atEdge && !startPhysical && !endPhysical;
+      const nearHydrant = hydrants.some(([h0, h1]) => (a - 0.5 / lane.bins >= h0 && a - 0.5 / lane.bins <= h1) || (b + 0.5 / lane.bins >= h0 && b + 0.5 / lane.bins <= h1));
       if (boundedBothSides) reasons.push('Opening between two parked vehicles');
       else if (atEdge) reasons.push('Opening runs to the edge of the visible lane; it may be longer');
+      else if (nearHydrant) reasons.push(`Opening next to a hydrant (keeps ${feet(o.hydrantClearanceM)} ft away)`);
       else reasons.push('Opening next to a no-parking zone');
-      reasons.push(`About ${lengthM.toFixed(1)} m of open curb (a car needs ~${needM.toFixed(1)} m)`);
+      reasons.push(`About ${feet(lengthM)} ft of open curb (your ${CAR.name} needs ~${feet(needM)} ft)`);
       if (farFactor < 1) reasons.push('Far from the camera; less precise');
       if (pFree < 0.75) reasons.push('Partly hidden or seen only briefly');
       const partlyHiddenNow = seenNow < o.likelySeenNow;
@@ -722,5 +733,46 @@ export function laneDiagnostics(region: Region, imageWidth = 352, imageHeight = 
     pxPerMetreStart: pxPerMetre(lane, 0.02),
     pxPerMetreEnd: pxPerMetre(lane, 0.98),
     calibrationSigmaM: calibrationSigma(region.points.map((p) => toPx(p, o)), lane.lengthM),
+  };
+}
+
+/** Where each hydrant on a parking lane is in the image (normalized): its curb point and its no-parking zone. */
+export function hydrantMarks(region: Region, clearanceM = HYDRANT_CLEARANCE_M): { point: Point; zone: Point[] }[] {
+  const o = { ...DEFAULT_GAP_OPTIONS, nowMs: 0 };
+  const lane = region.kind === 'parking' ? buildLane(region, o) : null;
+  if (!lane) return [];
+  const img = (u: number, v: number) => toNorm(applyHomography(lane.toImage, [u, v]), o);
+  return (region.hydrantsM ?? []).map((m) => {
+    const a = (m - clearanceM) / lane.lengthM;
+    const b = (m + clearanceM) / lane.lengthM;
+    return { point: img(m / lane.lengthM, 0), zone: [img(a, 0), img(a, 1), img(b, 1), img(b, 0)] };
+  });
+}
+
+export interface SpotFacts {
+  /** Open curb, in feet. */
+  openFt: number;
+  /** What the car needs here, in feet. */
+  needFt: number;
+  fits: boolean;
+  /** Distance from the spot to the nearest hydrant in feet, when one is within 15 ft; else null. */
+  hydrantFt: number | null;
+}
+
+/** Plain-language facts about a reported opening: does the car fit, and how close is a hydrant. */
+export function spotFacts(gap: { gapStart: number; gapEnd: number; lengthM?: number }, lane?: Region): SpotFacts {
+  const laneM = Math.max(1, Math.round(lane?.capacity ?? 6)) * DEFAULT_GAP_OPTIONS.slotM;
+  const startM = gap.gapStart * laneM;
+  const endM = gap.gapEnd * laneM;
+  const openM = gap.lengthM ?? endM - startM;
+  const distances = (lane?.hydrantsM ?? []).map((h) => (h < startM ? startM - h : h > endM ? h - endM : 0));
+  const nearestM = distances.length ? Math.min(...distances) : Infinity;
+  // Same rule as the analyzer: a hydrant zone at one end leaves room to swing in.
+  const needM = nearestM <= HYDRANT_CLEARANCE_M + DEFAULT_GAP_OPTIONS.binM * 2 ? CAR.needOneOpenEndM : CAR.needBetweenCarsM;
+  return {
+    openFt: feet(openM),
+    needFt: feet(needM),
+    fits: openM >= needM,
+    hydrantFt: nearestM <= 15 / M_TO_FT ? feet(nearestM) : null,
   };
 }

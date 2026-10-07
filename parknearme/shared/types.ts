@@ -49,6 +49,8 @@ export interface Region {
   streetLabel?: string;
   /** parking only: approximate location of the lane's midpoint, for the map marker. */
   anchor?: { lat: number; lon: number };
+  /** parking only: hydrants along the curb, in metres from the lane start (lane length = capacity x 6.1 m). */
+  hydrantsM?: number[];
 }
 
 export interface Calibration {

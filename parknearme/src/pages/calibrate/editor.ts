@@ -138,6 +138,7 @@ export function regionsForSave(regions: Region[]): Region[] {
       out.capacity = r.capacity ?? DEFAULT_CAPACITY;
       if (r.streetLabel?.trim()) out.streetLabel = r.streetLabel.trim().slice(0, 80);
       if (r.anchor) out.anchor = r.anchor;
+      if (r.hydrantsM?.length) out.hydrantsM = r.hydrantsM;
     }
     return out;
   });

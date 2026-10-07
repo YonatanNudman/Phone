@@ -48,6 +48,7 @@ const regionInput = z
     streetLabel: z.string().trim().max(80, 'At most 80 characters').optional(),
     capacity: z.int('Must be a whole number').min(1, 'At least 1').max(40, 'At most 40').optional(),
     anchor: z.object({ lat: z.number().min(-90).max(90), lon: z.number().min(-180).max(180) }).optional(),
+    hydrantsM: z.array(z.number().min(0, 'At least 0').max(250, 'At most 250')).max(10, 'At most 10 hydrants').optional(),
   })
   .superRefine((r, ctx) => {
     if (r.kind !== 'parking') return;
@@ -68,6 +69,7 @@ function normalizeRegion(r: z.output<typeof regionInput>): Region {
     capacity: r.capacity ?? DEFAULT_LANE_CAPACITY,
     ...(r.streetLabel ? { streetLabel: r.streetLabel } : {}),
     ...(r.anchor ? { anchor: r.anchor } : {}),
+    ...(r.hydrantsM?.length ? { hydrantsM: [...r.hydrantsM].sort((a, b) => a - b) } : {}),
   };
 }
 

@@ -214,6 +214,15 @@ describe('calibration', () => {
     await sync();
   });
 
+  it('ships the W 181st St lane with its hydrants and keeps hydrants when saving', async () => {
+    const seeded = await json<Calibration>(await h.call(`/api/cameras/${CAM.audubon}/calibration`));
+    expect(seeded.regions[0]).toMatchObject({ id: 'lane-181-south', hydrantsM: [5, 31.4] });
+    const lane = { id: 'lane', kind: 'parking', points: [[0.128, 1], [0.307, 1], [0.432, 0.533], [0.386, 0.533]], hydrantsM: [20, 4] };
+    const saved = await json<Calibration>(await post({ regions: [lane], referenceWidth: 352, referenceHeight: 240 }));
+    expect(saved.regions[0]!.hydrantsM).toEqual([4, 20]);
+    expect((await post({ regions: [{ ...lane, hydrantsM: [-1] }], referenceWidth: 352, referenceHeight: 240 })).status).toBe(400);
+  });
+
   it('rejects a non-convex (crossed) parking quad', async () => {
     const res = await post(lane([[0.1, 0.9], [0.4, 0.5], [0.4, 0.9], [0.1, 0.5]]));
     expect(res.status).toBe(400);

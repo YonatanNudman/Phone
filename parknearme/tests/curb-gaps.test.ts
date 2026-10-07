@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { CAR } from '../shared/car';
 import { analyzeCurbGaps, laneDiagnostics, type LaneStates } from '../shared/curb-gaps';
 import type { DetectedObject, Point, Region } from '../shared/types';
 import { CurbGapParkingDetector } from '../worker/analysis/detectors';
@@ -67,7 +68,30 @@ describe('curb-gap analysis on a synthetic street', () => {
   it('needs less room next to a physical end than between two cars', () => {
     const s = acrossStreet();
     const r = runFrames(Array(5).fill(gapCars(s)), [s.lane, s.zone('driveway', 'restricted', 10, 12.5)]);
-    for (const c of r.candidates) expect(c.needM).toBe(5.6);
+    for (const c of r.candidates) expect(c.needM).toBe(CAR.needOneOpenEndM);
+  });
+
+  it('keeps 5 ft clear on both sides of a hydrant', () => {
+    const s = acrossStreet();
+    // Hydrant in the middle of the 7.9 m opening: what is left on either side is too short.
+    const middle = runFrames(Array(5).fill(gapCars(s)), [{ ...s.lane, hydrantsM: [14.6] }]);
+    expect(middle.candidates).toHaveLength(0);
+    // Hydrant beside the car at 6.0-10.7 m: the opening starts 5 ft past it.
+    const r = runFrames(Array(5).fill(gapCars(s)), [{ ...s.lane, hydrantsM: [9.5] }]);
+    const gap = r.candidates[0]!;
+    expect(gap.start * s.lengthM).toBeGreaterThanOrEqual(9.5 + 1.52 - 0.01);
+    expect(gap.needM).toBe(CAR.needOneOpenEndM);
+    expect(gap.reasons.join(' ')).toContain('hydrant');
+  });
+
+  it(`only offers openings long enough for a ${CAR.name}`, () => {
+    const s = acrossStreet();
+    // Cars at 0.5 and 6.0 m, then an opening of `m` metres starting at 10.7 m.
+    const opening = (m: number) => [0.5, 6.0, 10.7 + m, 10.7 + m + 6].map((x) => s.car(x));
+    const inOpening = (r: ReturnType<typeof runFrames>) => r.candidates.filter((c) => c.start * s.lengthM < 13);
+    expect(inOpening(runFrames(Array(5).fill(opening(4.8)), [s.lane]))).toHaveLength(0);
+    const fits = inOpening(runFrames(Array(5).fill(opening(7.0)), [s.lane]))[0]!;
+    expect(fits.lengthM).toBeGreaterThan(CAR.needBetweenCarsM);
   });
 
   it('does not treat curb hidden behind a bus in the travel lane as free', () => {

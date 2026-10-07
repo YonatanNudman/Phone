@@ -12,6 +12,7 @@ import type { LatLon } from '../../shared/geo';
 import { cameraLabel } from '../lib/format';
 import { cameraIcon, cameraTitle, homeIcon, parkingIcon } from './mapIcons';
 import { candidateMarkerPositions, onMarkerActivate, type MarkerPosition } from './mapMarkers';
+import 'leaflet/dist/leaflet.css';
 import './map.css';
 
 export interface MapInsets {

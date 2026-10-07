@@ -4,7 +4,6 @@
 
 import { Lock, RefreshCw, ScanSearch, Trash } from 'lucide-react';
 import { useEffect, useReducer, useState } from 'react';
-import { Link } from 'wouter';
 import type { AppSettings, Calibration, CameraDetail, Detection } from '../../shared/types';
 import { formatMiles, type LatLon } from '../../shared/geo';
 import { FALLBACK_HOME } from '../../shared/settings';
@@ -26,7 +25,7 @@ import { RegionFields, RegionList, ToolPicker } from './calibrate/RegionPanel';
 import './calibrate/calibrate.css';
 
 export default function CalibratePage({ cameraId }: { cameraId: string }) {
-  const { isAdmin } = useAdmin();
+  const { isAdmin, unlock } = useAdmin();
   const camera = useResource<CameraDetail>(isAdmin ? cameraId : null, (signal) => getCamera(cameraId, signal));
   const calibration = useResource<Calibration | null>(isAdmin ? cameraId : null, (signal) => getCalibration(cameraId, signal));
   // Home is only needed for the anchor map; the fallback is fine until it loads.
@@ -35,17 +34,15 @@ export default function CalibratePage({ cameraId }: { cameraId: string }) {
   if (!isAdmin) {
     return (
       <div className="page cal-page">
-        <NavBar title="Calibrate" backLabel="Cameras" backTo="/cameras" />
+        <NavBar title="Calibrate" backLabel="Back" backTo="/" />
         <div className="cal-locked card">
           <div className="empty">
             <div className="empty-icon">
               <Lock size={24} aria-hidden="true" />
             </div>
-            <h2>Admin required</h2>
-            <p>Calibration changes how parking is detected for everyone. Unlock admin in Settings first.</p>
-            <Link href="/settings" className="btn btn-primary empty-cta">
-              Open Settings
-            </Link>
+            <h2>Admin token</h2>
+            <p>Changing the curb outline needs the admin token (the PARKNEARME_ADMIN_TOKEN GitHub secret).</p>
+            <UnlockForm onUnlock={unlock} />
           </div>
         </div>
       </div>
@@ -56,7 +53,7 @@ export default function CalibratePage({ cameraId }: { cameraId: string }) {
   if (error && (!camera.data || calibration.data === undefined)) {
     return (
       <div className="page cal-page">
-        <NavBar title="Calibrate" backLabel="Cameras" backTo="/cameras" />
+        <NavBar title="Calibrate" backLabel="Back" backTo="/" />
         <div className="cal-pad">
           <ErrorBanner
             title="Couldn't load this camera"
@@ -74,7 +71,7 @@ export default function CalibratePage({ cameraId }: { cameraId: string }) {
   if (!camera.data || calibration.data === undefined) {
     return (
       <div className="page cal-page" aria-busy="true">
-        <NavBar title="Calibrate" backLabel="Cameras" backTo="/cameras" />
+        <NavBar title="Calibrate" backLabel="Back" backTo="/" />
         <div className="cal-pad">
           <div className="skeleton" style={{ width: 220, height: 34 }} />
           <div className="skeleton" style={{ maxWidth: 880, aspectRatio: '352 / 240', marginTop: 20, borderRadius: 16 }} />
@@ -84,6 +81,43 @@ export default function CalibratePage({ cameraId }: { cameraId: string }) {
   }
 
   return <CalibrationEditor key={cameraId} camera={camera.data} initial={calibration.data} home={settings.data?.home ?? FALLBACK_HOME} />;
+}
+
+function UnlockForm({ onUnlock }: { onUnlock: (token: string) => Promise<void> }) {
+  const [token, setToken] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <form
+      className="unlock-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        setBusy(true);
+        setError(null);
+        onUnlock(token)
+          .catch((err: unknown) => setError(toApiError(err).message))
+          .finally(() => setBusy(false));
+      }}
+    >
+      <input
+        className="field"
+        type="password"
+        autoComplete="current-password"
+        aria-label="Admin token"
+        placeholder="Admin token"
+        value={token}
+        onChange={(e) => setToken(e.target.value)}
+      />
+      <button className="btn btn-primary" type="submit" disabled={busy || !token.trim()}>
+        {busy ? 'Checking…' : 'Unlock'}
+      </button>
+      {error && (
+        <p className="unlock-error" role="alert">
+          {error}
+        </p>
+      )}
+    </form>
+  );
 }
 
 function detailLines(details: unknown): string[] {

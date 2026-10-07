@@ -1,7 +1,8 @@
 // Sidebar: drawing tools, region list and the selected region's fields.
 
 import { Minus, MousePointer2, Plus, Trash } from 'lucide-react';
-import type { Dispatch } from 'react';
+import { useState, type Dispatch } from 'react';
+import { DEFAULT_GAP_OPTIONS } from '../../../shared/curb-gaps';
 import type { Region, RegionKind } from '../../../shared/types';
 import { REGION_RULE } from '../../../shared/types';
 import { formatMiles, haversineMiles, type LatLon } from '../../../shared/geo';
@@ -86,6 +87,34 @@ interface FieldsProps {
   home: LatLon;
 }
 
+/** Hydrant positions as typed text ("5, 31.4"); only valid numbers within the lane are kept. */
+function HydrantsField({ value, laneM, onChange }: { value: number[]; laneM: number; onChange: (m: number[] | undefined) => void }) {
+  const [text, setText] = useState(() => value.join(', '));
+  return (
+    <>
+      <label className="field-label" htmlFor="region-hydrants">
+        Hydrants <small>metres from the near end, e.g. 5, 31.4 · this lane is {laneM.toFixed(1)} m · 5 ft kept clear</small>
+      </label>
+      <input
+        id="region-hydrants"
+        className="field tabular"
+        inputMode="decimal"
+        placeholder="none"
+        value={text}
+        onChange={(e) => {
+          setText(e.target.value);
+          const m = e.target.value
+            .split(/[,\s]+/)
+            .filter(Boolean)
+            .map(Number)
+            .filter((n) => Number.isFinite(n) && n >= 0 && n <= 250);
+          onChange(m.length ? m.slice(0, 10) : undefined);
+        }}
+      />
+    </>
+  );
+}
+
 export function RegionFields({ region: r, dispatch, camera, home }: FieldsProps) {
   const update = (patch: Partial<Omit<Region, 'id' | 'kind'>>) => dispatch({ type: 'update', id: r.id, patch });
   const problem = regionProblem(r);
@@ -159,6 +188,8 @@ export function RegionFields({ region: r, dispatch, camera, home }: FieldsProps)
               <Plus size={16} aria-hidden="true" />
             </button>
           </div>
+
+          <HydrantsField key={r.id} value={r.hydrantsM ?? []} laneM={(capacity || 6) * DEFAULT_GAP_OPTIONS.slotM} onChange={(hydrantsM) => update({ hydrantsM })} />
 
           <span className="field-label">
             Map pin <small>optional · click where this lane is</small>

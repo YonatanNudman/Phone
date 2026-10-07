@@ -11,6 +11,8 @@ export interface FrameOverlay {
   objects?: DetectedObject[];
   candidates?: Pick<ParkingCandidate, 'polygon' | 'status'>[];
   regions?: Region[];
+  /** Hydrants on the curb and their no-parking zones (from hydrantMarks). */
+  hydrants?: { point: Point; zone: Point[] }[];
 }
 
 interface Props {
@@ -76,6 +78,12 @@ function OverlaySvg({ overlay }: { overlay: FrameOverlay }) {
           // Inline style (not the fill attribute) so it wins over the class's fill.
           style={{ stroke: REGION_STYLE[r.kind].color, fill: r.kind === 'ignore' ? `url(#${hatch})` : undefined }}
         />
+      ))}
+      {(overlay.hydrants ?? []).map((h, i) => (
+        <g key={`h${i}`} className="ov-hydrant">
+          <polygon points={pointsAttr(h.zone)} className="ov-hydrant-zone" />
+          <line x1={h.point[0]} y1={h.point[1]} x2={h.point[0]} y2={h.point[1] - 0.035} className="ov-hydrant-post" />
+        </g>
       ))}
       {(overlay.candidates ?? []).map((c, i) => (
         <polygon key={`c${i}`} points={pointsAttr(c.polygon)} className={`ov-gap ov-gap-${c.status}`} />

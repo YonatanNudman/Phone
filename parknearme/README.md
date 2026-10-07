@@ -1,10 +1,10 @@
 # ParkNearMe
 
-**Live parking near 403 Audubon.** A personal, mobile-first web app (installable PWA) that looks at public NYC DOT traffic cameras near 403 Audubon Ave, New York, NY 10033, and tells you whether a car-sized opening along the curb is currently visible.
+**Live parking near 403 Audubon.** A personal, one-screen web app (installable PWA) that looks at public NYC DOT traffic cameras near 403 Audubon Ave, New York, NY 10033, and answers one question: is there an open spot my 2016 Ford Escape fits in, at least 5 ft from a hydrant? Below the answer is the live camera, with the spot and hydrants marked, so you can check for yourself.
 
 > ParkNearMe shows **possible parking**, never "legal parking guaranteed". A visibly empty curb can be a hydrant, driveway, bus stop, crosswalk or a no-parking zone. Always check the signs.
 
-- Frontend: React 19 + TypeScript + Vite 8, Leaflet + OpenStreetMap, Lucide icons. iOS-style UI, light/dark, safe areas, PWA.
+- Frontend: React 19 + TypeScript + Vite 8, Lucide icons. One screen, light/dark, safe areas, PWA. (Leaflet is only used on the calibration page.)
 - Backend: one Cloudflare Worker (Hono) that also serves the SPA's static assets. D1 holds cameras, calibrations, detections and settings. Workers AI does vehicle detection. A cron trigger runs background checks and alerts.
 - Camera data: NYC TMC public endpoints, proxied through the Worker. Frames are analyzed in memory and never stored.
 
@@ -42,19 +42,23 @@ NYC TMC camera ──► Worker /api/cameras/:id/image  (same-origin proxy, 3 s 
            (pixels per metre along the curb) × calibration quality; optional VLM second opinion
                        │
                        ▼
-       D1: detections + parking_candidates  ──► /api/parking/current ──► map + bottom sheet
+       D1: detections + parking_candidates  ──► /api/parking/current ──► the one-screen answer
                                              └─► Web Push alert (deduped)
 ```
 
 The parking verdict is behind a `ParkingDetector` interface (`worker/analysis/detector.ts`). `CurbGapParkingDetector` composes any `VehicleDetector` with the gap analysis, so a different model or provider can be swapped in without touching the rest of the app.
 
-### Status colors
-| Color | Status | Meaning |
-|---|---|---|
-| Green | `likely_available` | Opening ≥ 1 car slot, confidence ≥ your threshold (default 60%) |
-| Yellow | `possible` | Opening found, lower confidence (small, far away, at the edge of view, or partly hidden) |
-| Red | `none` | Calibrated lane visible, fresh frame, no opening |
-| Gray | `unknown` | Stale/offline camera, not calibrated, analysis failed, or no cars detected at all (usually darkness or glare) |
+### Your car and hydrants
+- **Car fit** (`shared/car.ts`): a 2016 Ford Escape is 178.1 in (4.52 m) long. An opening counts only if it is about 5.7 m (19 ft) long between two cars, or 5.1 m (17 ft) when one end is a hydrant zone or corner, which leaves room to swing in. Lengths come from the lane's perspective mapping (homography), so far-away openings are measured less precisely and get lower confidence.
+- **Hydrants**: each parking lane lists its hydrants in metres from the lane start (`hydrantsM`). The analyzer never offers curb within 5 ft (1.52 m) of a hydrant. NYC's actual rule is 15 ft; 5 ft is a deliberate choice. The seeded W 181st St lane has hydrants at ~5 m and ~31 m, from NYC DEP hydrant data projected onto the NYC street centerline (see `migrations/0007_seed_hydrants.sql`).
+
+### The answer
+| Shown | Meaning |
+|---|---|
+| **Yes, N open spots** (green) | A confident opening that fits the car |
+| **Maybe. Check the camera** (orange) | An opening that is uncertain (small, far, partly hidden) or a bit tight |
+| **No open spots** (red) | Lane visible in a fresh frame, no opening |
+| **Can't tell right now** (gray) | Camera offline or frozen, analysis failed, or no cars seen at all (usually darkness or glare) |
 
 Detections older than 5 minutes, or taken from a frame that wasn't live, never count as current parking.
 
@@ -64,7 +68,7 @@ Detections older than 5 minutes, or taken from a frame that wasn't live, never c
 
 ```
 parknearme/
-  src/                 React app (map, camera sheet, /cameras, /calibrate/:id, /settings)
+  src/                 React app: the one screen (/), plus /calibrate/:id to fix the curb outline
   public/              manifest, icons, service worker (sw.js)
   worker/              Cloudflare Worker: Hono API, D1 repository, cron, push, analysis
     analysis/          ParkingDetector + VehicleDetector implementations, VLM verifier
@@ -164,21 +168,20 @@ Observability is enabled in `wrangler.jsonc`, so logs are also under Workers & P
 
 ## Using it
 
-1. Open the deployed URL on your phone → Share → **Add to Home Screen** (required for notifications on iPhone).
-2. **Settings → Admin**: paste the admin token once (stored only on that device).
-3. **Cameras** (`/cameras`): every camera within 1 mile, sorted by distance from 403 Audubon, with its live frame. Mark each one *Useful for parking?* YES / NO / UNKNOWN, and press **Analyze** to see what the detector finds.
-4. **Calibrate** (`/calibrate/:id`, desktop recommended): draw the curb **parking lane** as 4 points (near-curb, near-traffic, far-traffic, far-curb). Set how many cars fit (tick marks preview each car slot). Mark hydrants, driveways, crosswalks and bus stops as **RESTRICTED**, and anything irrelevant as **IGNORE**. Optionally mark the roadway, and place the lane on the mini-map. Use **Test analysis** to check the result.
-5. The main map then checks watched (YES), calibrated cameras when you open the app and on refresh. With alerts on, the cron also checks them every 2 minutes.
+1. Open the deployed URL on your phone → Share → **Add to Home Screen**.
+2. That's it: the screen says whether there's a spot, whether your Escape fits, how far the hydrant is, and shows the live camera. **Check again** re-checks now; it also re-checks every minute while open.
 
-The camera TMC calls "Audobon Ave @ W 181 ST" comes pre-marked as useful, with a starting calibration from `seed/calibrations.json` (migration `0002`). It looks east along W 181st St, at the north curb between Audubon and Amsterdam. Cameras get re-aimed, so re-check it in `/calibrate`.
+The camera TMC calls "Audobon Ave @ W 181 ST" comes pre-set: it looks east along W 181st St at the north curb between Audubon and Amsterdam, with that curb lane and its hydrants already marked (`seed/calibrations.json`, migrations `0002` and `0007`). If the camera gets re-aimed, fix the outline at `/calibrate/1ccb8d7c-43d4-450e-b40c-79527766db75` (desktop recommended; it asks for the admin token, the `PARKNEARME_ADMIN_TOKEN` secret). Draw the lane as 4 points (near-curb, near-traffic, far-traffic, far-curb), set how many cars fit, and mark driveways or bus stops as **RESTRICTED**.
 
-### Admin protection
-Read-only views are public, so anyone with the URL can see the map. Everything that changes state or costs money is protected:
+### Admin token (behind the scenes)
+The main screen needs no token; anyone with the URL can see it. Everything that changes state or costs money is protected:
 - calibration, usefulness, settings, catalog resync, push subscribe/test, and forced analysis of any camera require `Authorization: Bearer <ADMIN_TOKEN>` (constant-time comparison).
 - Public analysis is limited to watched cameras and is rate-limited per camera by `analysisCooldownSeconds` (default 45 s). The slot is claimed atomically in D1 before any frame fetch or AI call, and concurrent requests in one isolate share a single run. That caps AI spend and upstream DOT requests no matter who calls it. A caller that loses the race gets the latest stored result, or HTTP 429 `analysis_in_progress` if there is none yet.
 - For stronger privacy, put the whole Worker behind **Cloudflare Access** (Zero Trust → Access → Applications → self-hosted, your email). It's free for up to 50 users and needs no code changes. Note that the Cache API is unavailable behind Access, so frames are simply fetched uncached.
 
 ### Notifications
+The simplified app has no alerts switch; the backend support below is still there if you want it back.
+
 Web Push uses VAPID with `aes128gcm` encryption, via `@block65/webcrypto-web-push`, which uses WebCrypto only. Payloads use the Declarative Web Push format, which iOS 18.4+ shows without waking the service worker. On iPhone, push only works for the **Home Screen app** on iOS 16.4+. An alert fires when all of these hold:
 - notifications are on
 - the candidate is within your radius

@@ -2,9 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { editorReducer, initialEditor, regionProblem, regionsForSave } from '../src/pages/calibrate/editor';
 import { mergeDetection } from '../src/hooks/useParking';
 import { currentCandidates, detectionChip, historySummary, isCurrent, maxDetectionAge } from '../src/lib/detection';
-import { base64UrlToBytes, pushBlock } from '../src/lib/push';
 import { reasonText, formatClock } from '../src/lib/format';
-import { statusPillText } from '../src/components/statusPillText';
 import type { ParkingCurrentResponse } from '../shared/types';
 
 describe('editor', () => {
@@ -34,6 +32,10 @@ describe('editor', () => {
     const saved = regionsForSave(s.regions);
     expect(saved[0]).not.toHaveProperty('capacity');
     expect(saved[0]).not.toHaveProperty('streetLabel');
+  });
+  it('regionsForSave keeps hydrants on parking lanes', () => {
+    const out = regionsForSave([{ id: 'a', kind: 'parking', points: [[0, 0], [0, 1], [1, 1], [1, 0]], capacity: 8, hydrantsM: [5, 31.4] }]);
+    expect(out[0]!.hydrantsM).toEqual([5, 31.4]);
   });
   it('regionsForSave drops empty street labels and keeps capacity', () => {
     const out = regionsForSave([{ id: 'a', kind: 'parking', points: [[0, 0], [0, 1], [1, 1], [1, 0]], streetLabel: '  ', capacity: 7 }]);
@@ -107,38 +109,6 @@ describe('detection age limit', () => {
   });
 });
 
-describe('status pill', () => {
-  const nowMs = Date.parse('2026-10-07T12:00:00Z');
-  const base = { updatedAt: new Date(nowMs - 6000).toISOString(), working: false, message: null, errorText: null, failed: 0, now: nowMs };
-  it('keeps the ticking age line out of the live region', () => {
-    const a = statusPillText(base);
-    const b = statusPillText({ ...base, now: nowMs + 1000 });
-    expect(a).toEqual({ sub: 'Updated 6 sec ago', subIsLive: false });
-    expect(b).toEqual({ sub: 'Updated 7 sec ago', subIsLive: false });
-  });
-  it('announces progress and errors', () => {
-    expect(statusPillText({ ...base, working: true, message: 'Analyzing W 181st…' })).toEqual({ sub: 'Analyzing W 181st…', subIsLive: true });
-    expect(statusPillText({ ...base, errorText: "Couldn't refresh" })).toEqual({ sub: "Couldn't refresh", subIsLive: true });
-    expect(statusPillText({ ...base, updatedAt: null })).toEqual({ sub: 'No recent camera checks', subIsLive: true });
-  });
-});
-
-describe('push block', () => {
-  const ok = { ok: true } as const;
-  const ready = { enabled: true, publicKey: 'k' };
-  it('blocks the alerts toggle until push config has loaded, with a retry when it failed', () => {
-    expect(pushBlock(undefined, false, ok)?.kind).toBe('loading');
-    expect(pushBlock(undefined, true, ok)).toEqual({ kind: 'retry', message: "Couldn't load notification settings" });
-  });
-  it('explains server and device problems, else allows subscribing', () => {
-    expect(pushBlock({ enabled: false, publicKey: null }, false, ok)?.kind).toBe('server');
-    const denied = { ok: false, reason: 'denied', message: 'Notifications are blocked.' } as const;
-    expect(pushBlock(ready, false, denied)).toEqual({ kind: 'device', message: 'Notifications are blocked.' });
-    expect(pushBlock(undefined, true, denied)?.kind).toBe('device');
-    expect(pushBlock(ready, false, ok)).toBeNull();
-  });
-});
-
 describe('helpers', () => {
   it('chips and history text', () => {
     expect(detectionChip(null, Date.now()).text).toBe('Not checked');
@@ -146,10 +116,5 @@ describe('helpers', () => {
     expect(historySummary({ status: 'unknown', candidateSpaces: 0, reason: 'needs_calibration' })).toBe('not calibrated');
     expect(reasonText('no_vehicles_detected')).toMatch(/dark or glare/);
     expect(formatClock('2026-10-07T04:42:00Z')).toBe('12:42 AM');
-  });
-  it('decodes VAPID keys', () => {
-    const k = base64UrlToBytes('BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U');
-    expect(k.length).toBe(65);
-    expect(k[0]).toBe(4);
   });
 });

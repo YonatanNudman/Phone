@@ -89,6 +89,20 @@
   stroke: #ffcc00;
 }
 
+.ov-hydrant-zone {
+  fill: rgba(255, 59, 48, 0.3);
+  stroke: #ff3b30;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.ov-hydrant-post {
+  stroke: #ff3b30;
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+}
+
 .ov-box {
   fill: none;
   stroke-width: 1.75;
