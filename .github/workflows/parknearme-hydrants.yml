@@ -1,22 +1,24 @@
 name: ParkNearMe hydrant lookup
-# One-off: print NYC DEP hydrants and the W 181st St centerline near Audubon/Amsterdam.
+# One-off: W 181st St geometry near Audubon/Amsterdam (OSM + NYC centerline).
 on: workflow_dispatch
 jobs:
   lookup:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "== hydrants =="
-          curl -sS -G "https://data.cityofnewyork.us/resource/5bgh-vtsn.json" \
-            --data-urlencode '$where=within_box(the_geom, 40.8515, -73.9345, 40.8480, -73.9280)' \
-            --data-urlencode '$limit=200' | python3 -c "import sys,json;d=json.load(sys.stdin);print(len(d));[print(json.dumps(x)) for x in d]"
-          echo "== osm =="
-          curl -sS https://overpass-api.de/api/interpreter --data-urlencode 'data=[out:json];way["name"~"181st Street"](40.848,-73.935,40.852,-73.928);out geom;node(w);way(bn)["name"~"Audubon|Amsterdam|St. Nicholas"];out tags;' | python3 -c "
-          import sys,json
-          d=json.load(sys.stdin)
+          set +e
+          echo "== catalog =="
+          curl -sS "https://api.us.socrata.com/api/catalog/v1?domains=data.cityofnewyork.us&q=centerline&limit=8" | python3 -c "import sys,json;[print(r['resource']['id'],r['resource']['name']) for r in json.load(sys.stdin)['results']]"
+          for ep in https://overpass-api.de/api/interpreter https://overpass.kumi.systems/api/interpreter https://maps.mail.ru/osm/tools/overpass/api/interpreter; do
+            echo "== osm $ep =="
+            curl -sS -m 60 "$ep" --data-urlencode 'data=[out:json][timeout:50];(way["highway"]["name"~"181"](40.8475,-73.9350,40.8500,-73.9290);way["highway"]["name"~"Audubon|Amsterdam"](40.8475,-73.9350,40.8500,-73.9290);node["emergency"="fire_hydrant"](40.8475,-73.9350,40.8500,-73.9290);way["footway"="crossing"](40.8480,-73.9335,40.8495,-73.9310););out geom;' > osm.json
+            head -c 300 osm.json; echo
+            python3 - <<'PY' && break
+          import json
+          d=json.load(open('osm.json'))
           for e in d['elements']:
-            print(e['type'], e.get('id'), e.get('tags',{}).get('name'), [(round(g['lat'],6),round(g['lon'],6)) for g in e.get('geometry',[])])"
-          echo "== intersections =="
-          curl -sS https://overpass-api.de/api/interpreter --data-urlencode 'data=[out:json];way["name"="West 181st Street"](40.848,-73.935,40.852,-73.928)->.a;way["name"~"^(Audubon Avenue|Amsterdam Avenue)$"](40.846,-73.936,40.854,-73.926)->.b;node(w.a)->.na;node(w.b)->.nb;node.na.nb;out;way(bn.na);out tags;' | python3 -c "
-          import sys,json
-          for e in json.load(sys.stdin)['elements']: print(e['type'], e.get('lat'), e.get('lon'), e.get('tags',{}).get('name'))"
+            t=e.get('tags',{})
+            g=[(round(p['lat'],6),round(p['lon'],6)) for p in e.get('geometry',[])] or [(e.get('lat'),e.get('lon'))]
+            print(e['type'],e['id'],t.get('name'),t.get('highway'),t.get('footway'),t.get('emergency'),t.get('width'),t.get('lanes'),g)
+          PY
+          done
