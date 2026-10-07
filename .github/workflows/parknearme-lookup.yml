@@ -1,0 +1,32 @@
+name: ParkNearMe data lookup
+# One-off: where parking-locator is deployed, and NYC street-cleaning sign data.
+on: workflow_dispatch
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          set +e
+          for u in https://parking-locator.excel-capital.workers.dev https://parking-locator.nudman-yonatan.workers.dev; do
+            echo "== $u"; curl -sS -m 15 -o /dev/null -w "root %{http_code}\n" "$u/"; curl -sS -m 15 -w "\napi %{http_code}\n" "$u/api/spot" | head -c 300; echo
+          done
+          echo "== catalog"
+          for q in "parking regulation" "alternate side parking" "street sweeping" "parking signs"; do
+            curl -sS -G "https://api.us.socrata.com/api/catalog/v1" --data-urlencode "domains=data.cityofnewyork.us" --data-urlencode "q=$q" --data-urlencode "limit=6" | python3 -c "import sys,json;[print('  ',r['resource']['id'],r['resource']['name'],'|',(r['resource'].get('columns_field_name') or [])[:25]) for r in json.load(sys.stdin)['results']]"
+          done
+          echo "== nfid-uabd sample"
+          curl -sS -G "https://data.cityofnewyork.us/resource/nfid-uabd.json" --data-urlencode '$limit=3' | head -c 1500; echo
+          echo "== audubon broom signs"
+          curl -sS -G "https://data.cityofnewyork.us/resource/nfid-uabd.json" --data-urlencode "\$where=upper(on_street) like '%AUDUBON%'" --data-urlencode '$limit=5000' > aud.json
+          python3 - <<'PY'
+          import json, collections
+          d = json.load(open('aud.json'))
+          if isinstance(d, dict): print(d); raise SystemExit
+          print('rows', len(d)); print('keys', sorted(d[0].keys()) if d else None)
+          c = collections.Counter()
+          for r in d:
+            desc = r.get('sign_description') or r.get('signdesc') or ''
+            if 'BROOM' in desc.upper() or 'SANITATION' in desc.upper():
+              c[(r.get('from_street'), r.get('to_street'), r.get('side_of_street'), desc)] += 1
+          for k, v in sorted(c.items(), key=lambda kv: str(kv[0]))[:80]: print(v, k)
+          PY
