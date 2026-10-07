@@ -1,18 +1,17 @@
-name: ParkNearMe data lookup
-# One-off: is parking-locator in this Cloudflare account, and where is it served.
+name: ParkNearMe street cleaning data
+# Fetches NYC street-cleaning signs near home and commits them (runs where NYC Open Data is reachable).
 on: workflow_dispatch
+permissions:
+  contents: write
 jobs:
-  lookup:
+  fetch:
     runs-on: ubuntu-latest
-    env:
-      CF: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      ACC: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
+      - uses: actions/checkout@v4
+      - run: pip install pyproj
+      - run: python3 parknearme/scripts/fetch_street_cleaning.py parknearme/data/street-cleaning.json
       - run: |
-          set +e
-          api() { curl -sS -H "Authorization: Bearer $CF" "https://api.cloudflare.com/client/v4/accounts/$ACC$1"; }
-          echo "== subdomain"; api /workers/subdomain | python3 -c "import sys,json;print(json.load(sys.stdin).get('result'))"
-          echo "== scripts"; api /workers/scripts | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('success'),[ (s['id'],s.get('modified_on')) for s in d.get('result') or []],d.get('errors'))"
-          echo "== kv"; api "/storage/kv/namespaces?per_page=100" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('success'),[(n['id'][:8],n['title']) for n in d.get('result') or []],d.get('errors'))"
-          echo "== custom domains"; api /workers/domains | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('success'),[(x.get('hostname'),x.get('service')) for x in d.get('result') or []],d.get('errors'))"
-          echo "== parking-locator workers.dev"; api /workers/scripts/parking-locator/subdomain | python3 -c "import sys,json;print(json.load(sys.stdin))"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add parknearme/data/street-cleaning.json
+          git commit -m "Street-cleaning signs near home [skip ci]" && git push || echo "no changes"
