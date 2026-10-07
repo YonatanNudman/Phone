@@ -55,9 +55,12 @@ for r in rows:
     lon, lat = to_ll.transform(x, y)
     face = faces.setdefault(key, {"id": key, "street": street, "from": lo, "to": hi, "side": side, "rules": [], "points": []})
     rule = clean_rule(r.get("sign_description", ""))
-    if rule and rule not in face["rules"]:
+    if not rule:
+        continue
+    if rule not in face["rules"]:
         face["rules"].append(rule)
-    face["points"].append([round(lat, 6), round(lon, 6)])
+    # Each sign: [lat, lon, index into rules]. Long blocks can change rules partway.
+    face["points"].append([round(lat, 6), round(lon, 6), face["rules"].index(rule)])
 
 out = {
     "source": "NYC DOT Parking Regulation Locations and Signs (data.cityofnewyork.us, nfid-uabd), broom-symbol signs",
