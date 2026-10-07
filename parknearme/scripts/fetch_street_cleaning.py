@@ -65,6 +65,8 @@ out = {
     "home": {"lat": LAT, "lon": LON, "radiusFt": RADIUS_FT},
     "faces": sorted(faces.values(), key=lambda f: f["id"]),
 }
+import os
+os.makedirs(os.path.dirname(OUT) or ".", exist_ok=True)
 with open(OUT, "w") as fh:
     json.dump(out, fh, indent=1)
 print(f"{len(out['faces'])} block faces -> {OUT}", file=sys.stderr)
