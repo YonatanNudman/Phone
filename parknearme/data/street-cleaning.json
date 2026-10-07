@@ -1,0 +1,6500 @@
+{
+ "source": "NYC DOT Parking Regulation Locations and Signs (data.cityofnewyork.us, nfid-uabd), broom-symbol signs",
+ "generatedAt": "2026-10-07T14:25:12Z",
+ "home": {
+  "lat": 40.851304,
+  "lon": -73.930153,
+  "radiusFt": 2200.0
+ },
+ "faces": [
+  {
+   "id": "AMSTERDAM AVENUE|WEST 177 STREET|WEST 178 STREET|W",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 177 STREET",
+   "to": "WEST 178 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) MONDAY THURSDAY 7:30AM-8AM"
+   ],
+   "points": [
+    [
+     40.845651,
+     -73.932813
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 179 STREET|WEST 180 STREET|W",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84705,
+     -73.931669
+    ],
+    [
+     40.847393,
+     -73.93142
+    ],
+    [
+     40.847152,
+     -73.93172
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 182 STREET|WEST 183 STREET|W",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.848938,
+     -73.930413
+    ],
+    [
+     40.849212,
+     -73.930214
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 182 STREET|WEST 186 STREET|E",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 186 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851185,
+     -73.928661
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 183 STREET|WEST 184 STREET|W",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.849429,
+     -73.930058
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 186 STREET|WEST 187 STREET|E",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851324,
+     -73.928556
+    ],
+    [
+     40.851588,
+     -73.928357
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 187 STREET|WEST 188 STREET|E",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852304,
+     -73.927706
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 187 STREET|WEST 188 STREET|W",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85198,
+     -73.928191
+    ],
+    [
+     40.852216,
+     -73.928017
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 188 STREET|WEST 189 STREET|W",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852743,
+     -73.927633
+    ],
+    [
+     40.85294,
+     -73.927488
+    ]
+   ]
+  },
+  {
+   "id": "AMSTERDAM AVENUE|WEST 189 STREET|WEST 190 STREET|W",
+   "street": "AMSTERDAM AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853226,
+     -73.927278
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|FORT GEORGE AVENUE|WEST 190 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "FORT GEORGE AVENUE",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856454,
+     -73.927539
+    ],
+    [
+     40.856023,
+     -73.927666
+    ],
+    [
+     40.856868,
+     -73.92748
+    ],
+    [
+     40.855754,
+     -73.927745
+    ],
+    [
+     40.856805,
+     -73.927426
+    ],
+    [
+     40.855433,
+     -73.927843
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|FORT GEORGE AVENUE|WEST 193 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "FORT GEORGE AVENUE",
+   "to": "WEST 193 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856648,
+     -73.926826
+    ],
+    [
+     40.856453,
+     -73.926816
+    ],
+    [
+     40.856829,
+     -73.92696
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 177 STREET|WEST 178 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 177 STREET",
+   "to": "WEST 178 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.846395,
+     -73.933961
+    ],
+    [
+     40.84619,
+     -73.934114
+    ],
+    [
+     40.846596,
+     -73.933813
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 177 STREET|WEST 178 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 177 STREET",
+   "to": "WEST 178 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.846308,
+     -73.9342
+    ],
+    [
+     40.846489,
+     -73.93407
+    ],
+    [
+     40.846719,
+     -73.9339
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 178 STREET|WEST 179 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 178 STREET",
+   "to": "WEST 179 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847317,
+     -73.933288
+    ],
+    [
+     40.846788,
+     -73.93365
+    ],
+    [
+     40.847057,
+     -73.933477
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 178 STREET|WEST 179 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 178 STREET",
+   "to": "WEST 179 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847106,
+     -73.933617
+    ],
+    [
+     40.84737,
+     -73.933426
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 179 STREET|WEST 180 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.847822,
+     -73.932919
+    ],
+    [
+     40.847561,
+     -73.933107
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 179 STREET|WEST 180 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848006,
+     -73.932876
+    ],
+    [
+     40.847745,
+     -73.933147
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 180 STREET|WEST 181 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 180 STREET",
+   "to": "WEST 181 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) SATURDAY 8AM-8:30AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848343,
+     -73.932626
+    ],
+    [
+     40.848088,
+     -73.932727
+    ],
+    [
+     40.848283,
+     -73.932669
+    ],
+    [
+     40.848505,
+     -73.932506
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 180 STREET|WEST 181 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 180 STREET",
+   "to": "WEST 181 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) SATURDAY 8:30AM-9AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848527,
+     -73.932492
+    ],
+    [
+     40.848253,
+     -73.932695
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 181 STREET|WEST 182 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 182 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849032,
+     -73.932032
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 181 STREET|WEST 182 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 182 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849202,
+     -73.932083
+    ],
+    [
+     40.848931,
+     -73.932282
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 182 STREET|WEST 183 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.849712,
+     -73.931536
+    ],
+    [
+     40.849485,
+     -73.931703
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 182 STREET|WEST 183 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84963,
+     -73.931771
+    ],
+    [
+     40.849874,
+     -73.931594
+    ],
+    [
+     40.849457,
+     -73.931895
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 183 STREET|WEST 184 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850143,
+     -73.931312
+    ],
+    [
+     40.850258,
+     -73.931229
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 183 STREET|WEST 184 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85008,
+     -73.931438
+    ],
+    [
+     40.850357,
+     -73.931239
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 184 STREET|WEST 185 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 185 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850942,
+     -73.930729
+    ],
+    [
+     40.85056,
+     -73.930917
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 184 STREET|WEST 185 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 185 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850807,
+     -73.93091
+    ],
+    [
+     40.850747,
+     -73.930953
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 185 STREET|WEST 186 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 185 STREET",
+   "to": "WEST 186 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851575,
+     -73.930175
+    ],
+    [
+     40.851221,
+     -73.930436
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 185 STREET|WEST 186 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 185 STREET",
+   "to": "WEST 186 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851743,
+     -73.930222
+    ],
+    [
+     40.851474,
+     -73.930421
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 186 STREET|WEST 187 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852118,
+     -73.929777
+    ],
+    [
+     40.852346,
+     -73.929611
+    ],
+    [
+     40.851822,
+     -73.930081
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 186 STREET|WEST 187 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852033,
+     -73.929926
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 187 STREET|WEST 188 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852936,
+     -73.92918
+    ],
+    [
+     40.852519,
+     -73.929484
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 187 STREET|WEST 188 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852736,
+     -73.929502
+    ],
+    [
+     40.852925,
+     -73.929361
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 188 STREET|WEST 189 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853183,
+     -73.928999
+    ],
+    [
+     40.853422,
+     -73.928829
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 188 STREET|WEST 189 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853471,
+     -73.928959
+    ],
+    [
+     40.85368,
+     -73.92881
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 189 STREET|WEST 190 STREET|E",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854099,
+     -73.928333
+    ],
+    [
+     40.85377,
+     -73.928572
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 189 STREET|WEST 190 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854168,
+     -73.928452
+    ],
+    [
+     40.853924,
+     -73.928546
+    ],
+    [
+     40.854042,
+     -73.928543
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 190 STREET|WEST 191 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 190 STREET",
+   "to": "WEST 191 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.854966,
+     -73.927869
+    ],
+    [
+     40.854618,
+     -73.928119
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 191 STREET|WEST 192 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 191 STREET",
+   "to": "WEST 192 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.85526,
+     -73.927648
+    ],
+    [
+     40.855595,
+     -73.927438
+    ],
+    [
+     40.855035,
+     -73.927822
+    ]
+   ]
+  },
+  {
+   "id": "AUDUBON AVENUE|WEST 192 STREET|WEST 193 STREET|W",
+   "street": "AUDUBON AVENUE",
+   "from": "WEST 192 STREET",
+   "to": "WEST 193 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856198,
+     -73.926888
+    ],
+    [
+     40.855789,
+     -73.927181
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|BROADWAY|WEST 187 STREET|W",
+   "street": "BENNETT AVENUE",
+   "from": "BROADWAY",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854756,
+     -73.934445
+    ],
+    [
+     40.856013,
+     -73.933583
+    ],
+    [
+     40.856885,
+     -73.932986
+    ],
+    [
+     40.85626,
+     -73.933413
+    ],
+    [
+     40.855107,
+     -73.934202
+    ],
+    [
+     40.854487,
+     -73.934626
+    ],
+    [
+     40.854586,
+     -73.934561
+    ],
+    [
+     40.855472,
+     -73.933952
+    ],
+    [
+     40.855766,
+     -73.933753
+    ],
+    [
+     40.85652,
+     -73.933236
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 181 STREET|WEST 184 STREET|E",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 184 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850701,
+     -73.936495
+    ],
+    [
+     40.851971,
+     -73.935846
+    ],
+    [
+     40.85106,
+     -73.936314
+    ],
+    [
+     40.851337,
+     -73.936172
+    ],
+    [
+     40.851647,
+     -73.936013
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 181 STREET|WEST 184 STREET|W",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 184 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852009,
+     -73.93594
+    ],
+    [
+     40.851389,
+     -73.936259
+    ],
+    [
+     40.851683,
+     -73.936107
+    ],
+    [
+     40.852281,
+     -73.935806
+    ],
+    [
+     40.851093,
+     -73.936411
+    ],
+    [
+     40.850805,
+     -73.93656
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 184 STREET|WEST 186 STREET|E",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 186 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852717,
+     -73.935466
+    ],
+    [
+     40.852399,
+     -73.935626
+    ],
+    [
+     40.853222,
+     -73.935205
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 184 STREET|WEST 186 STREET|W",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 186 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853145,
+     -73.935361
+    ],
+    [
+     40.85339,
+     -73.935238
+    ],
+    [
+     40.853033,
+     -73.935419
+    ],
+    [
+     40.852816,
+     -73.935531
+    ],
+    [
+     40.852583,
+     -73.935651
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 186 STREET|WEST 187 STREET|E",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853623,
+     -73.934999
+    ],
+    [
+     40.853829,
+     -73.934894
+    ],
+    [
+     40.854237,
+     -73.934688
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 186 STREET|WEST 187 STREET|W",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85356,
+     -73.935151
+    ],
+    [
+     40.854449,
+     -73.934695
+    ],
+    [
+     40.853963,
+     -73.934941
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 187 STREET|WEST 189 STREET|E",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 189 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854682,
+     -73.934503
+    ],
+    [
+     40.855387,
+     -73.934271
+    ],
+    [
+     40.855088,
+     -73.934369
+    ]
+   ]
+  },
+  {
+   "id": "BENNETT AVENUE|WEST 189 STREET|WEST 190 STREET|E",
+   "street": "BENNETT AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.856573,
+     -73.933734
+    ],
+    [
+     40.855708,
+     -73.934162
+    ],
+    [
+     40.856172,
+     -73.933948
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY TERRACE|FAIRVIEW AVENUE|WEST 193 STREET|E",
+   "street": "BROADWAY TERRACE",
+   "from": "FAIRVIEW AVENUE",
+   "to": "WEST 193 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.857049,
+     -73.931316
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY TERRACE|FAIRVIEW AVENUE|WEST 193 STREET|W",
+   "street": "BROADWAY TERRACE",
+   "from": "FAIRVIEW AVENUE",
+   "to": "WEST 193 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.857126,
+     -73.931388
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|FAIRVIEW AVENUE|WEST 187 STREET|E",
+   "street": "BROADWAY",
+   "from": "FAIRVIEW AVENUE",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855274,
+     -73.933241
+    ],
+    [
+     40.854517,
+     -73.933469
+    ],
+    [
+     40.854994,
+     -73.933357
+    ],
+    [
+     40.856086,
+     -73.932857
+    ],
+    [
+     40.856413,
+     -73.932683
+    ],
+    [
+     40.855658,
+     -73.933077
+    ],
+    [
+     40.854717,
+     -73.933404
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 179 STREET|WEST 180 STREET|E",
+   "street": "BROADWAY",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84909,
+     -73.936756
+    ],
+    [
+     40.849304,
+     -73.93651
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 179 STREET|WEST 180 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849153,
+     -73.936962
+    ],
+    [
+     40.84935,
+     -73.936742
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 180 STREET|WEST 181 STREET|E",
+   "street": "BROADWAY",
+   "from": "WEST 180 STREET",
+   "to": "WEST 181 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849819,
+     -73.935928
+    ],
+    [
+     40.849616,
+     -73.93616
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 180 STREET|WEST 181 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 180 STREET",
+   "to": "WEST 181 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849775,
+     -73.936264
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 181 STREET|WEST 182 STREET|E",
+   "street": "BROADWAY",
+   "from": "WEST 181 STREET",
+   "to": "WEST 182 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850524,
+     -73.935562
+    ],
+    [
+     40.850261,
+     -73.935573
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 181 STREET|WEST 184 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 181 STREET",
+   "to": "WEST 184 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.851929,
+     -73.934845
+    ],
+    [
+     40.851759,
+     -73.934932
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 182 STREET|WEST 183 STREET|E",
+   "street": "BROADWAY",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-9AM"
+   ],
+   "points": [
+    [
+     40.851079,
+     -73.935161
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 183 STREET|WEST 184 STREET|E",
+   "street": "BROADWAY",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-9AM"
+   ],
+   "points": [
+    [
+     40.851652,
+     -73.934979
+    ],
+    [
+     40.851943,
+     -73.934834
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 184 STREET|WEST 185 STREET|E",
+   "street": "BROADWAY",
+   "from": "WEST 184 STREET",
+   "to": "WEST 185 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852346,
+     -73.934512
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 184 STREET|WEST 186 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 184 STREET",
+   "to": "WEST 186 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853109,
+     -73.934356
+    ],
+    [
+     40.852879,
+     -73.934472
+    ],
+    [
+     40.852297,
+     -73.934769
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 185 STREET|WEST 187 STREET|E",
+   "street": "BROADWAY",
+   "from": "WEST 185 STREET",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853979,
+     -73.933679
+    ],
+    [
+     40.853633,
+     -73.933853
+    ],
+    [
+     40.852958,
+     -73.934313
+    ],
+    [
+     40.853084,
+     -73.934251
+    ],
+    [
+     40.853331,
+     -73.934009
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 186 STREET|WEST 187 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853702,
+     -73.934048
+    ],
+    [
+     40.853438,
+     -73.934182
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 187 STREET|WEST 189 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 187 STREET",
+   "to": "WEST 189 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854267,
+     -73.933769
+    ],
+    [
+     40.854673,
+     -73.933639
+    ],
+    [
+     40.854934,
+     -73.933555
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 189 STREET|WEST 190 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855508,
+     -73.933363
+    ],
+    [
+     40.856062,
+     -73.933099
+    ],
+    [
+     40.855818,
+     -73.933229
+    ],
+    [
+     40.855914,
+     -73.933178
+    ]
+   ]
+  },
+  {
+   "id": "BROADWAY|WEST 190 STREET|WEST 192 STREET|W",
+   "street": "BROADWAY",
+   "from": "WEST 190 STREET",
+   "to": "WEST 192 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.856965,
+     -73.932624
+    ]
+   ]
+  },
+  {
+   "id": "FAIRVIEW AVENUE|BROADWAY|WADSWORTH TERRACE|S",
+   "street": "FAIRVIEW AVENUE",
+   "from": "BROADWAY",
+   "to": "WADSWORTH TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856868,
+     -73.931569
+    ],
+    [
+     40.857251,
+     -73.929902
+    ],
+    [
+     40.856698,
+     -73.932408
+    ],
+    [
+     40.857013,
+     -73.930589
+    ],
+    [
+     40.856778,
+     -73.932115
+    ],
+    [
+     40.85724,
+     -73.930115
+    ],
+    [
+     40.856997,
+     -73.931055
+    ]
+   ]
+  },
+  {
+   "id": "FAIRVIEW AVENUE|ST NICHOLAS AVENUE|WADSWORTH TERRACE|S",
+   "street": "FAIRVIEW AVENUE",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.857127,
+     -73.928319
+    ]
+   ]
+  },
+  {
+   "id": "FORT WASHINGTON AVENUE|WEST 181 STREET|WEST 183 STREET|E",
+   "street": "FORT WASHINGTON AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 183 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) TUESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851684,
+     -73.9379
+    ],
+    [
+     40.851942,
+     -73.937802
+    ],
+    [
+     40.851396,
+     -73.938009
+    ]
+   ]
+  },
+  {
+   "id": "FORT WASHINGTON AVENUE|WEST 181 STREET|WEST 183 STREET|W",
+   "street": "FORT WASHINGTON AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 183 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) MONDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851753,
+     -73.938026
+    ]
+   ]
+  },
+  {
+   "id": "FORT WASHINGTON AVENUE|WEST 183 STREET|WEST 185 STREET|W",
+   "street": "FORT WASHINGTON AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 185 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) MONDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852587,
+     -73.937747
+    ],
+    [
+     40.8529,
+     -73.937653
+    ],
+    [
+     40.852993,
+     -73.937624
+    ]
+   ]
+  },
+  {
+   "id": "FORT WASHINGTON AVENUE|WEST 183 STREET|WEST 190 STREET|E",
+   "street": "FORT WASHINGTON AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) TUESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853347,
+     -73.937201
+    ],
+    [
+     40.852705,
+     -73.937563
+    ],
+    [
+     40.85389,
+     -73.936958
+    ],
+    [
+     40.854123,
+     -73.936857
+    ],
+    [
+     40.852397,
+     -73.937657
+    ],
+    [
+     40.854664,
+     -73.936614
+    ],
+    [
+     40.854428,
+     -73.936719
+    ]
+   ]
+  },
+  {
+   "id": "FORT WASHINGTON AVENUE|WEST 185 STREET|WEST 187 STREET|W",
+   "street": "FORT WASHINGTON AVENUE",
+   "from": "WEST 185 STREET",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) MONDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853745,
+     -73.937392
+    ],
+    [
+     40.853589,
+     -73.937443
+    ]
+   ]
+  },
+  {
+   "id": "FT GEORGE AVENUE|AUDUBON AVENUE|WEST 193 STREET|E",
+   "street": "FT GEORGE AVENUE",
+   "from": "AUDUBON AVENUE",
+   "to": "WEST 193 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.857077,
+     -73.927918
+    ]
+   ]
+  },
+  {
+   "id": "LAUREL HILL TERRACE|AMSTERDAM AVENUE|WEST 182 STREET|E",
+   "street": "LAUREL HILL TERRACE",
+   "from": "AMSTERDAM AVENUE",
+   "to": "WEST 182 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850026,
+     -73.928829
+    ],
+    [
+     40.848811,
+     -73.92939
+    ],
+    [
+     40.851527,
+     -73.928137
+    ],
+    [
+     40.852329,
+     -73.927771
+    ],
+    [
+     40.851917,
+     -73.927959
+    ],
+    [
+     40.852488,
+     -73.927695
+    ],
+    [
+     40.849631,
+     -73.92901
+    ],
+    [
+     40.850685,
+     -73.928524
+    ],
+    [
+     40.851094,
+     -73.928336
+    ],
+    [
+     40.849513,
+     -73.929064
+    ],
+    [
+     40.849848,
+     -73.928912
+    ],
+    [
+     40.852488,
+     -73.927695
+    ],
+    [
+     40.849181,
+     -73.92922
+    ],
+    [
+     40.850265,
+     -73.92872
+    ],
+    [
+     40.848476,
+     -73.929543
+    ]
+   ]
+  },
+  {
+   "id": "LAUREL HILL TERRACE|AMSTERDAM AVENUE|WEST 187 STREET|W",
+   "street": "LAUREL HILL TERRACE",
+   "from": "AMSTERDAM AVENUE",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852328,
+     -73.927605
+    ],
+    [
+     40.852059,
+     -73.927449
+    ],
+    [
+     40.851617,
+     -73.92719
+    ],
+    [
+     40.851859,
+     -73.92733
+    ]
+   ]
+  },
+  {
+   "id": "LAUREL HILL TERRACE|WEST 182 STREET|WEST 186 STREET|W",
+   "street": "LAUREL HILL TERRACE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 186 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850468,
+     -73.927708
+    ],
+    [
+     40.849886,
+     -73.928312
+    ],
+    [
+     40.849137,
+     -73.928826
+    ],
+    [
+     40.848536,
+     -73.929347
+    ],
+    [
+     40.84962,
+     -73.928406
+    ],
+    [
+     40.85019,
+     -73.927914
+    ],
+    [
+     40.848871,
+     -73.929058
+    ],
+    [
+     40.848279,
+     -73.929723
+    ]
+   ]
+  },
+  {
+   "id": "LAUREL HILL TERRACE|WEST 186 STREET|WEST 187 STREET|W",
+   "street": "LAUREL HILL TERRACE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851203,
+     -73.92723
+    ],
+    [
+     40.850959,
+     -73.927335
+    ]
+   ]
+  },
+  {
+   "id": "MAGAW PLACE|WEST 181 STREET|WEST 183 STREET|E",
+   "street": "MAGAW PLACE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 183 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) TUESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851768,
+     -73.936859
+    ],
+    [
+     40.851511,
+     -73.936964
+    ],
+    [
+     40.851187,
+     -73.937094
+    ],
+    [
+     40.850926,
+     -73.937199
+    ]
+   ]
+  },
+  {
+   "id": "MAGAW PLACE|WEST 181 STREET|WEST 183 STREET|W",
+   "street": "MAGAW PLACE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 183 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) MONDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850964,
+     -73.937297
+    ],
+    [
+     40.851703,
+     -73.936996
+    ],
+    [
+     40.85128,
+     -73.937166
+    ]
+   ]
+  },
+  {
+   "id": "OVERLOOK TERRACE|WEST 184 STREET|WEST 186 STREET|E",
+   "street": "OVERLOOK TERRACE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 186 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853195,
+     -73.936453
+    ],
+    [
+     40.852946,
+     -73.936493
+    ],
+    [
+     40.853544,
+     -73.936398
+    ]
+   ]
+  },
+  {
+   "id": "OVERLOOK TERRACE|WEST 186 STREET|WEST 187 STREET|E",
+   "street": "OVERLOOK TERRACE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853909,
+     -73.936296
+    ],
+    [
+     40.854664,
+     -73.936075
+    ],
+    [
+     40.854315,
+     -73.936209
+    ]
+   ]
+  },
+  {
+   "id": "OVERLOOK TERRACE|WEST 187 STREET|WEST 190 STREET|E",
+   "street": "OVERLOOK TERRACE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85541,
+     -73.935764
+    ],
+    [
+     40.855062,
+     -73.935956
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 177 STREET|WEST 178 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 177 STREET",
+   "to": "WEST 178 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.847107,
+     -73.935222
+    ],
+    [
+     40.846937,
+     -73.935345
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 178 STREET|WEST 179 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 178 STREET",
+   "to": "WEST 179 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.847458,
+     -73.934969
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 178 STREET|WEST 179 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 178 STREET",
+   "to": "WEST 179 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.847974,
+     -73.934842
+    ],
+    [
+     40.847714,
+     -73.93503
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 179 STREET|WEST 180 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848457,
+     -73.934238
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 179 STREET|WEST 180 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848553,
+     -73.934415
+    ],
+    [
+     40.848191,
+     -73.934679
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 180 STREET|WEST 181 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 180 STREET",
+   "to": "WEST 181 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849008,
+     -73.933963
+    ],
+    [
+     40.848858,
+     -73.934071
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 180 STREET|WEST 181 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 180 STREET",
+   "to": "WEST 181 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84877,
+     -73.934259
+    ],
+    [
+     40.848858,
+     -73.934071
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 181 STREET|WEST 182 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 182 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849546,
+     -73.933568
+    ],
+    [
+     40.849694,
+     -73.933459
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 182 STREET|WEST 183 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850122,
+     -73.933145
+    ],
+    [
+     40.850312,
+     -73.933003
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 182 STREET|WEST 183 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850144,
+     -73.933126
+    ],
+    [
+     40.850364,
+     -73.932967
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 183 STREET|WEST 184 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850805,
+     -73.932645
+    ],
+    [
+     40.850923,
+     -73.932562
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 183 STREET|WEST 184 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850655,
+     -73.932757
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 184 STREET|WEST 185 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 185 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.851469,
+     -73.932037
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 184 STREET|WEST 185 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 185 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.851431,
+     -73.932189
+    ],
+    [
+     40.851294,
+     -73.932413
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 185 STREET|WEST 186 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 185 STREET",
+   "to": "WEST 186 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.852224,
+     -73.93161
+    ],
+    [
+     40.85204,
+     -73.931744
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 185 STREET|WEST 186 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 185 STREET",
+   "to": "WEST 186 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.852259,
+     -73.931584
+    ],
+    [
+     40.852078,
+     -73.931838
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 186 STREET|WEST 187 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.852855,
+     -73.931024
+    ],
+    [
+     40.852589,
+     -73.931215
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 187 STREET|WEST 188 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.853554,
+     -73.930513
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 187 STREET|WEST 188 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.853417,
+     -73.930857
+    ],
+    [
+     40.853319,
+     -73.930929
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 188 STREET|WEST 189 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.854092,
+     -73.930241
+    ],
+    [
+     40.853952,
+     -73.930346
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 188 STREET|WEST 189 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.854155,
+     -73.930317
+    ],
+    [
+     40.853914,
+     -73.930495
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 189 STREET|WEST 190 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.854742,
+     -73.929644
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 189 STREET|WEST 190 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.85449,
+     -73.930071
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 190 STREET|WEST 191 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 190 STREET",
+   "to": "WEST 191 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.855346,
+     -73.929203
+    ],
+    [
+     40.855146,
+     -73.92947
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 190 STREET|WEST 191 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 190 STREET",
+   "to": "WEST 191 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.855209,
+     -73.929427
+    ],
+    [
+     40.855291,
+     -73.929365
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 191 STREET|WEST 192 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 191 STREET",
+   "to": "WEST 192 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.855785,
+     -73.92888
+    ],
+    [
+     40.856032,
+     -73.928699
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 191 STREET|WEST 192 STREET|W",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 191 STREET",
+   "to": "WEST 192 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 7:30AM-8AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.855878,
+     -73.929057
+    ],
+    [
+     40.855678,
+     -73.929202
+    ]
+   ]
+  },
+  {
+   "id": "ST NICHOLAS AVENUE|WEST 192 STREET|WEST 193 STREET|E",
+   "street": "ST NICHOLAS AVENUE",
+   "from": "WEST 192 STREET",
+   "to": "WEST 193 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.856394,
+     -73.928442
+    ],
+    [
+     40.856677,
+     -73.928359
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|ST NICHOLAS AVENUE|WEST 190 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WEST 190 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856323,
+     -73.928945
+    ],
+    [
+     40.855514,
+     -73.930562
+    ],
+    [
+     40.855966,
+     -73.929614
+    ],
+    [
+     40.855646,
+     -73.930283
+    ],
+    [
+     40.855547,
+     -73.93063
+    ],
+    [
+     40.855816,
+     -73.929893
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|ST NICHOLAS AVENUE|WEST 192 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WEST 192 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.85671,
+     -73.929494
+    ],
+    [
+     40.856743,
+     -73.92884
+    ],
+    [
+     40.856759,
+     -73.929151
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 177 STREET|WEST 178 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 177 STREET",
+   "to": "WEST 178 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847766,
+     -73.936393
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 177 STREET|WEST 178 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 177 STREET",
+   "to": "WEST 178 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847753,
+     -73.936577
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 178 STREET|WEST 179 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 178 STREET",
+   "to": "WEST 179 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.848414,
+     -73.935919
+    ],
+    [
+     40.848153,
+     -73.93611
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 178 STREET|WEST 179 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 178 STREET",
+   "to": "WEST 179 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847983,
+     -73.936407
+    ],
+    [
+     40.848219,
+     -73.936233
+    ],
+    [
+     40.848463,
+     -73.936059
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 179 STREET|WEST 180 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.849012,
+     -73.935481
+    ],
+    [
+     40.848669,
+     -73.93573
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 179 STREET|WEST 180 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 179 STREET",
+   "to": "WEST 180 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.848968,
+     -73.9356
+    ],
+    [
+     40.849086,
+     -73.935513
+    ],
+    [
+     40.848614,
+     -73.935947
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 180 STREET|WEST 181 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 180 STREET",
+   "to": "WEST 181 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84933,
+     -73.935336
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 181 STREET|WEST 182 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 182 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850066,
+     -73.934713
+    ],
+    [
+     40.850195,
+     -73.934706
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 181 STREET|WEST 182 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 181 STREET",
+   "to": "WEST 182 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850367,
+     -73.934666
+    ],
+    [
+     40.850151,
+     -73.934829
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 182 STREET|WEST 183 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850817,
+     -73.934163
+    ],
+    [
+     40.850515,
+     -73.934384
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 182 STREET|WEST 183 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 182 STREET",
+   "to": "WEST 183 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850946,
+     -73.934243
+    ],
+    [
+     40.850672,
+     -73.934442
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 183 STREET|WEST 184 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851086,
+     -73.933968
+    ],
+    [
+     40.851278,
+     -73.933913
+    ],
+    [
+     40.851399,
+     -73.933826
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 183 STREET|WEST 184 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 183 STREET",
+   "to": "WEST 184 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851415,
+     -73.933899
+    ],
+    [
+     40.85118,
+     -73.934065
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 184 STREET|WEST 185 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 185 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852099,
+     -73.933226
+    ],
+    [
+     40.85166,
+     -73.933548
+    ],
+    [
+     40.851879,
+     -73.933385
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 184 STREET|WEST 185 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 184 STREET",
+   "to": "WEST 185 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851923,
+     -73.933526
+    ],
+    [
+     40.852167,
+     -73.933348
+    ],
+    [
+     40.851715,
+     -73.933681
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 185 STREET|WEST 186 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 185 STREET",
+   "to": "WEST 186 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852787,
+     -73.932723
+    ],
+    [
+     40.852535,
+     -73.932907
+    ],
+    [
+     40.852269,
+     -73.933103
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 185 STREET|WEST 187 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 185 STREET",
+   "to": "WEST 187 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853254,
+     -73.932556
+    ],
+    [
+     40.852335,
+     -73.933225
+    ],
+    [
+     40.853092,
+     -73.932672
+    ],
+    [
+     40.852894,
+     -73.932816
+    ],
+    [
+     40.852609,
+     -73.933026
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 186 STREET|WEST 187 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 186 STREET",
+   "to": "WEST 187 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853196,
+     -73.932509
+    ],
+    [
+     40.853319,
+     -73.932418
+    ],
+    [
+     40.853473,
+     -73.932219
+    ],
+    [
+     40.85293,
+     -73.932704
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 187 STREET|WEST 188 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854104,
+     -73.931756
+    ],
+    [
+     40.853627,
+     -73.932111
+    ],
+    [
+     40.853879,
+     -73.931923
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 187 STREET|WEST 188 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 187 STREET",
+   "to": "WEST 188 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854159,
+     -73.931893
+    ],
+    [
+     40.853693,
+     -73.932234
+    ],
+    [
+     40.85389,
+     -73.932089
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 188 STREET|WEST 189 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854247,
+     -73.931655
+    ],
+    [
+     40.854735,
+     -73.9313
+    ],
+    [
+     40.854458,
+     -73.931503
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 188 STREET|WEST 189 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854787,
+     -73.93143
+    ],
+    [
+     40.854296,
+     -73.931792
+    ],
+    [
+     40.854538,
+     -73.931615
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 189 STREET|WEST 190 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855322,
+     -73.930866
+    ],
+    [
+     40.855105,
+     -73.931025
+    ],
+    [
+     40.854878,
+     -73.931191
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 189 STREET|WEST 190 STREET|W",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854922,
+     -73.931336
+    ],
+    [
+     40.855092,
+     -73.931209
+    ],
+    [
+     40.85538,
+     -73.930996
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 190 STREET|WEST 191 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 190 STREET",
+   "to": "WEST 191 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.855978,
+     -73.930388
+    ],
+    [
+     40.855476,
+     -73.930757
+    ],
+    [
+     40.855731,
+     -73.930569
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH AVENUE|WEST 191 STREET|WEST 192 STREET|E",
+   "street": "WADSWORTH AVENUE",
+   "from": "WEST 191 STREET",
+   "to": "WEST 192 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856164,
+     -73.930254
+    ],
+    [
+     40.856351,
+     -73.930055
+    ],
+    [
+     40.856496,
+     -73.92982
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH TERRACE|FAIRVIEW AVENUE|WEST 188 STREET|W",
+   "street": "WADSWORTH TERRACE",
+   "from": "FAIRVIEW AVENUE",
+   "to": "WEST 188 STREET",
+   "side": "W",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM",
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85698,
+     -73.930209
+    ],
+    [
+     40.85574,
+     -73.931429
+    ],
+    [
+     40.85574,
+     -73.931429
+    ],
+    [
+     40.855191,
+     -73.932004
+    ],
+    [
+     40.856146,
+     -73.931031
+    ],
+    [
+     40.856703,
+     -73.930481
+    ],
+    [
+     40.854747,
+     -73.932457
+    ],
+    [
+     40.85549,
+     -73.931791
+    ],
+    [
+     40.857243,
+     -73.92992
+    ],
+    [
+     40.854931,
+     -73.932323
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH TERRACE|FAIRVIEW AVENUE|WEST 190 STREET|E",
+   "street": "WADSWORTH TERRACE",
+   "from": "FAIRVIEW AVENUE",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856579,
+     -73.931099
+    ],
+    [
+     40.856234,
+     -73.931356
+    ],
+    [
+     40.857035,
+     -73.930553
+    ],
+    [
+     40.855946,
+     -73.93157
+    ],
+    [
+     40.857273,
+     -73.930332
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH TERRACE|WEST 188 STREET|WEST 189 STREET|E",
+   "street": "WADSWORTH TERRACE",
+   "from": "WEST 188 STREET",
+   "to": "WEST 189 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854689,
+     -73.93237
+    ],
+    [
+     40.854972,
+     -73.932167
+    ]
+   ]
+  },
+  {
+   "id": "WADSWORTH TERRACE|WEST 189 STREET|WEST 190 STREET|E",
+   "street": "WADSWORTH TERRACE",
+   "from": "WEST 189 STREET",
+   "to": "WEST 190 STREET",
+   "side": "E",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855287,
+     -73.931939
+    ],
+    [
+     40.855581,
+     -73.931726
+    ]
+   ]
+  },
+  {
+   "id": "WEST 177 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 177 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.845956,
+     -73.933788
+    ]
+   ]
+  },
+  {
+   "id": "WEST 177 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 177 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.846377,
+     -73.934681
+    ]
+   ]
+  },
+  {
+   "id": "WEST 178 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 178 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.846507,
+     -73.933004
+    ],
+    [
+     40.846708,
+     -73.93348
+    ],
+    [
+     40.846329,
+     -73.932581
+    ]
+   ]
+  },
+  {
+   "id": "WEST 178 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 178 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.846541,
+     -73.933408
+    ],
+    [
+     40.846439,
+     -73.933174
+    ],
+    [
+     40.846266,
+     -73.932758
+    ],
+    [
+     40.84612,
+     -73.932476
+    ]
+   ]
+  },
+  {
+   "id": "WEST 178 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 178 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847244,
+     -73.934756
+    ],
+    [
+     40.846961,
+     -73.93408
+    ],
+    [
+     40.847107,
+     -73.934427
+    ]
+   ]
+  },
+  {
+   "id": "WEST 178 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 178 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.846873,
+     -73.9342
+    ],
+    [
+     40.847,
+     -73.934499
+    ]
+   ]
+  },
+  {
+   "id": "WEST 178 STREET|BROADWAY|WADSWORTH AVENUE|S",
+   "street": "WEST 178 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847882,
+     -73.936588
+    ]
+   ]
+  },
+  {
+   "id": "WEST 178 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 178 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847802,
+     -73.936075
+    ],
+    [
+     40.847601,
+     -73.935594
+    ]
+   ]
+  },
+  {
+   "id": "WEST 178 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 178 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847426,
+     -73.935507
+    ],
+    [
+     40.847739,
+     -73.936266
+    ],
+    [
+     40.847492,
+     -73.935666
+    ],
+    [
+     40.847618,
+     -73.93597
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 179 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847303,
+     -73.932912
+    ],
+    [
+     40.847141,
+     -73.932533
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 179 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.846921,
+     -73.932266
+    ],
+    [
+     40.84707,
+     -73.93262
+    ],
+    [
+     40.847205,
+     -73.932938
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 179 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.847848,
+     -73.934217
+    ],
+    [
+     40.847655,
+     -73.933758
+    ],
+    [
+     40.847848,
+     -73.934217
+    ],
+    [
+     40.847952,
+     -73.934462
+    ],
+    [
+     40.847889,
+     -73.934314
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 179 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY",
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.847853,
+     -73.934481
+    ],
+    [
+     40.847746,
+     -73.934231
+    ],
+    [
+     40.847584,
+     -73.933845
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|BROADWAY|WADSWORTH AVENUE|N",
+   "street": "WEST 179 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.848744,
+     -73.936338
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|BROADWAY|WADSWORTH AVENUE|S",
+   "street": "WEST 179 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY",
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.848741,
+     -73.936544
+    ],
+    [
+     40.848691,
+     -73.936406
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 179 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848367,
+     -73.935445
+    ],
+    [
+     40.848172,
+     -73.935113
+    ],
+    [
+     40.848227,
+     -73.935239
+    ]
+   ]
+  },
+  {
+   "id": "WEST 179 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 179 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84829,
+     -73.935525
+    ],
+    [
+     40.848076,
+     -73.935012
+    ],
+    [
+     40.848161,
+     -73.935214
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 180 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847723,
+     -73.932099
+    ],
+    [
+     40.84797,
+     -73.932583
+    ],
+    [
+     40.847852,
+     -73.932301
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 180 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.847734,
+     -73.932236
+    ],
+    [
+     40.847662,
+     -73.931958
+    ],
+    [
+     40.847566,
+     -73.93173
+    ],
+    [
+     40.84786,
+     -73.93254
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 180 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848382,
+     -73.933667
+    ],
+    [
+     40.848215,
+     -73.933269
+    ],
+    [
+     40.84827,
+     -73.933403
+    ],
+    [
+     40.848553,
+     -73.934068
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 180 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848152,
+     -73.933121
+    ],
+    [
+     40.848459,
+     -73.933847
+    ],
+    [
+     40.848371,
+     -73.933641
+    ],
+    [
+     40.848286,
+     -73.933439
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|BROADWAY|FORT WASHINGTON AVENUE|N",
+   "street": "WEST 180 STREET",
+   "from": "BROADWAY",
+   "to": "FORT WASHINGTON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) MONDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.849801,
+     -73.937468
+    ],
+    [
+     40.849627,
+     -73.936597
+    ],
+    [
+     40.849685,
+     -73.936897
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|BROADWAY|FORT WASHINGTON AVENUE|S",
+   "street": "WEST 180 STREET",
+   "from": "BROADWAY",
+   "to": "FORT WASHINGTON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) TUESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.849719,
+     -73.937497
+    ],
+    [
+     40.849553,
+     -73.936644
+    ],
+    [
+     40.849834,
+     -73.937862
+    ],
+    [
+     40.849611,
+     -73.93694
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|BROADWAY|WADSWORTH AVENUE|N",
+   "street": "WEST 180 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849262,
+     -73.935643
+    ],
+    [
+     40.849366,
+     -73.935892
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|BROADWAY|WADSWORTH AVENUE|S",
+   "street": "WEST 180 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849191,
+     -73.935701
+    ],
+    [
+     40.849295,
+     -73.93595
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 180 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848979,
+     -73.934971
+    ],
+    [
+     40.849097,
+     -73.935253
+    ],
+    [
+     40.848742,
+     -73.934407
+    ],
+    [
+     40.84885,
+     -73.934664
+    ]
+   ]
+  },
+  {
+   "id": "WEST 180 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 180 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848896,
+     -73.934996
+    ],
+    [
+     40.849023,
+     -73.935303
+    ],
+    [
+     40.848655,
+     -73.934426
+    ],
+    [
+     40.848767,
+     -73.934697
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 181 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) SATURDAY 8:30AM-9AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849049,
+     -73.933084
+    ],
+    [
+     40.848925,
+     -73.932607
+    ],
+    [
+     40.849057,
+     -73.932925
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 181 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.848947,
+     -73.932846
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|BENNETT AVENUE|BROADWAY|N",
+   "street": "WEST 181 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850426,
+     -73.936368
+    ],
+    [
+     40.850349,
+     -73.936097
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|BENNETT AVENUE|MAGAW PLACE|N",
+   "street": "WEST 181 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "MAGAW PLACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850586,
+     -73.936943
+    ],
+    [
+     40.850665,
+     -73.937221
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|BROADWAY|FORT WASHINGTON AVENUE|S",
+   "street": "WEST 181 STREET",
+   "from": "BROADWAY",
+   "to": "FORT WASHINGTON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850682,
+     -73.93772
+    ],
+    [
+     40.850424,
+     -73.936806
+    ],
+    [
+     40.850723,
+     -73.937861
+    ],
+    [
+     40.850536,
+     -73.9372
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|BROADWAY|WADSWORTH AVENUE|N",
+   "street": "WEST 181 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850135,
+     -73.935476
+    ],
+    [
+     40.850085,
+     -73.935357
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|FORT WASHINGTON AVENUE|MAGAW PLACE|N",
+   "street": "WEST 181 STREET",
+   "from": "FORT WASHINGTON AVENUE",
+   "to": "MAGAW PLACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.85091,
+     -73.938074
+    ],
+    [
+     40.850797,
+     -73.93768
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 181 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.849717,
+     -73.934497
+    ],
+    [
+     40.849618,
+     -73.934258
+    ],
+    [
+     40.849415,
+     -73.933958
+    ]
+   ]
+  },
+  {
+   "id": "WEST 181 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 181 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8AM-8:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84953,
+     -73.934233
+    ],
+    [
+     40.849624,
+     -73.934645
+    ]
+   ]
+  },
+  {
+   "id": "WEST 182 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 182 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.848913,
+     -73.930851
+    ],
+    [
+     40.849257,
+     -73.931671
+    ],
+    [
+     40.849306,
+     -73.931916
+    ]
+   ]
+  },
+  {
+   "id": "WEST 182 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 182 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.849309,
+     -73.931916
+    ],
+    [
+     40.848757,
+     -73.930742
+    ],
+    [
+     40.849309,
+     -73.931916
+    ],
+    [
+     40.849309,
+     -73.931916
+    ]
+   ]
+  },
+  {
+   "id": "WEST 182 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 182 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY",
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.849721,
+     -73.932787
+    ],
+    [
+     40.849548,
+     -73.932379
+    ],
+    [
+     40.849787,
+     -73.932946
+    ],
+    [
+     40.849488,
+     -73.932234
+    ]
+   ]
+  },
+  {
+   "id": "WEST 182 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 182 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.84957,
+     -73.932657
+    ],
+    [
+     40.849348,
+     -73.932126
+    ],
+    [
+     40.849735,
+     -73.933047
+    ]
+   ]
+  },
+  {
+   "id": "WEST 182 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 182 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850216,
+     -73.934077
+    ],
+    [
+     40.849966,
+     -73.933488
+    ],
+    [
+     40.850134,
+     -73.933878
+    ]
+   ]
+  },
+  {
+   "id": "WEST 182 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 182 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850175,
+     -73.934088
+    ],
+    [
+     40.850304,
+     -73.934399
+    ],
+    [
+     40.850062,
+     -73.933712
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 183 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.849695,
+     -73.930785
+    ],
+    [
+     40.849566,
+     -73.930478
+    ],
+    [
+     40.849869,
+     -73.9312
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 183 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.849542,
+     -73.930741
+    ],
+    [
+     40.849654,
+     -73.931009
+    ],
+    [
+     40.849347,
+     -73.930272
+    ],
+    [
+     40.849781,
+     -73.931301
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|N",
+   "street": "WEST 183 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.850056,
+     -73.931645
+    ],
+    [
+     40.850322,
+     -73.932277
+    ],
+    [
+     40.850413,
+     -73.932494
+    ],
+    [
+     40.850168,
+     -73.931912
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|S",
+   "street": "WEST 183 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850111,
+     -73.932089
+    ],
+    [
+     40.849957,
+     -73.931721
+    ],
+    [
+     40.850273,
+     -73.932468
+    ],
+    [
+     40.850377,
+     -73.932721
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|BROADWAY|WADSWORTH AVENUE|N",
+   "street": "WEST 183 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851383,
+     -73.934784
+    ],
+    [
+     40.851141,
+     -73.934217
+    ],
+    [
+     40.851273,
+     -73.934524
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|FORT WASHINGTON AVENUE|MAGAW PLACE|N",
+   "street": "WEST 183 STREET",
+   "from": "FORT WASHINGTON AVENUE",
+   "to": "MAGAW PLACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) TUESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852073,
+     -73.937401
+    ],
+    [
+     40.85212,
+     -73.937607
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|FORT WASHINGTON AVENUE|MAGAW PLACE|S",
+   "street": "WEST 183 STREET",
+   "from": "FORT WASHINGTON AVENUE",
+   "to": "MAGAW PLACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) MONDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851906,
+     -73.937047
+    ],
+    [
+     40.852016,
+     -73.937513
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|SAINT NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 183 STREET",
+   "from": "SAINT NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850864,
+     -73.933726
+    ],
+    [
+     40.850732,
+     -73.933408
+    ],
+    [
+     40.850597,
+     -73.933086
+    ],
+    [
+     40.850702,
+     -73.933339
+    ]
+   ]
+  },
+  {
+   "id": "WEST 183 STREET|SAINT NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 183 STREET",
+   "from": "SAINT NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850627,
+     -73.93331
+    ],
+    [
+     40.850781,
+     -73.933675
+    ],
+    [
+     40.850627,
+     -73.93331
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 184 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85028,
+     -73.930394
+    ],
+    [
+     40.850151,
+     -73.93009
+    ],
+    [
+     40.850464,
+     -73.930834
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 184 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850398,
+     -73.9309
+    ],
+    [
+     40.850269,
+     -73.930589
+    ],
+    [
+     40.850068,
+     -73.930116
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|S",
+   "street": "WEST 184 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850527,
+     -73.931207
+    ],
+    [
+     40.850662,
+     -73.931528
+    ],
+    [
+     40.850964,
+     -73.93224
+    ],
+    [
+     40.850857,
+     -73.931987
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 184 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.850637,
+     -73.931243
+    ],
+    [
+     40.850937,
+     -73.931951
+    ],
+    [
+     40.850758,
+     -73.931528
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|BENNETT AVENUE|BROADWAY|N",
+   "street": "WEST 184 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852306,
+     -73.935445
+    ],
+    [
+     40.85224,
+     -73.935217
+    ],
+    [
+     40.852182,
+     -73.935011
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|BENNETT AVENUE|BROADWAY|S",
+   "street": "WEST 184 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852204,
+     -73.935409
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|BENNETT AVENUE|OVERLOOK TERRACE|N",
+   "street": "WEST 184 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "OVERLOOK TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852416,
+     -73.93581
+    ],
+    [
+     40.852498,
+     -73.936088
+    ],
+    [
+     40.852583,
+     -73.936366
+    ],
+    [
+     40.852545,
+     -73.936236
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|BENNETT AVENUE|OVERLOOK TERRACE|S",
+   "street": "WEST 184 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "OVERLOOK TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852537,
+     -73.93633
+    ],
+    [
+     40.852473,
+     -73.936135
+    ],
+    [
+     40.852372,
+     -73.935832
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|BROADWAY|WADSWORTH AVENUE|N",
+   "street": "WEST 184 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852006,
+     -73.934491
+    ],
+    [
+     40.851852,
+     -73.934126
+    ],
+    [
+     40.851723,
+     -73.933819
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|BROADWAY|WADSWORTH AVENUE|S",
+   "street": "WEST 184 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851783,
+     -73.934184
+    ],
+    [
+     40.851844,
+     -73.934332
+    ],
+    [
+     40.851693,
+     -73.933974
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|SAINT NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 184 STREET",
+   "from": "SAINT NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.851407,
+     -73.933295
+    ],
+    [
+     40.851239,
+     -73.932894
+    ]
+   ]
+  },
+  {
+   "id": "WEST 184 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 184 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY",
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.851231,
+     -73.932648
+    ],
+    [
+     40.851355,
+     -73.932944
+    ],
+    [
+     40.851464,
+     -73.933205
+    ],
+    [
+     40.851355,
+     -73.932944
+    ]
+   ]
+  },
+  {
+   "id": "WEST 185 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|N",
+   "street": "WEST 185 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.851243,
+     -73.930772
+    ],
+    [
+     40.851648,
+     -73.931737
+    ],
+    [
+     40.851543,
+     -73.93148
+    ],
+    [
+     40.851364,
+     -73.931061
+    ]
+   ]
+  },
+  {
+   "id": "WEST 185 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|S",
+   "street": "WEST 185 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.851321,
+     -73.931271
+    ],
+    [
+     40.851175,
+     -73.930928
+    ],
+    [
+     40.851444,
+     -73.931564
+    ]
+   ]
+  },
+  {
+   "id": "WEST 185 STREET|BROADWAY|WADSWORTH AVENUE|N",
+   "street": "WEST 185 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85234,
+     -73.933381
+    ],
+    [
+     40.85264,
+     -73.934085
+    ],
+    [
+     40.852445,
+     -73.933623
+    ]
+   ]
+  },
+  {
+   "id": "WEST 185 STREET|BROADWAY|WADSWORTH AVENUE|S",
+   "street": "WEST 185 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85253,
+     -73.93414
+    ],
+    [
+     40.852291,
+     -73.933576
+    ],
+    [
+     40.852409,
+     -73.933854
+    ]
+   ]
+  },
+  {
+   "id": "WEST 185 STREET|SAINT NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 185 STREET",
+   "from": "SAINT NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY",
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.851947,
+     -73.932445
+    ],
+    [
+     40.852076,
+     -73.932756
+    ],
+    [
+     40.852137,
+     -73.932897
+    ]
+   ]
+  },
+  {
+   "id": "WEST 185 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 185 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.851961,
+     -73.932796
+    ],
+    [
+     40.852068,
+     -73.933052
+    ],
+    [
+     40.851716,
+     -73.932214
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 186 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851523,
+     -73.929359
+    ],
+    [
+     40.85141,
+     -73.929088
+    ],
+    [
+     40.851316,
+     -73.928867
+    ],
+    [
+     40.851734,
+     -73.929861
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|AMSTERDAM AVENUE|LAUREL HILL TERRACE|N",
+   "street": "WEST 186 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "LAUREL HILL TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851047,
+     -73.928217
+    ],
+    [
+     40.850857,
+     -73.927762
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|AMSTERDAM AVENUE|LAUREL HILL TERRACE|S",
+   "street": "WEST 186 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "LAUREL HILL TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.850797,
+     -73.927877
+    ],
+    [
+     40.850896,
+     -73.928112
+    ],
+    [
+     40.851047,
+     -73.928463
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|AMSTERDAM AVENUE|WASHINGTON TERRACE|S",
+   "street": "WEST 186 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "WASHINGTON TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851383,
+     -73.929239
+    ],
+    [
+     40.851234,
+     -73.928885
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|N",
+   "street": "WEST 186 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY",
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.852221,
+     -73.931013
+    ],
+    [
+     40.851921,
+     -73.930305
+    ],
+    [
+     40.852028,
+     -73.930558
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|S",
+   "street": "WEST 186 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.852004,
+     -73.930724
+    ],
+    [
+     40.851844,
+     -73.930345
+    ],
+    [
+     40.85213,
+     -73.931028
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|AUDUBON AVENUE|WASHINGTON TERRACE|S",
+   "street": "WEST 186 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "WASHINGTON TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851547,
+     -73.929633
+    ],
+    [
+     40.851668,
+     -73.929926
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|BENNETT AVENUE|BROADWAY|N",
+   "street": "WEST 186 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853455,
+     -73.934891
+    ],
+    [
+     40.853384,
+     -73.934641
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|BENNETT AVENUE|BROADWAY|S",
+   "street": "WEST 186 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853214,
+     -73.93441
+    ],
+    [
+     40.853351,
+     -73.934862
+    ],
+    [
+     40.853296,
+     -73.934681
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|BENNETT AVENUE|OVERLOOK TERRACE|N",
+   "street": "WEST 186 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "OVERLOOK TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853692,
+     -73.935903
+    ],
+    [
+     40.853524,
+     -73.935295
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|BENNETT AVENUE|OVERLOOK TERRACE|S",
+   "street": "WEST 186 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "OVERLOOK TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853731,
+     -73.936177
+    ],
+    [
+     40.853494,
+     -73.935357
+    ],
+    [
+     40.853634,
+     -73.935845
+    ],
+    [
+     40.853568,
+     -73.935606
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|SAINT NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 186 STREET",
+   "from": "SAINT NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) 9AM-9:30AM EXCEPT SUNDAY",
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 8:30AM-10AM"
+   ],
+   "points": [
+    [
+     40.852611,
+     -73.931931
+    ],
+    [
+     40.852743,
+     -73.932238
+    ],
+    [
+     40.852509,
+     -73.931808
+    ]
+   ]
+  },
+  {
+   "id": "WEST 186 STREET|SAINT NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 186 STREET",
+   "from": "SAINT NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 8:30AM-10AM",
+    "NO PARKING (SANITATION BROOM SYMBOL) 8:30AM-9AM EXCEPT SUNDAY"
+   ],
+   "points": [
+    [
+     40.852771,
+     -73.93256
+    ],
+    [
+     40.852647,
+     -73.932264
+    ],
+    [
+     40.852419,
+     -73.931722
+    ],
+    [
+     40.85252,
+     -73.93196
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 187 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852442,
+     -73.929376
+    ],
+    [
+     40.852186,
+     -73.928765
+    ],
+    [
+     40.852038,
+     -73.928415
+    ],
+    [
+     40.85231,
+     -73.929061
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 187 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851887,
+     -73.928371
+    ],
+    [
+     40.852222,
+     -73.929166
+    ],
+    [
+     40.852349,
+     -73.929462
+    ],
+    [
+     40.852022,
+     -73.928689
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|AMSTERDAM AVENUE|LAUREL HIL TERRACE|S",
+   "street": "WEST 187 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "LAUREL HIL TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851579,
+     -73.927446
+    ],
+    [
+     40.851763,
+     -73.927909
+    ],
+    [
+     40.85145,
+     -73.927132
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|AMSTERDAM AVENUE|LAUREL HILL TERRACE|N",
+   "street": "WEST 187 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "LAUREL HILL TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.851694,
+     -73.927631
+    ],
+    [
+     40.85154,
+     -73.927269
+    ],
+    [
+     40.851802,
+     -73.927891
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|N",
+   "street": "WEST 187 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85253,
+     -73.929741
+    ],
+    [
+     40.852739,
+     -73.930232
+    ],
+    [
+     40.852733,
+     -73.930069
+    ],
+    [
+     40.852802,
+     -73.93038
+    ],
+    [
+     40.85289,
+     -73.93059
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|AUDUBON AVENUE|SAINT NICHOLAS AVENUE|S",
+   "street": "WEST 187 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "SAINT NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852915,
+     -73.930814
+    ],
+    [
+     40.852547,
+     -73.929939
+    ],
+    [
+     40.852717,
+     -73.93034
+    ],
+    [
+     40.852783,
+     -73.930499
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|BENNETT AVENUE|BROADWAY|N",
+   "street": "WEST 187 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854275,
+     -73.933925
+    ],
+    [
+     40.854443,
+     -73.934351
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|BENNETT AVENUE|BROADWAY|S",
+   "street": "WEST 187 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854435,
+     -73.934478
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|BENNETT AVENUE|OVERLOOK TERRACE|N",
+   "street": "WEST 187 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "OVERLOOK TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854542,
+     -73.934803
+    ],
+    [
+     40.854839,
+     -73.935782
+    ],
+    [
+     40.854713,
+     -73.935374
+    ],
+    [
+     40.854608,
+     -73.93502
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|BENNETT AVENUE|OVERLOOK TERRACE|S",
+   "street": "WEST 187 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "OVERLOOK TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85465,
+     -73.935258
+    ],
+    [
+     40.854537,
+     -73.934875
+    ],
+    [
+     40.85482,
+     -73.93584
+    ],
+    [
+     40.854746,
+     -73.935587
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|BROADWAY|WADSWORTH AVENUE|N",
+   "street": "WEST 187 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853789,
+     -73.932559
+    ],
+    [
+     40.854179,
+     -73.933484
+    ],
+    [
+     40.854031,
+     -73.933137
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|BROADWAY|WADSWORTH AVENUE|S",
+   "street": "WEST 187 STREET",
+   "from": "BROADWAY",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853671,
+     -73.932588
+    ],
+    [
+     40.853814,
+     -73.932931
+    ],
+    [
+     40.854023,
+     -73.933426
+    ],
+    [
+     40.853753,
+     -73.932783
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 187 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853302,
+     -73.931413
+    ],
+    [
+     40.853401,
+     -73.931641
+    ],
+    [
+     40.853209,
+     -73.931189
+    ],
+    [
+     40.853498,
+     -73.931872
+    ]
+   ]
+  },
+  {
+   "id": "WEST 187 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 187 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853113,
+     -73.931273
+    ],
+    [
+     40.853445,
+     -73.932068
+    ],
+    [
+     40.853291,
+     -73.931544
+    ],
+    [
+     40.853371,
+     -73.931728
+    ],
+    [
+     40.85322,
+     -73.93137
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|AMSTERDAM AVENUE|AUDOBON AVENUE|S",
+   "street": "WEST 188 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDOBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.852606,
+     -73.928092
+    ],
+    [
+     40.852961,
+     -73.928927
+    ],
+    [
+     40.852848,
+     -73.92867
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 188 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85276,
+     -73.92824
+    ],
+    [
+     40.853026,
+     -73.928865
+    ],
+    [
+     40.852655,
+     -73.927991
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 188 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853637,
+     -73.930314
+    ],
+    [
+     40.853213,
+     -73.929306
+    ],
+    [
+     40.85351,
+     -73.930018
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 188 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853538,
+     -73.930296
+    ],
+    [
+     40.853164,
+     -73.929407
+    ],
+    [
+     40.853271,
+     -73.929657
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 188 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85417,
+     -73.931579
+    ],
+    [
+     40.85384,
+     -73.930798
+    ],
+    [
+     40.854065,
+     -73.931322
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 188 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854052,
+     -73.931525
+    ],
+    [
+     40.853832,
+     -73.930997
+    ],
+    [
+     40.853744,
+     -73.930798
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|WADSWORTH AVENUE|WADSWORTH TERRACE|N",
+   "street": "WEST 188 STREET",
+   "from": "WADSWORTH AVENUE",
+   "to": "WADSWORTH TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854494,
+     -73.932348
+    ],
+    [
+     40.854335,
+     -73.931973
+    ]
+   ]
+  },
+  {
+   "id": "WEST 188 STREET|WADSWORTH AVENUE|WADSWORTH TERRACE|S",
+   "street": "WEST 188 STREET",
+   "from": "WADSWORTH AVENUE",
+   "to": "WADSWORTH TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.8542,
+     -73.931886
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 189 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853462,
+     -73.927965
+    ],
+    [
+     40.853646,
+     -73.928406
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 189 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853476,
+     -73.928218
+    ],
+    [
+     40.853182,
+     -73.927517
+    ],
+    [
+     40.853317,
+     -73.927835
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 189 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853946,
+     -73.929117
+    ],
+    [
+     40.854061,
+     -73.929392
+    ],
+    [
+     40.853855,
+     -73.928901
+    ],
+    [
+     40.854155,
+     -73.929612
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 189 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853767,
+     -73.928908
+    ],
+    [
+     40.853927,
+     -73.929284
+    ],
+    [
+     40.85407,
+     -73.92962
+    ],
+    [
+     40.85418,
+     -73.92988
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|BENNETT AVENUE|BROADWAY|N",
+   "street": "WEST 189 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855489,
+     -73.933739
+    ],
+    [
+     40.855431,
+     -73.933544
+    ],
+    [
+     40.855557,
+     -73.933974
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|BENNETT AVENUE|BROADWAY|S",
+   "street": "WEST 189 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855351,
+     -73.933606
+    ],
+    [
+     40.855491,
+     -73.934075
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 189 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854515,
+     -73.930469
+    ],
+    [
+     40.854683,
+     -73.930863
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 189 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854697,
+     -73.931108
+    ],
+    [
+     40.85446,
+     -73.930541
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|WADSWORTH AVENUE|WADSWORTH TERRACE|N",
+   "street": "WEST 189 STREET",
+   "from": "WADSWORTH AVENUE",
+   "to": "WADSWORTH TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854966,
+     -73.931517
+    ],
+    [
+     40.855139,
+     -73.931925
+    ]
+   ]
+  },
+  {
+   "id": "WEST 189 STREET|WADSWORTH AVENUE|WADSWORTH TERRACE|S",
+   "street": "WEST 189 STREET",
+   "from": "WADSWORTH AVENUE",
+   "to": "WADSWORTH TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855062,
+     -73.932001
+    ],
+    [
+     40.854952,
+     -73.931733
+    ],
+    [
+     40.854859,
+     -73.931517
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|N",
+   "street": "WEST 190 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.853981,
+     -73.927288
+    ],
+    [
+     40.853862,
+     -73.927006
+    ],
+    [
+     40.854242,
+     -73.92791
+    ],
+    [
+     40.85409,
+     -73.927552
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|AMSTERDAM AVENUE|AUDUBON AVENUE|S",
+   "street": "WEST 190 STREET",
+   "from": "AMSTERDAM AVENUE",
+   "to": "AUDUBON AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854148,
+     -73.927997
+    ],
+    [
+     40.854052,
+     -73.927773
+    ],
+    [
+     40.853964,
+     -73.9274
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 190 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854725,
+     -73.929059
+    ],
+    [
+     40.85458,
+     -73.928712
+    ],
+    [
+     40.854475,
+     -73.928466
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 190 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.854651,
+     -73.929189
+    ],
+    [
+     40.854572,
+     -73.929001
+    ],
+    [
+     40.854486,
+     -73.928651
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|BENNETT AVENUE|BROADWAY|N",
+   "street": "WEST 190 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.85677,
+     -73.933492
+    ],
+    [
+     40.856685,
+     -73.93321
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|BENNETT AVENUE|BROADWAY|S",
+   "street": "WEST 190 STREET",
+   "from": "BENNETT AVENUE",
+   "to": "BROADWAY",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.856548,
+     -73.933066
+    ],
+    [
+     40.856726,
+     -73.933507
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 190 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) THURSDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855099,
+     -73.929944
+    ],
+    [
+     40.855297,
+     -73.930406
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 190 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855042,
+     -73.930118
+    ],
+    [
+     40.855267,
+     -73.9305
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|WADSWORTH AVENUE|WADSWORTH TERRACE|N",
+   "street": "WEST 190 STREET",
+   "from": "WADSWORTH AVENUE",
+   "to": "WADSWORTH TERRACE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855712,
+     -73.931444
+    ],
+    [
+     40.855525,
+     -73.930995
+    ]
+   ]
+  },
+  {
+   "id": "WEST 190 STREET|WADSWORTH AVENUE|WADSWORTH TERRACE|S",
+   "street": "WEST 190 STREET",
+   "from": "WADSWORTH AVENUE",
+   "to": "WADSWORTH TERRACE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 11:30AM-1PM"
+   ],
+   "points": [
+    [
+     40.855556,
+     -73.931288
+    ],
+    [
+     40.855657,
+     -73.931527
+    ],
+    [
+     40.855481,
+     -73.931111
+    ]
+   ]
+  },
+  {
+   "id": "WEST 191 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 191 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.855384,
+     -73.928642
+    ],
+    [
+     40.855497,
+     -73.928917
+    ],
+    [
+     40.8552,
+     -73.928212
+    ]
+   ]
+  },
+  {
+   "id": "WEST 191 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 191 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.855439,
+     -73.928892
+    ],
+    [
+     40.855329,
+     -73.928632
+    ],
+    [
+     40.85506,
+     -73.927988
+    ]
+   ]
+  },
+  {
+   "id": "WEST 191 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 191 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.855925,
+     -73.929936
+    ],
+    [
+     40.855695,
+     -73.929387
+    ]
+   ]
+  },
+  {
+   "id": "WEST 191 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 191 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.855706,
+     -73.929629
+    ],
+    [
+     40.855901,
+     -73.930095
+    ]
+   ]
+  },
+  {
+   "id": "WEST 192 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|N",
+   "street": "WEST 192 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856064,
+     -73.928331
+    ],
+    [
+     40.855847,
+     -73.927814
+    ],
+    [
+     40.855713,
+     -73.927492
+    ]
+   ]
+  },
+  {
+   "id": "WEST 192 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 192 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.855743,
+     -73.927789
+    ],
+    [
+     40.855946,
+     -73.928277
+    ],
+    [
+     40.856054,
+     -73.928515
+    ]
+   ]
+  },
+  {
+   "id": "WEST 192 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|N",
+   "street": "WEST 192 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856331,
+     -73.928963
+    ],
+    [
+     40.856482,
+     -73.929314
+    ]
+   ]
+  },
+  {
+   "id": "WEST 192 STREET|ST NICHOLAS AVENUE|WADSWORTH AVENUE|S",
+   "street": "WEST 192 STREET",
+   "from": "ST NICHOLAS AVENUE",
+   "to": "WADSWORTH AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.85635,
+     -73.929223
+    ],
+    [
+     40.856458,
+     -73.929476
+    ],
+    [
+     40.856243,
+     -73.928967
+    ]
+   ]
+  },
+  {
+   "id": "WEST 193 STREET|AUDUBON AVENUE|FORT GEORGE AVENUE|N",
+   "street": "WEST 193 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "FORT GEORGE AVENUE",
+   "side": "N",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) WEDNESDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856473,
+     -73.927354
+    ],
+    [
+     40.856616,
+     -73.927697
+    ],
+    [
+     40.856748,
+     -73.928012
+    ]
+   ]
+  },
+  {
+   "id": "WEST 193 STREET|AUDUBON AVENUE|ST NICHOLAS AVENUE|S",
+   "street": "WEST 193 STREET",
+   "from": "AUDUBON AVENUE",
+   "to": "ST NICHOLAS AVENUE",
+   "side": "S",
+   "rules": [
+    "NO PARKING (SANITATION BROOM SYMBOL) FRIDAY 9:30AM-11AM"
+   ],
+   "points": [
+    [
+     40.856324,
+     -73.927231
+    ],
+    [
+     40.856566,
+     -73.927806
+    ],
+    [
+     40.85644,
+     -73.927506
+    ],
+    [
+     40.85666,
+     -73.928026
+    ]
+   ]
+  }
+ ]
+}
