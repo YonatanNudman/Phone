@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T04:26:49.539Z",
+  "generatedAt": "2026-10-07T11:56:50.261Z",
   "runner": "github-actions",
   "home": {
     "address": "403 Audubon Ave, New York, NY 10033",
@@ -45,14 +45,23 @@
     "frames": 5,
     "intervalSeconds": 4
   },
+  "focus": {
+    "cameraIds": [
+      "4d39d6d1-a009-480f-9851-2571a5df1174",
+      "1ccb8d7c-43d4-450e-b40c-79527766db75",
+      "3ad126cc-3f99-4626-a229-b9ba4d3f4b63"
+    ],
+    "frames": 30,
+    "intervalSeconds": 30
+  },
   "catalog": {
     "status": 200,
-    "ms": 372,
+    "ms": 471,
     "count": 976,
     "headers": {
       "content-type": "application/json; charset=utf-8",
       "cache-control": "no-store",
-      "date": "Wed, 07 Oct 2026 04:26:30 GMT"
+      "date": "Wed, 07 Oct 2026 11:41:18 GMT"
     },
     "fieldNames": [
       "area",
@@ -126,22 +135,22 @@
         "isOnline": "true",
         "imageUrl": "https://webcams.nyctmc.org/api/cameras/4d39d6d1-a009-480f-9851-2571a5df1174/image"
       },
-      "fetchedOk": 5,
-      "attempted": 5,
-      "distinctFrames": 5,
+      "fetchedOk": 35,
+      "attempted": 35,
+      "distinctFrames": 35,
       "imageSize": {
         "height": 240,
         "width": 352
       },
-      "avgBytes": 15938,
+      "avgBytes": 20874,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.753Z",
+          "fetchedAt": "2026-10-07T11:41:18.184Z",
           "status": 200,
-          "ms": 343,
-          "bytes": 16288,
-          "sha256": "b3fcf44c862e3d03fd9400f813572ad35e5d9f049f69817954a5c7f3699fa139",
+          "ms": 361,
+          "bytes": 21052,
+          "sha256": "982ec8c8889b9b598fbf2e6e87a5bbdc2a107e03faacda6ed1dedfbabe81cd1b",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -149,18 +158,18 @@
           "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16288",
+            "content-length": "21052",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.654Z",
+          "fetchedAt": "2026-10-07T11:41:23.469Z",
           "status": 200,
-          "ms": 130,
-          "bytes": 14943,
-          "sha256": "3c3064b6ee177a552f924ac0ed1987883681dfb9633853b9fcf16b49f3022baf",
+          "ms": 370,
+          "bytes": 21010,
+          "sha256": "05e965a24dd1f624c50103172fb20841dae335a17cc8a0e07e77526590b19db2",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -168,18 +177,18 @@
           "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "14943",
+            "content-length": "21010",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:23 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.511Z",
+          "fetchedAt": "2026-10-07T11:41:28.399Z",
           "status": 200,
-          "ms": 394,
-          "bytes": 16136,
-          "sha256": "33385bd1c19c5746625ced7592bf55e062df8b80fc49e69940cc2a7972a48075",
+          "ms": 267,
+          "bytes": 21124,
+          "sha256": "a62c8489120598edc451f4525927f47d101571741aba044bbd14be670b205a19",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -187,18 +196,18 @@
           "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16136",
+            "content-length": "21124",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.159Z",
+          "fetchedAt": "2026-10-07T11:41:33.035Z",
           "status": 200,
-          "ms": 137,
-          "bytes": 16447,
-          "sha256": "9d04d99343711b63c1058c68735f88614018cbdacd95c6beeb2e6dd45db623e1",
+          "ms": 176,
+          "bytes": 20871,
+          "sha256": "2ed73ab747c74bd935ac64aad7f37a74e7fd0491b636846ac46693e8e5a208a9",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -206,18 +215,18 @@
           "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16447",
+            "content-length": "20871",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.321Z",
+          "fetchedAt": "2026-10-07T11:41:37.562Z",
           "status": 200,
-          "ms": 154,
-          "bytes": 15877,
-          "sha256": "4db30f28b62c1ed8371b5fa4b4293d26292c5697d17c9d0d4651396abb055398",
+          "ms": 174,
+          "bytes": 20712,
+          "sha256": "e6857c4931bca869dfee6bd780914c7ba489299dd347134d213aacc47b4b5170",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -225,9 +234,579 @@
           "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "15877",
+            "content-length": "20712",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
+          }
+        },
+        {
+          "n": 5,
+          "fetchedAt": "2026-10-07T11:42:08.375Z",
+          "status": 200,
+          "ms": 162,
+          "bytes": 21307,
+          "sha256": "45dc16f47b0a97d46e2983c34fdc570ae750a6b3e4a6b8e411e667857b849e57",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-5.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21307",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:42:08 GMT"
+          }
+        },
+        {
+          "n": 6,
+          "fetchedAt": "2026-10-07T11:42:38.546Z",
+          "status": 200,
+          "ms": 156,
+          "bytes": 20451,
+          "sha256": "07fd1397cccf92c08220352bed2a37e25b3ab7dc71609113267ace57bd48b109",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-6.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20451",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:42:38 GMT"
+          }
+        },
+        {
+          "n": 7,
+          "fetchedAt": "2026-10-07T11:43:08.706Z",
+          "status": 200,
+          "ms": 170,
+          "bytes": 20822,
+          "sha256": "a2a0bf74f5c890ed0b618196c59f0cf3b2403b26435f96b1763c09432520502d",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-7.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20822",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:43:08 GMT"
+          }
+        },
+        {
+          "n": 8,
+          "fetchedAt": "2026-10-07T11:43:39.584Z",
+          "status": 200,
+          "ms": 176,
+          "bytes": 20817,
+          "sha256": "3f245b5cdc49b6225cde235a72b89173d3c51ad66b6467b94ed94c3e58f0f573",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-8.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20817",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:43:39 GMT"
+          }
+        },
+        {
+          "n": 9,
+          "fetchedAt": "2026-10-07T11:44:09.776Z",
+          "status": 200,
+          "ms": 169,
+          "bytes": 21254,
+          "sha256": "84a349d4a263d9f7e8df15beb82cd1b77b3cd3e3b24b5ded53274396edfaa023",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-9.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21254",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:44:09 GMT"
+          }
+        },
+        {
+          "n": 10,
+          "fetchedAt": "2026-10-07T11:44:39.961Z",
+          "status": 200,
+          "ms": 152,
+          "bytes": 20503,
+          "sha256": "18444b36098c22a5e6bda7ff4464fd5dc7ec7b5b14a30394e990014c52b20094",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-10.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20503",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:44:40 GMT"
+          }
+        },
+        {
+          "n": 11,
+          "fetchedAt": "2026-10-07T11:45:10.141Z",
+          "status": 200,
+          "ms": 153,
+          "bytes": 20804,
+          "sha256": "461486a427982b179c37c74139b643d6656dbc281634727f3a25cbe7165cbfc9",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-11.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20804",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:45:10 GMT"
+          }
+        },
+        {
+          "n": 12,
+          "fetchedAt": "2026-10-07T11:45:40.325Z",
+          "status": 200,
+          "ms": 371,
+          "bytes": 20725,
+          "sha256": "d5869cb31bc7a5d3913f5a026ef23659b1386b96f7f605d86a2caf2f6a89be67",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-12.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20725",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:45:40 GMT"
+          }
+        },
+        {
+          "n": 13,
+          "fetchedAt": "2026-10-07T11:46:10.973Z",
+          "status": 200,
+          "ms": 300,
+          "bytes": 21229,
+          "sha256": "64105c80d8fc6b4b4a43df97fad11eedfc213d364faf969592a29ea4ddc98365",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-13.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21229",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:46:11 GMT"
+          }
+        },
+        {
+          "n": 14,
+          "fetchedAt": "2026-10-07T11:46:41.357Z",
+          "status": 200,
+          "ms": 166,
+          "bytes": 20820,
+          "sha256": "10cc3eab09464090a68617fd9a205d42a5b9bb7b42856706e3975421a316decb",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-14.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20820",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:46:41 GMT"
+          }
+        },
+        {
+          "n": 15,
+          "fetchedAt": "2026-10-07T11:47:11.666Z",
+          "status": 200,
+          "ms": 195,
+          "bytes": 20652,
+          "sha256": "4fae771055068269ec778184c3dd00e95b1d0b7440de880833885747dd80d494",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-15.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20652",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:47:11 GMT"
+          }
+        },
+        {
+          "n": 16,
+          "fetchedAt": "2026-10-07T11:47:41.988Z",
+          "status": 200,
+          "ms": 364,
+          "bytes": 20924,
+          "sha256": "d08a06bbbac79733233795f39ae089ce3bed92682786cf75db907ba00255fd5c",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-16.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20924",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:47:42 GMT"
+          }
+        },
+        {
+          "n": 17,
+          "fetchedAt": "2026-10-07T11:48:12.388Z",
+          "status": 200,
+          "ms": 262,
+          "bytes": 21331,
+          "sha256": "024b5b47f2a840c946f1764368aed75cab6e09d97d6e5773051705ee59920f17",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-17.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21331",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:48:12 GMT"
+          }
+        },
+        {
+          "n": 18,
+          "fetchedAt": "2026-10-07T11:48:42.810Z",
+          "status": 200,
+          "ms": 176,
+          "bytes": 21076,
+          "sha256": "bcc85d0c014b77762db3782c63576db13b6dac30367393cbdd5d69cda2e75470",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-18.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21076",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:48:42 GMT"
+          }
+        },
+        {
+          "n": 19,
+          "fetchedAt": "2026-10-07T11:49:13.354Z",
+          "status": 200,
+          "ms": 257,
+          "bytes": 21551,
+          "sha256": "f531bc7906c69abc6f59c5ce9664ac90bf4cafd8e9cb6258bb2867530be33d1d",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-19.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21551",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:49:13 GMT"
+          }
+        },
+        {
+          "n": 20,
+          "fetchedAt": "2026-10-07T11:49:43.638Z",
+          "status": 200,
+          "ms": 290,
+          "bytes": 21486,
+          "sha256": "c67aab8b177387db24901faee9afae542854ca043f644a4387b8be2c73786dff",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-20.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21486",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:49:43 GMT"
+          }
+        },
+        {
+          "n": 21,
+          "fetchedAt": "2026-10-07T11:50:14.401Z",
+          "status": 200,
+          "ms": 356,
+          "bytes": 21338,
+          "sha256": "68ade60febfe170776f629b7dce86a328e7cee34e90ba22d5777249c255d8eed",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-21.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21338",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:50:14 GMT"
+          }
+        },
+        {
+          "n": 22,
+          "fetchedAt": "2026-10-07T11:50:44.905Z",
+          "status": 200,
+          "ms": 258,
+          "bytes": 19492,
+          "sha256": "67d9dd6f1138d959449a85dfc8f929efb5185a548d4f924d67a0b053188bb5ff",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-22.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19492",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:50:45 GMT"
+          }
+        },
+        {
+          "n": 23,
+          "fetchedAt": "2026-10-07T11:51:15.453Z",
+          "status": 200,
+          "ms": 286,
+          "bytes": 20825,
+          "sha256": "e763d06d88f03a92015d59e74108beffa7e5b133c7cca8081af0bb900bbc26c6",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-23.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20825",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:51:15 GMT"
+          }
+        },
+        {
+          "n": 24,
+          "fetchedAt": "2026-10-07T11:51:45.778Z",
+          "status": 200,
+          "ms": 166,
+          "bytes": 21385,
+          "sha256": "66796dd24be74e97f1a0c1605ac6e9388976f577cbef5a265cea3cc9ee5f73a8",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-24.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21385",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:51:45 GMT"
+          }
+        },
+        {
+          "n": 25,
+          "fetchedAt": "2026-10-07T11:52:16.072Z",
+          "status": 200,
+          "ms": 377,
+          "bytes": 20606,
+          "sha256": "c765f5abaf1577f28e53b5e88c958f3dd02cd6d19f0355c6ac6d37631cb9a7f4",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-25.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20606",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:52:16 GMT"
+          }
+        },
+        {
+          "n": 26,
+          "fetchedAt": "2026-10-07T11:52:46.528Z",
+          "status": 200,
+          "ms": 360,
+          "bytes": 20718,
+          "sha256": "467c9c3baa529f416c422a8cab5155a94f70dc402b6f6dd96c79c14193d3def4",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-26.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20718",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:52:46 GMT"
+          }
+        },
+        {
+          "n": 27,
+          "fetchedAt": "2026-10-07T11:53:17.023Z",
+          "status": 200,
+          "ms": 267,
+          "bytes": 20258,
+          "sha256": "25a16adb1758198c6f9d835579f829b71f4256b25749d53f0d79a10d2966a5cb",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-27.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20258",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:53:17 GMT"
+          }
+        },
+        {
+          "n": 28,
+          "fetchedAt": "2026-10-07T11:53:47.545Z",
+          "status": 200,
+          "ms": 256,
+          "bytes": 20865,
+          "sha256": "49327fe22c6552495af36854ba47d0cc8fe65308213dcd68024221d6ece8c0c7",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-28.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20865",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:53:47 GMT"
+          }
+        },
+        {
+          "n": 29,
+          "fetchedAt": "2026-10-07T11:54:17.963Z",
+          "status": 200,
+          "ms": 283,
+          "bytes": 20414,
+          "sha256": "0572fb2b6be05ebd08c697dc3d2c6b24c36ae30e3a9c056a5e9fd937817fdeda",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-29.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20414",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:54:18 GMT"
+          }
+        },
+        {
+          "n": 30,
+          "fetchedAt": "2026-10-07T11:54:48.289Z",
+          "status": 200,
+          "ms": 390,
+          "bytes": 21274,
+          "sha256": "a32eecf79351b054d7a0d9970a8b89d0028371323c538043665455aec906859e",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-30.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21274",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:54:48 GMT"
+          }
+        },
+        {
+          "n": 31,
+          "fetchedAt": "2026-10-07T11:55:18.755Z",
+          "status": 200,
+          "ms": 292,
+          "bytes": 20640,
+          "sha256": "dad48730117399ec6e053a6d06f9869f0cce9299589bead01c801c63671149a8",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-31.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20640",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:55:19 GMT"
+          }
+        },
+        {
+          "n": 32,
+          "fetchedAt": "2026-10-07T11:55:49.201Z",
+          "status": 200,
+          "ms": 244,
+          "bytes": 20521,
+          "sha256": "714efda8710a4ddbd02ee2fb634f6073e008fe3a54ae9b97e054eb8beddee61c",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-32.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20521",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:55:49 GMT"
+          }
+        },
+        {
+          "n": 33,
+          "fetchedAt": "2026-10-07T11:56:19.566Z",
+          "status": 200,
+          "ms": 188,
+          "bytes": 20772,
+          "sha256": "ee4aca1bbfd730a3d2ed010b4f740542eafc516d9f08aa7a6a7078699ad4f2c4",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-33.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20772",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:56:19 GMT"
+          }
+        },
+        {
+          "n": 34,
+          "fetchedAt": "2026-10-07T11:56:50.098Z",
+          "status": 200,
+          "ms": 148,
+          "bytes": 20971,
+          "sha256": "5e91ed4809f3008ec9119a5788b9e360256593a487509ff2bef358c112f97989",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/4d39d6d1-a009-480f-9851-2571a5df1174-34.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20971",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:56:50 GMT"
           }
         }
       ]
@@ -250,22 +829,22 @@
         "isOnline": "true",
         "imageUrl": "https://webcams.nyctmc.org/api/cameras/1ccb8d7c-43d4-450e-b40c-79527766db75/image"
       },
-      "fetchedOk": 5,
-      "attempted": 5,
-      "distinctFrames": 5,
+      "fetchedOk": 35,
+      "attempted": 35,
+      "distinctFrames": 35,
       "imageSize": {
         "height": 240,
         "width": 352
       },
-      "avgBytes": 23042,
+      "avgBytes": 25843,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.755Z",
+          "fetchedAt": "2026-10-07T11:41:18.186Z",
           "status": 200,
-          "ms": 337,
-          "bytes": 20106,
-          "sha256": "6b2d1216a0f62552d8d5e08c978e9b12dfb8979b5b7fe357d2780af1bc18b28d",
+          "ms": 365,
+          "bytes": 25307,
+          "sha256": "486ca2710330d234e05bb30624d574f2c616e975086e5a0db6795fac024279e0",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -273,18 +852,18 @@
           "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20106",
+            "content-length": "25307",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.655Z",
+          "fetchedAt": "2026-10-07T11:41:23.470Z",
           "status": 200,
-          "ms": 131,
-          "bytes": 23922,
-          "sha256": "398f6f5d87c3898a86916bd26d88362bea738a5f95ee386e78ade2c9dd776bb7",
+          "ms": 354,
+          "bytes": 26005,
+          "sha256": "83d12e77f2752177ddf630da70e73aec36c0ddab5d614bee6e000b3e05d0d57c",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -292,18 +871,18 @@
           "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "23922",
+            "content-length": "26005",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:23 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.513Z",
+          "fetchedAt": "2026-10-07T11:41:28.400Z",
           "status": 200,
-          "ms": 393,
-          "bytes": 23987,
-          "sha256": "e71e8ca48857203f5756bcb3bdfb3888c60e6583fb68b30280f0cbf029d5ec93",
+          "ms": 279,
+          "bytes": 24496,
+          "sha256": "fc53cfebdfac74d7742bfffa2ecbf9fb12ceda2489be00b53d06017db5a67d89",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -311,18 +890,18 @@
           "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "23987",
+            "content-length": "24496",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.160Z",
+          "fetchedAt": "2026-10-07T11:41:33.036Z",
           "status": 200,
-          "ms": 143,
-          "bytes": 23460,
-          "sha256": "3a8f7fdb10150e0d90921b549d4f3cdd79d82bb82648f3d69ee7e548f1dca2e6",
+          "ms": 165,
+          "bytes": 25670,
+          "sha256": "fa60489d9e9d52f051578cd8e4039a5867ec05e7d98caba0884fd7b1d213cdc1",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -330,18 +909,18 @@
           "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "23460",
+            "content-length": "25670",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.321Z",
+          "fetchedAt": "2026-10-07T11:41:37.563Z",
           "status": 200,
-          "ms": 147,
-          "bytes": 23735,
-          "sha256": "cde3757a3cb9b9a8f6ff536ba16d7caf5eaa5d4ff3a0a6565cc8d730245bee8a",
+          "ms": 165,
+          "bytes": 25800,
+          "sha256": "897e958e47968ebe5fa518d5defb4f3ca95043ad687834893db226142aac42c6",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -349,9 +928,579 @@
           "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "23735",
+            "content-length": "25800",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
+          }
+        },
+        {
+          "n": 5,
+          "fetchedAt": "2026-10-07T11:42:08.376Z",
+          "status": 200,
+          "ms": 152,
+          "bytes": 25315,
+          "sha256": "84b506f008bcc4350121620d1dec1bb6dac6e7b763ef965c10c11ce6c01d2bdd",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-5.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25315",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:42:08 GMT"
+          }
+        },
+        {
+          "n": 6,
+          "fetchedAt": "2026-10-07T11:42:38.547Z",
+          "status": 200,
+          "ms": 157,
+          "bytes": 25806,
+          "sha256": "43df758910b4f954024799bbde112d81fdde6d3befe973b3576faecc7e8e3192",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-6.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25806",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:42:38 GMT"
+          }
+        },
+        {
+          "n": 7,
+          "fetchedAt": "2026-10-07T11:43:08.707Z",
+          "status": 200,
+          "ms": 861,
+          "bytes": 25895,
+          "sha256": "9ef595bb5ddc56879fdbfc3c68c86095d082fb0d5d48203de961db91b4d9d2ef",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-7.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25895",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:43:09 GMT"
+          }
+        },
+        {
+          "n": 8,
+          "fetchedAt": "2026-10-07T11:43:39.585Z",
+          "status": 200,
+          "ms": 159,
+          "bytes": 26047,
+          "sha256": "6c45f6c9e2f3fcba3f93083c0af49c2626c382fc9e0a196eb2f83733986e1e36",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-8.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26047",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:43:39 GMT"
+          }
+        },
+        {
+          "n": 9,
+          "fetchedAt": "2026-10-07T11:44:09.777Z",
+          "status": 200,
+          "ms": 152,
+          "bytes": 25798,
+          "sha256": "325cab59c43554d300f89e9d62324c913cbaa26f343a0fa16b2bf3dbd0974c4f",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-9.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25798",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:44:09 GMT"
+          }
+        },
+        {
+          "n": 10,
+          "fetchedAt": "2026-10-07T11:44:39.962Z",
+          "status": 200,
+          "ms": 152,
+          "bytes": 25788,
+          "sha256": "52720c02653e7ec095c0f548b5f47bd4fe47cc3165f28b9c3e3ec7137dff516d",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-10.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25788",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:44:40 GMT"
+          }
+        },
+        {
+          "n": 11,
+          "fetchedAt": "2026-10-07T11:45:10.142Z",
+          "status": 200,
+          "ms": 153,
+          "bytes": 26342,
+          "sha256": "55d1f0a94a7f5f638e6adbe69395974b4674888c54e13826e3187b1161d5a44b",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-11.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26342",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:45:10 GMT"
+          }
+        },
+        {
+          "n": 12,
+          "fetchedAt": "2026-10-07T11:45:40.326Z",
+          "status": 200,
+          "ms": 370,
+          "bytes": 24727,
+          "sha256": "e8b4eeccae90996c8ac5cb0b83df172b729a7c9bfb2ab97951b25882c7de7ed4",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-12.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "24727",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:45:40 GMT"
+          }
+        },
+        {
+          "n": 13,
+          "fetchedAt": "2026-10-07T11:46:10.975Z",
+          "status": 200,
+          "ms": 300,
+          "bytes": 25909,
+          "sha256": "ff9b034268c85fcf70f03ec50d7d3763d83d19876dab6653f97182bf3ea1f7e1",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-13.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25909",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:46:11 GMT"
+          }
+        },
+        {
+          "n": 14,
+          "fetchedAt": "2026-10-07T11:46:41.358Z",
+          "status": 200,
+          "ms": 162,
+          "bytes": 26123,
+          "sha256": "61fb862bcb4c2620f9637f32b1e2f6a634a609d4cb1be11ffe5275e3ab166ab9",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-14.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26123",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:46:41 GMT"
+          }
+        },
+        {
+          "n": 15,
+          "fetchedAt": "2026-10-07T11:47:11.667Z",
+          "status": 200,
+          "ms": 172,
+          "bytes": 25944,
+          "sha256": "716e5ec5d5f2da569be12aa9eda6644a2888139592a8174368993f25c7a035b0",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-15.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25944",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:47:11 GMT"
+          }
+        },
+        {
+          "n": 16,
+          "fetchedAt": "2026-10-07T11:47:41.989Z",
+          "status": 200,
+          "ms": 364,
+          "bytes": 25975,
+          "sha256": "5cf92fc678a9913896d3cacf6c09ccd79f5b8c3fd5348b2d66b63e7207e0e8e6",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-16.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25975",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:47:42 GMT"
+          }
+        },
+        {
+          "n": 17,
+          "fetchedAt": "2026-10-07T11:48:12.389Z",
+          "status": 200,
+          "ms": 268,
+          "bytes": 25418,
+          "sha256": "ff91a6e2ee69ff15aa5d9d8e1f238b42f4e4d1e1832ae8d5f5f5e5e57d58452f",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-17.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25418",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:48:12 GMT"
+          }
+        },
+        {
+          "n": 18,
+          "fetchedAt": "2026-10-07T11:48:42.811Z",
+          "status": 200,
+          "ms": 165,
+          "bytes": 25994,
+          "sha256": "7b52129a9c713409d2000b3f3d4878dbca283f870ac74201f739bf8bcf6ce7c0",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-18.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25994",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:48:42 GMT"
+          }
+        },
+        {
+          "n": 19,
+          "fetchedAt": "2026-10-07T11:49:13.355Z",
+          "status": 200,
+          "ms": 257,
+          "bytes": 25009,
+          "sha256": "7a796efb827db7f45058fa47703aa336264fe156ec45f8c17365ab787d4666fb",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-19.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25009",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:49:13 GMT"
+          }
+        },
+        {
+          "n": 20,
+          "fetchedAt": "2026-10-07T11:49:43.639Z",
+          "status": 200,
+          "ms": 289,
+          "bytes": 25754,
+          "sha256": "0ee281249eede499e08d71aee8215331ecfca362f464d0a6858582d46becca86",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-20.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25754",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:49:43 GMT"
+          }
+        },
+        {
+          "n": 21,
+          "fetchedAt": "2026-10-07T11:50:14.402Z",
+          "status": 200,
+          "ms": 354,
+          "bytes": 26139,
+          "sha256": "1bfae531b0bd4e24de7435699ba61765a6d2ad9043c4decda26419a123a19d9b",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-21.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26139",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:50:14 GMT"
+          }
+        },
+        {
+          "n": 22,
+          "fetchedAt": "2026-10-07T11:50:44.906Z",
+          "status": 200,
+          "ms": 260,
+          "bytes": 26113,
+          "sha256": "eea06196ce70b2257bf9bdf09cc9a9ab2deb59d70735085c1d762f7ea8f3350e",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-22.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26113",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:50:45 GMT"
+          }
+        },
+        {
+          "n": 23,
+          "fetchedAt": "2026-10-07T11:51:15.454Z",
+          "status": 200,
+          "ms": 267,
+          "bytes": 25863,
+          "sha256": "4ae1194fd46c59a48ddeddeb83d45c2d550cfb575258c2668842ac6cbdcb5e81",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-23.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25863",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:51:15 GMT"
+          }
+        },
+        {
+          "n": 24,
+          "fetchedAt": "2026-10-07T11:51:45.779Z",
+          "status": 200,
+          "ms": 151,
+          "bytes": 26070,
+          "sha256": "979292901053944dda9703b50beccd60e6951b3f4babe64fdc9acde9c12fbd41",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-24.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26070",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:51:45 GMT"
+          }
+        },
+        {
+          "n": 25,
+          "fetchedAt": "2026-10-07T11:52:16.074Z",
+          "status": 200,
+          "ms": 358,
+          "bytes": 26315,
+          "sha256": "9f58d417513ef28ea55473411073d922bf42163048627af5c14359e7eb2e0bbc",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-25.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26315",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:52:16 GMT"
+          }
+        },
+        {
+          "n": 26,
+          "fetchedAt": "2026-10-07T11:52:46.529Z",
+          "status": 200,
+          "ms": 351,
+          "bytes": 26266,
+          "sha256": "9637fe67f71f8883b4dcf545874b843a6df843332839dbb03a6c849e5217b04b",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-26.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26266",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:52:46 GMT"
+          }
+        },
+        {
+          "n": 27,
+          "fetchedAt": "2026-10-07T11:53:17.024Z",
+          "status": 200,
+          "ms": 268,
+          "bytes": 26036,
+          "sha256": "1e4c710bfc56abf79ffdb746642352bfba452d87321ba5bb0cb5a2cf1f3880a4",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-27.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26036",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:53:17 GMT"
+          }
+        },
+        {
+          "n": 28,
+          "fetchedAt": "2026-10-07T11:53:47.546Z",
+          "status": 200,
+          "ms": 257,
+          "bytes": 25709,
+          "sha256": "04818e4b2884522f9fcc6abbdf49dc449740237cc3bf1e87290193fbef2ae5b5",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-28.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25709",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:53:47 GMT"
+          }
+        },
+        {
+          "n": 29,
+          "fetchedAt": "2026-10-07T11:54:17.964Z",
+          "status": 200,
+          "ms": 293,
+          "bytes": 26588,
+          "sha256": "ace111ffbaced0e2ebd3bebb43bc540a75dbd26965e47ceac83859a69a13cc22",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-29.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26588",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:54:18 GMT"
+          }
+        },
+        {
+          "n": 30,
+          "fetchedAt": "2026-10-07T11:54:48.290Z",
+          "status": 200,
+          "ms": 403,
+          "bytes": 26203,
+          "sha256": "ceee047951e56ff106ca042eb380a520cca6b048c2611dc653e9468e4574c3de",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-30.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26203",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:54:48 GMT"
+          }
+        },
+        {
+          "n": 31,
+          "fetchedAt": "2026-10-07T11:55:18.756Z",
+          "status": 200,
+          "ms": 282,
+          "bytes": 26218,
+          "sha256": "9cceeb9bdd4057173a9d66b0d043f7ec2d63a522450cc2105df3f5ab71f290e1",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-31.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26218",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:55:18 GMT"
+          }
+        },
+        {
+          "n": 32,
+          "fetchedAt": "2026-10-07T11:55:49.202Z",
+          "status": 200,
+          "ms": 241,
+          "bytes": 25790,
+          "sha256": "24e789a37f4a2bf543c28edd1d920b60abe1713df8cf9b1896559bf0fecb4630",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-32.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25790",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:55:49 GMT"
+          }
+        },
+        {
+          "n": 33,
+          "fetchedAt": "2026-10-07T11:56:19.567Z",
+          "status": 200,
+          "ms": 186,
+          "bytes": 26188,
+          "sha256": "462dc41961223d497cc8c53333c2421c0fe21afe5ceaf3cec3d20d9023f10f34",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-33.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "26188",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:56:19 GMT"
+          }
+        },
+        {
+          "n": 34,
+          "fetchedAt": "2026-10-07T11:56:50.099Z",
+          "status": 200,
+          "ms": 161,
+          "bytes": 25892,
+          "sha256": "5a4e2d880dc5c3ae7782df5cc97ef520a7411bb5bcb4ec1cfa368b265834e80a",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/1ccb8d7c-43d4-450e-b40c-79527766db75-34.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "25892",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:56:50 GMT"
           }
         }
       ]
@@ -374,22 +1523,22 @@
         "isOnline": "true",
         "imageUrl": "https://webcams.nyctmc.org/api/cameras/3ad126cc-3f99-4626-a229-b9ba4d3f4b63/image"
       },
-      "fetchedOk": 5,
-      "attempted": 5,
-      "distinctFrames": 5,
+      "fetchedOk": 35,
+      "attempted": 35,
+      "distinctFrames": 34,
       "imageSize": {
         "height": 240,
         "width": 352
       },
-      "avgBytes": 16367,
+      "avgBytes": 20155,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.756Z",
+          "fetchedAt": "2026-10-07T11:41:18.187Z",
           "status": 200,
-          "ms": 418,
-          "bytes": 16057,
-          "sha256": "6d2a7ca6d8deb36847096cd13433c410fb6dda6afbd384d5aff1cdbfcc60c17e",
+          "ms": 509,
+          "bytes": 19815,
+          "sha256": "4b9231eca2abeedb162e3a87e6b9d4f23bf517eeb8c8f66db696b4acb34b9f95",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -397,18 +1546,18 @@
           "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16057",
+            "content-length": "19815",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.656Z",
+          "fetchedAt": "2026-10-07T11:41:23.470Z",
           "status": 200,
-          "ms": 201,
-          "bytes": 16214,
-          "sha256": "16ddbe894d0545b8b73c000081b5a6d68fe3404b50b06b59c1583a39b9fb34eb",
+          "ms": 659,
+          "bytes": 19982,
+          "sha256": "0b2c3c82163c86d532dc1b61226cd8c0ff790412f4c97cb8597a64e57c55b7d8",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -416,18 +1565,18 @@
           "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16214",
+            "content-length": "19982",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.513Z",
+          "fetchedAt": "2026-10-07T11:41:28.401Z",
           "status": 200,
-          "ms": 393,
-          "bytes": 16483,
-          "sha256": "702716436f1d6d92d5fa05596b9f21c01f006058496bd9f4fe701c8af5589110",
+          "ms": 268,
+          "bytes": 19982,
+          "sha256": "0b2c3c82163c86d532dc1b61226cd8c0ff790412f4c97cb8597a64e57c55b7d8",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -435,18 +1584,18 @@
           "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16483",
+            "content-length": "19982",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.160Z",
+          "fetchedAt": "2026-10-07T11:41:33.037Z",
           "status": 200,
-          "ms": 121,
-          "bytes": 16460,
-          "sha256": "d6d5e6aa623e70cb36728f2d8a07d2e996a523a4e29d6e8f4ca329e8ecd6e064",
+          "ms": 329,
+          "bytes": 19942,
+          "sha256": "62534dc363e140b52eed2bd621c03a55eceb8f30dcc1bd26abe80fc873805561",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -454,18 +1603,18 @@
           "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16460",
+            "content-length": "19942",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.322Z",
+          "fetchedAt": "2026-10-07T11:41:37.563Z",
           "status": 200,
-          "ms": 133,
-          "bytes": 16619,
-          "sha256": "35ad1da96b8d397649fac58e37260621436c74ed75f90969584ad53342130e01",
+          "ms": 152,
+          "bytes": 19852,
+          "sha256": "acccd88c990f164d0d7bb397e908e21ff669bca7a59b5c55e6cc0915ea0f3835",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -473,9 +1622,579 @@
           "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16619",
+            "content-length": "19852",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
+          }
+        },
+        {
+          "n": 5,
+          "fetchedAt": "2026-10-07T11:42:08.376Z",
+          "status": 200,
+          "ms": 155,
+          "bytes": 20136,
+          "sha256": "93f77dbb75be865e43098e0242da3878a0fd588c4bbd246f694a1be0f006ade2",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-5.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20136",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:42:08 GMT"
+          }
+        },
+        {
+          "n": 6,
+          "fetchedAt": "2026-10-07T11:42:38.548Z",
+          "status": 200,
+          "ms": 151,
+          "bytes": 20264,
+          "sha256": "48d1695cced5e9116b4787fe30704e7d1b82413f4680e2ffe767ab082c7fa67d",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-6.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20264",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:42:38 GMT"
+          }
+        },
+        {
+          "n": 7,
+          "fetchedAt": "2026-10-07T11:43:08.708Z",
+          "status": 200,
+          "ms": 165,
+          "bytes": 20790,
+          "sha256": "71781f5994a8280a2a67395970797ff3e8e6d97aa757379b8e23b819f8a2f37b",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-7.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20790",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:43:08 GMT"
+          }
+        },
+        {
+          "n": 8,
+          "fetchedAt": "2026-10-07T11:43:39.586Z",
+          "status": 200,
+          "ms": 153,
+          "bytes": 20542,
+          "sha256": "d59dbd94f0546bc0bf8014cd8bbe4db3453799ababf7dbaf2d95eca3ae198c40",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-8.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20542",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:43:39 GMT"
+          }
+        },
+        {
+          "n": 9,
+          "fetchedAt": "2026-10-07T11:44:09.778Z",
+          "status": 200,
+          "ms": 154,
+          "bytes": 20318,
+          "sha256": "37b7c7bdd4e717aee9fdff9f6b36f042a4a45fcdc25034965277b31a90ec96fb",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-9.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20318",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:44:09 GMT"
+          }
+        },
+        {
+          "n": 10,
+          "fetchedAt": "2026-10-07T11:44:39.963Z",
+          "status": 200,
+          "ms": 162,
+          "bytes": 21078,
+          "sha256": "12b2a23668a5cb54af7d9acd99a5ce5ef809a4310b1ce311f2208a2d05938404",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-10.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "21078",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:44:40 GMT"
+          }
+        },
+        {
+          "n": 11,
+          "fetchedAt": "2026-10-07T11:45:10.143Z",
+          "status": 200,
+          "ms": 167,
+          "bytes": 20687,
+          "sha256": "dc8554eea8536a90600e5fb3b84691d4b482eba36c186aeca79151d6de6cdbd3",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-11.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20687",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:45:10 GMT"
+          }
+        },
+        {
+          "n": 12,
+          "fetchedAt": "2026-10-07T11:45:40.327Z",
+          "status": 200,
+          "ms": 630,
+          "bytes": 20272,
+          "sha256": "2426886b024d897be9d7037b1cf6567ab07a768b1867190dbcb2a41d7800e3c1",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-12.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20272",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:45:40 GMT"
+          }
+        },
+        {
+          "n": 13,
+          "fetchedAt": "2026-10-07T11:46:10.976Z",
+          "status": 200,
+          "ms": 366,
+          "bytes": 20379,
+          "sha256": "1b8be5dde6a955ea9cad8d8ec2106ed318ffd7eb7664ffa268864b31886e4759",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-13.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20379",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:46:11 GMT"
+          }
+        },
+        {
+          "n": 14,
+          "fetchedAt": "2026-10-07T11:46:41.359Z",
+          "status": 200,
+          "ms": 290,
+          "bytes": 20206,
+          "sha256": "e89c29190542efebad9e41403c0b87d295c247bc9bec3a26179b845de20b10bf",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-14.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20206",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:46:41 GMT"
+          }
+        },
+        {
+          "n": 15,
+          "fetchedAt": "2026-10-07T11:47:11.667Z",
+          "status": 200,
+          "ms": 304,
+          "bytes": 20074,
+          "sha256": "880393707f6ea64357ecff8955106e33449ff11b3f22b42ebdcc1db4e7a01ae5",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-15.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20074",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:47:11 GMT"
+          }
+        },
+        {
+          "n": 16,
+          "fetchedAt": "2026-10-07T11:47:41.990Z",
+          "status": 200,
+          "ms": 382,
+          "bytes": 20103,
+          "sha256": "3d37e6d026af577d3b812c84806cd8d9e2ccf8f8026417f893f9266ca9b5ea0e",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-16.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20103",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:47:42 GMT"
+          }
+        },
+        {
+          "n": 17,
+          "fetchedAt": "2026-10-07T11:48:12.390Z",
+          "status": 200,
+          "ms": 403,
+          "bytes": 20033,
+          "sha256": "333e7e48277fd847e0d33092892dde34b4bcc7e85e443c03bc465dd5b70bfcd8",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-17.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20033",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:48:12 GMT"
+          }
+        },
+        {
+          "n": 18,
+          "fetchedAt": "2026-10-07T11:48:42.812Z",
+          "status": 200,
+          "ms": 525,
+          "bytes": 19768,
+          "sha256": "5d445172a0da53d0b136ae5d66fefab7019bf6fc524976cbd4a15dd9cc6cf3d0",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-18.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19768",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:48:43 GMT"
+          }
+        },
+        {
+          "n": 19,
+          "fetchedAt": "2026-10-07T11:49:13.355Z",
+          "status": 200,
+          "ms": 267,
+          "bytes": 20102,
+          "sha256": "04d32f8ce71f6f8e3be2d2dc03072c4c4d463677418848d99ebd3bc3b86411e7",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-19.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20102",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:49:13 GMT"
+          }
+        },
+        {
+          "n": 20,
+          "fetchedAt": "2026-10-07T11:49:43.640Z",
+          "status": 200,
+          "ms": 754,
+          "bytes": 20662,
+          "sha256": "5fc03c9e09a1f036afc9e4d248a1d0f792bdd383b7c02373dc0787c70d9f96b9",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-20.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20662",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:49:44 GMT"
+          }
+        },
+        {
+          "n": 21,
+          "fetchedAt": "2026-10-07T11:50:14.403Z",
+          "status": 200,
+          "ms": 487,
+          "bytes": 19920,
+          "sha256": "58c6e227897ffb3c4b2947e00226b70e0d3c3fd7a75bb79731bf437e1907a861",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-21.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19920",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:50:14 GMT"
+          }
+        },
+        {
+          "n": 22,
+          "fetchedAt": "2026-10-07T11:50:44.907Z",
+          "status": 200,
+          "ms": 542,
+          "bytes": 20121,
+          "sha256": "de4f900fab72b9eba2e1913ac86dddba5ce5224080b272c0ef3a67e783384182",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-22.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20121",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:50:45 GMT"
+          }
+        },
+        {
+          "n": 23,
+          "fetchedAt": "2026-10-07T11:51:15.454Z",
+          "status": 200,
+          "ms": 310,
+          "bytes": 20355,
+          "sha256": "5cba7c558a49df4a2e3a2019fa470094bb2eb7643ddf83c6b6de1576cca0f5d9",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-23.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20355",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:51:15 GMT"
+          }
+        },
+        {
+          "n": 24,
+          "fetchedAt": "2026-10-07T11:51:45.779Z",
+          "status": 200,
+          "ms": 277,
+          "bytes": 20155,
+          "sha256": "f8de4abcaa99340cbd213ad378723d5217ccd5698c560ba87ff1c8b8ad87f66d",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-24.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20155",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:51:46 GMT"
+          }
+        },
+        {
+          "n": 25,
+          "fetchedAt": "2026-10-07T11:52:16.074Z",
+          "status": 200,
+          "ms": 439,
+          "bytes": 20403,
+          "sha256": "67c4444800f3654bdecdeadf3d72d3069fea56a2d11138174bfd8974ffd77664",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-25.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20403",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:52:16 GMT"
+          }
+        },
+        {
+          "n": 26,
+          "fetchedAt": "2026-10-07T11:52:46.529Z",
+          "status": 200,
+          "ms": 478,
+          "bytes": 20344,
+          "sha256": "a3977e1fc61094b17b54f3f16a01c3adc89fcb59adce5614c6273ff3aa04eb10",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-26.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20344",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:52:46 GMT"
+          }
+        },
+        {
+          "n": 27,
+          "fetchedAt": "2026-10-07T11:53:17.025Z",
+          "status": 200,
+          "ms": 514,
+          "bytes": 19999,
+          "sha256": "5c53b8ce777d7419126e6bd500ffdb9dbbc8ab77691570c984ab51b0a24f7b66",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-27.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19999",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:53:17 GMT"
+          }
+        },
+        {
+          "n": 28,
+          "fetchedAt": "2026-10-07T11:53:47.547Z",
+          "status": 200,
+          "ms": 400,
+          "bytes": 19623,
+          "sha256": "27b8d283e312069d99b9d2637e8da564acc063c1c5a1a70a3874d68131573902",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-28.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19623",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:53:47 GMT"
+          }
+        },
+        {
+          "n": 29,
+          "fetchedAt": "2026-10-07T11:54:17.965Z",
+          "status": 200,
+          "ms": 314,
+          "bytes": 20045,
+          "sha256": "47a44f66b16a137fa75d54912ec33beece674393a82db8a51b2f9c5cab1efa34",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-29.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20045",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:54:18 GMT"
+          }
+        },
+        {
+          "n": 30,
+          "fetchedAt": "2026-10-07T11:54:48.291Z",
+          "status": 200,
+          "ms": 449,
+          "bytes": 19561,
+          "sha256": "8e72c44270df154fd00833eab8d7c0737ced7f113abaaa8260789cc82ad66d4b",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-30.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19561",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:54:48 GMT"
+          }
+        },
+        {
+          "n": 31,
+          "fetchedAt": "2026-10-07T11:55:18.756Z",
+          "status": 200,
+          "ms": 429,
+          "bytes": 20036,
+          "sha256": "020bf9cc3cd613e40a927d08f9016a10c3e44c8b40042f7b42212d5229e07990",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-31.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20036",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:55:19 GMT"
+          }
+        },
+        {
+          "n": 32,
+          "fetchedAt": "2026-10-07T11:55:49.203Z",
+          "status": 200,
+          "ms": 348,
+          "bytes": 19893,
+          "sha256": "bfbffd247c9d3ccc36ec807e5479238d5046537e6903edca17afb762a84534b8",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-32.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19893",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:55:49 GMT"
+          }
+        },
+        {
+          "n": 33,
+          "fetchedAt": "2026-10-07T11:56:19.568Z",
+          "status": 200,
+          "ms": 518,
+          "bytes": 19910,
+          "sha256": "84b2fbb227b56f5d60d06bf30639af6c251bc3125aec7ca325435a2686f90d66",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-33.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "19910",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:56:20 GMT"
+          }
+        },
+        {
+          "n": 34,
+          "fetchedAt": "2026-10-07T11:56:50.099Z",
+          "status": 200,
+          "ms": 162,
+          "bytes": 20077,
+          "sha256": "f754cd99bd7569c5cb9aa519d138084339e8ba1bc9cd0e793b5cfcb72c3e146b",
+          "jpeg": {
+            "height": 240,
+            "width": 352
+          },
+          "file": "frames/3ad126cc-3f99-4626-a229-b9ba4d3f4b63-34.jpg",
+          "headers": {
+            "content-type": "image/jpeg",
+            "content-length": "20077",
+            "cache-control": "no-store",
+            "date": "Wed, 07 Oct 2026 11:56:50 GMT"
           }
         }
       ]
@@ -505,15 +2224,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 16576,
+      "avgBytes": 21015,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.757Z",
+          "fetchedAt": "2026-10-07T11:41:18.188Z",
           "status": 200,
-          "ms": 406,
-          "bytes": 17758,
-          "sha256": "f5f0b10effcc18db028656b71f7b6b403221656f3062e65699aa794e5b20d941",
+          "ms": 513,
+          "bytes": 20269,
+          "sha256": "066d06c83b6e425558d55e409e577d21f1b8b206f46884e99e1234c679aca504",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -521,18 +2240,18 @@
           "file": "frames/99bd1846-c0e4-4689-b077-63d2525bf1aa-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "17758",
+            "content-length": "20269",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.657Z",
+          "fetchedAt": "2026-10-07T11:41:23.471Z",
           "status": 200,
-          "ms": 214,
-          "bytes": 16579,
-          "sha256": "37cad1b681f394af9e169d8fb2627182f87b8979a3e7a7d0d3bc34a36d1c1864",
+          "ms": 649,
+          "bytes": 21134,
+          "sha256": "0461c4288b06c3cc8095cb3d7a52344aff29e7898ed61f294061fa2af92c153b",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -540,18 +2259,18 @@
           "file": "frames/99bd1846-c0e4-4689-b077-63d2525bf1aa-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16579",
+            "content-length": "21134",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.514Z",
+          "fetchedAt": "2026-10-07T11:41:28.402Z",
           "status": 200,
-          "ms": 393,
-          "bytes": 16217,
-          "sha256": "5371dd879e1383832d99106a24c1a699bccdb41a345a7000f35bef16c20b7ca0",
+          "ms": 282,
+          "bytes": 21578,
+          "sha256": "d9413eccd716f597722f3f731e67d379f647216fde41f1bf614af45dc327afa4",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -559,18 +2278,18 @@
           "file": "frames/99bd1846-c0e4-4689-b077-63d2525bf1aa-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16217",
+            "content-length": "21578",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.161Z",
+          "fetchedAt": "2026-10-07T11:41:33.037Z",
           "status": 200,
-          "ms": 136,
-          "bytes": 14441,
-          "sha256": "a8f9253db1f0dfe93c1598998010603d22e23730358a3c24bd32f7a7e3098282",
+          "ms": 346,
+          "bytes": 21095,
+          "sha256": "f44d7dcf6d350cc0b978e9f2d161b4060c382b90ea0b3d4c53544f9674eeaa4f",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -578,18 +2297,18 @@
           "file": "frames/99bd1846-c0e4-4689-b077-63d2525bf1aa-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "14441",
+            "content-length": "21095",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.323Z",
+          "fetchedAt": "2026-10-07T11:41:37.564Z",
           "status": 200,
-          "ms": 136,
-          "bytes": 17886,
-          "sha256": "513a126193f02654bee9fa563e448f815ede22f438b2917f9ac7f73bd162f466",
+          "ms": 165,
+          "bytes": 20998,
+          "sha256": "fe38d19722b550b876f8066dbffcc96dcf69834994cbf3dd1bf495279ee30eba",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -597,9 +2316,9 @@
           "file": "frames/99bd1846-c0e4-4689-b077-63d2525bf1aa-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "17886",
+            "content-length": "20998",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
           }
         }
       ]
@@ -629,15 +2348,15 @@
         "height": 480,
         "width": 720
       },
-      "avgBytes": 37792,
+      "avgBytes": 21619,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.758Z",
+          "fetchedAt": "2026-10-07T11:41:18.189Z",
           "status": 200,
-          "ms": 407,
-          "bytes": 37633,
-          "sha256": "e0daef9b0841949f71febfdee473f0d17b388d008ef4c5a8b0c8502dcc55e37f",
+          "ms": 513,
+          "bytes": 21624,
+          "sha256": "be3e91dfb894948dbb6a6d855ead8d077778a9d35631a216c1c559181225d252",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -645,18 +2364,18 @@
           "file": "frames/749f7d56-21e8-4716-8efc-624723f5b9a8-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "37633",
+            "content-length": "21624",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.657Z",
+          "fetchedAt": "2026-10-07T11:41:23.471Z",
           "status": 200,
-          "ms": 211,
-          "bytes": 38084,
-          "sha256": "2812ddfe058247d7b2d12d9a45c1aec4a149658f3d3ebb53eb2d763f9b0db3b0",
+          "ms": 659,
+          "bytes": 22527,
+          "sha256": "802d3dd4ca952136f5eb7221a42a39583f51350a39519f8bf9af90055679b1d5",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -664,18 +2383,18 @@
           "file": "frames/749f7d56-21e8-4716-8efc-624723f5b9a8-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "38084",
+            "content-length": "22527",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.514Z",
+          "fetchedAt": "2026-10-07T11:41:28.402Z",
           "status": 200,
-          "ms": 394,
-          "bytes": 36257,
-          "sha256": "69e4ae920f2a821017505aea06ebecc82e9d449403fb4100116178d203917b84",
+          "ms": 378,
+          "bytes": 21707,
+          "sha256": "3fd5bd2f9d46a2b7c3abe9f658145db10263b0453738354fb14179573002cb49",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -683,18 +2402,18 @@
           "file": "frames/749f7d56-21e8-4716-8efc-624723f5b9a8-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "36257",
+            "content-length": "21707",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.161Z",
+          "fetchedAt": "2026-10-07T11:41:33.038Z",
           "status": 200,
-          "ms": 137,
-          "bytes": 38924,
-          "sha256": "9f63df49f2f11bef64d44348432bd75a7d499f38c7de9f277ae8c106c42ac273",
+          "ms": 328,
+          "bytes": 21725,
+          "sha256": "a136d538a83578ca8c01f6779d310acb9759f510c6c31ad85c1f94a25cfdcc4c",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -702,18 +2421,18 @@
           "file": "frames/749f7d56-21e8-4716-8efc-624723f5b9a8-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "38924",
+            "content-length": "21725",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.323Z",
+          "fetchedAt": "2026-10-07T11:41:37.565Z",
           "status": 200,
-          "ms": 135,
-          "bytes": 38061,
-          "sha256": "3183b086732695ae2057ad63343e6062eb05c3d21e066a2b6243c7bb19b6bdd8",
+          "ms": 166,
+          "bytes": 20511,
+          "sha256": "7e1308d6d0fe74cd36df109809fb06a15bc94023eb28317dfe974287a40602eb",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -721,9 +2440,9 @@
           "file": "frames/749f7d56-21e8-4716-8efc-624723f5b9a8-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "38061",
+            "content-length": "20511",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
           }
         }
       ]
@@ -748,20 +2467,20 @@
       },
       "fetchedOk": 5,
       "attempted": 5,
-      "distinctFrames": 5,
+      "distinctFrames": 4,
       "imageSize": {
         "height": 240,
         "width": 352
       },
-      "avgBytes": 17079,
+      "avgBytes": 21165,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.759Z",
+          "fetchedAt": "2026-10-07T11:41:18.190Z",
           "status": 200,
-          "ms": 417,
-          "bytes": 17153,
-          "sha256": "73bf16e74798ce12dd7509014a430517b42075419bb76dc4a5cb393c77e0196f",
+          "ms": 543,
+          "bytes": 21716,
+          "sha256": "48e7af6869a7271d40922a38e1fc1f3afe2916368aaa0e886dafbe7ae710394d",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -769,18 +2488,18 @@
           "file": "frames/6728d273-d20b-44b7-868a-d54c00e50fab-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "17153",
+            "content-length": "21716",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.658Z",
+          "fetchedAt": "2026-10-07T11:41:23.472Z",
           "status": 200,
-          "ms": 202,
-          "bytes": 17138,
-          "sha256": "85ef2f7b9b5bbe686a6e8b01b56005c97dca7099847103a5af2cac776ef87aeb",
+          "ms": 662,
+          "bytes": 21628,
+          "sha256": "5889899e574c295ab5328f8317e5c0f653f7f101e321fb15e3567d1c2f7f3bbb",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -788,18 +2507,18 @@
           "file": "frames/6728d273-d20b-44b7-868a-d54c00e50fab-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "17138",
+            "content-length": "21628",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.515Z",
+          "fetchedAt": "2026-10-07T11:41:28.403Z",
           "status": 200,
-          "ms": 405,
-          "bytes": 17376,
-          "sha256": "67820f5791d179a421c38c8f96d83c857448e65dcf47ae1ab3d14eb9da3a994c",
+          "ms": 365,
+          "bytes": 20687,
+          "sha256": "92c7abba65bd01e775972cb0305ff07faa43755766f9c0e5727fadd39f00ecd0",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -807,18 +2526,18 @@
           "file": "frames/6728d273-d20b-44b7-868a-d54c00e50fab-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "17376",
+            "content-length": "20687",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.162Z",
+          "fetchedAt": "2026-10-07T11:41:33.038Z",
           "status": 200,
-          "ms": 135,
-          "bytes": 16794,
-          "sha256": "a32e3adcda8fc9ebea6a2596c67e12c7b49e304cec294aee90dd7105aca0c56c",
+          "ms": 346,
+          "bytes": 20687,
+          "sha256": "92c7abba65bd01e775972cb0305ff07faa43755766f9c0e5727fadd39f00ecd0",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -826,18 +2545,18 @@
           "file": "frames/6728d273-d20b-44b7-868a-d54c00e50fab-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16794",
+            "content-length": "20687",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.324Z",
+          "fetchedAt": "2026-10-07T11:41:37.565Z",
           "status": 200,
-          "ms": 133,
-          "bytes": 16932,
-          "sha256": "84db24d5f4c653673c8cc42a26adfe5208b98afaa8861783f53c79ac96a9c468",
+          "ms": 174,
+          "bytes": 21105,
+          "sha256": "ad8461f027a74957e790e19601ca84109697231e27c9c55b1d94f76b9b50d843",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -845,9 +2564,9 @@
           "file": "frames/6728d273-d20b-44b7-868a-d54c00e50fab-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16932",
+            "content-length": "21105",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
           }
         }
       ]
@@ -877,15 +2596,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 20407,
+      "avgBytes": 26881,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.760Z",
+          "fetchedAt": "2026-10-07T11:41:18.191Z",
           "status": 200,
-          "ms": 407,
-          "bytes": 20628,
-          "sha256": "ae23d535024032c590198a0d714c68d25bf6f8770af430b0ada0852d0306d8e0",
+          "ms": 595,
+          "bytes": 26689,
+          "sha256": "b4588fa3eca61834a82a252437c4ed42df8c31bd40d13e33ff9dfa8a3dd8d869",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -893,18 +2612,18 @@
           "file": "frames/ad3df063-d5d6-458c-84e7-1242060649cf-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20628",
+            "content-length": "26689",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.658Z",
+          "fetchedAt": "2026-10-07T11:41:23.472Z",
           "status": 200,
-          "ms": 204,
-          "bytes": 20510,
-          "sha256": "e046fb2973fd7886bd3e6a84aa708dba387bf94843f1a9431ac8b4b6795df72c",
+          "ms": 669,
+          "bytes": 27281,
+          "sha256": "8d3e3eee7d0174e96c222cbe14a652f57d3f120c2e902ed26f3bca57d30bc019",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -912,18 +2631,18 @@
           "file": "frames/ad3df063-d5d6-458c-84e7-1242060649cf-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20510",
+            "content-length": "27281",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.515Z",
+          "fetchedAt": "2026-10-07T11:41:28.403Z",
           "status": 200,
-          "ms": 411,
-          "bytes": 20619,
-          "sha256": "df8eb2288b0f0bc7c13e8614a35736286e8a7e0f89a8c13b762f359e792aa723",
+          "ms": 463,
+          "bytes": 26729,
+          "sha256": "71f5591a1838d643975eb594a009f203acc34aaade158db23758f4e6148f908a",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -931,18 +2650,18 @@
           "file": "frames/ad3df063-d5d6-458c-84e7-1242060649cf-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20619",
+            "content-length": "26729",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.163Z",
+          "fetchedAt": "2026-10-07T11:41:33.039Z",
           "status": 200,
-          "ms": 136,
-          "bytes": 20603,
-          "sha256": "b220b2b3ba4097babe49c2058a44366e6182367d794a74287b1b13bf13eeecb8",
+          "ms": 444,
+          "bytes": 26507,
+          "sha256": "8f0793c738e3d2f8e2114420998320b0caeddcc11259d8c1d4dda7e6216e0452",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -950,18 +2669,18 @@
           "file": "frames/ad3df063-d5d6-458c-84e7-1242060649cf-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20603",
+            "content-length": "26507",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.324Z",
+          "fetchedAt": "2026-10-07T11:41:37.566Z",
           "status": 200,
-          "ms": 131,
-          "bytes": 19674,
-          "sha256": "00cbde20bc5855631281f069399d7881e0c069720c8dfa5847a62e94de182a2f",
+          "ms": 152,
+          "bytes": 27201,
+          "sha256": "d679047edced5000b8cac2874e9d28c134bb4d9e34bdef6c5a3a4faf356ca1e6",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -969,9 +2688,9 @@
           "file": "frames/ad3df063-d5d6-458c-84e7-1242060649cf-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "19674",
+            "content-length": "27201",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
           }
         }
       ]
@@ -1001,15 +2720,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 24691,
+      "avgBytes": 27866,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.761Z",
+          "fetchedAt": "2026-10-07T11:41:18.192Z",
           "status": 200,
-          "ms": 405,
-          "bytes": 24551,
-          "sha256": "772f64ece3c7a23298eb7f9ff377df8f0ae0395beac871e6b7a660fc46830a9f",
+          "ms": 607,
+          "bytes": 27971,
+          "sha256": "806bd6c1714a268e0303b40459ae7e80263671a68dc3d41eaf600cefbb55c6eb",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1017,18 +2736,18 @@
           "file": "frames/d7d6c994-492d-4f3a-895e-745596825fb4-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "24551",
+            "content-length": "27971",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.659Z",
+          "fetchedAt": "2026-10-07T11:41:23.473Z",
           "status": 200,
-          "ms": 217,
-          "bytes": 24640,
-          "sha256": "6f080f6ebaaa77aef450b69001fc1922a0bb8439da8d3a3cfd1370001f8236e8",
+          "ms": 674,
+          "bytes": 27900,
+          "sha256": "61a79efc5dacc8fd0f5d327ef9463b06fdfc5d2ed92c378203d5e501b88e9e8f",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1036,18 +2755,18 @@
           "file": "frames/d7d6c994-492d-4f3a-895e-745596825fb4-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "24640",
+            "content-length": "27900",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.516Z",
+          "fetchedAt": "2026-10-07T11:41:28.404Z",
           "status": 200,
-          "ms": 394,
-          "bytes": 25739,
-          "sha256": "04fb114f63a8978233950e207c8193dd4eaaaa54e18b4508c4a84e4aee4f3030",
+          "ms": 470,
+          "bytes": 27715,
+          "sha256": "51085a04f3579e450455e34d4ee3f12515744e319be7d8be461db449fcd938d3",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1055,18 +2774,18 @@
           "file": "frames/d7d6c994-492d-4f3a-895e-745596825fb4-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "25739",
+            "content-length": "27715",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.163Z",
+          "fetchedAt": "2026-10-07T11:41:33.039Z",
           "status": 200,
-          "ms": 136,
-          "bytes": 24429,
-          "sha256": "c7e7eed1f7fbe656fff85655547a3586a4858b7ac3a2e14f6747756088df28ce",
+          "ms": 438,
+          "bytes": 28021,
+          "sha256": "8bcf59dd5f9d1b2771f36c073ef1d1c1d0ab0d50242484f560f45ebbb6eb457b",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1074,18 +2793,18 @@
           "file": "frames/d7d6c994-492d-4f3a-895e-745596825fb4-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "24429",
+            "content-length": "28021",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.325Z",
+          "fetchedAt": "2026-10-07T11:41:37.566Z",
           "status": 200,
-          "ms": 133,
-          "bytes": 24097,
-          "sha256": "c174438bd2a4c18ccd89c8ac6c8d1eedcd8826c967238e1fd73f1fcac338c575",
+          "ms": 181,
+          "bytes": 27722,
+          "sha256": "98952cce9139b576f8c6cef2f93c42a77aa5b00b2485a46fd03807a4fe4c2ea6",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1093,9 +2812,9 @@
           "file": "frames/d7d6c994-492d-4f3a-895e-745596825fb4-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "24097",
+            "content-length": "27722",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
           }
         }
       ]
@@ -1125,15 +2844,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 20181,
+      "avgBytes": 18399,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.762Z",
+          "fetchedAt": "2026-10-07T11:41:18.192Z",
           "status": 200,
-          "ms": 584,
-          "bytes": 20064,
-          "sha256": "25b957403f808afb6e2e83c7a3f4cc416cb750aa6a4e760efb2e8740ae6c4309",
+          "ms": 835,
+          "bytes": 18757,
+          "sha256": "b01c33e58c21e198a52371d76a5c8eb840fd6fd7285bb9bcd324e9b77f021343",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1141,18 +2860,18 @@
           "file": "frames/d8e022cc-c262-45ac-a939-8e86e20853fd-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20064",
+            "content-length": "18757",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.660Z",
+          "fetchedAt": "2026-10-07T11:41:23.473Z",
           "status": 200,
-          "ms": 208,
-          "bytes": 20320,
-          "sha256": "e7e2dc734ee90f8b51917196db485e5402742d2347a1b53c0836469f752053c2",
+          "ms": 785,
+          "bytes": 18496,
+          "sha256": "533a047cfb863942636e0ac358e085d0c1c9b1d08b62d98eecfd088cea1079c6",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1160,18 +2879,18 @@
           "file": "frames/d8e022cc-c262-45ac-a939-8e86e20853fd-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20320",
+            "content-length": "18496",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.516Z",
+          "fetchedAt": "2026-10-07T11:41:28.404Z",
           "status": 200,
-          "ms": 398,
-          "bytes": 20164,
-          "sha256": "134096cf34bc092e1bb67c9e0282b0dbe9da6eb3211a3148de145774e940c915",
+          "ms": 574,
+          "bytes": 18399,
+          "sha256": "3c817104e2189cc023d51f80f2064d1f24cc4b21ff5b9f1c27d88ff6c51f2d76",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1179,18 +2898,18 @@
           "file": "frames/d8e022cc-c262-45ac-a939-8e86e20853fd-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20164",
+            "content-length": "18399",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.164Z",
+          "fetchedAt": "2026-10-07T11:41:33.040Z",
           "status": 200,
-          "ms": 141,
-          "bytes": 20236,
-          "sha256": "8bdcc48c224d249413bc2f1b20d1628d77bcb69be32256a1e1fd63b799192369",
+          "ms": 445,
+          "bytes": 18224,
+          "sha256": "9cdf5dc1128bc7728e48027461a83294e3d8f122fcf0d1d5079bff22af73d58d",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1198,18 +2917,18 @@
           "file": "frames/d8e022cc-c262-45ac-a939-8e86e20853fd-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20236",
+            "content-length": "18224",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.326Z",
+          "fetchedAt": "2026-10-07T11:41:37.567Z",
           "status": 200,
-          "ms": 152,
-          "bytes": 20120,
-          "sha256": "809a7795118059173f3dc69db9f98671bf4456f923f8018c7a46f443eef17a32",
+          "ms": 384,
+          "bytes": 18121,
+          "sha256": "d82a637e436cebaed136c3c1d218b69d47d7c83ed726ef38139eb3b78019b735",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1217,9 +2936,9 @@
           "file": "frames/d8e022cc-c262-45ac-a939-8e86e20853fd-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "20120",
+            "content-length": "18121",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
           }
         }
       ]
@@ -1249,15 +2968,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 13722,
+      "avgBytes": 20916,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.762Z",
+          "fetchedAt": "2026-10-07T11:41:18.193Z",
           "status": 200,
-          "ms": 582,
-          "bytes": 12257,
-          "sha256": "f4f63525053c3e72a1d6cb8561c886650fce08236a1bd8d33a406f34bafc5c14",
+          "ms": 828,
+          "bytes": 21147,
+          "sha256": "3b2b3fe34d3e81ddd34e2199353ca0aae2bdacdc5ca359d826748829f706b089",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1265,18 +2984,18 @@
           "file": "frames/936d479d-402f-468a-b1c6-b2c2a68a0b4c-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "12257",
+            "content-length": "21147",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:18 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.660Z",
+          "fetchedAt": "2026-10-07T11:41:23.473Z",
           "status": 200,
-          "ms": 211,
-          "bytes": 11594,
-          "sha256": "aabf5bfb49da113dee9ab0a4324fd56039eeb800663e861d07d12ad150737e40",
+          "ms": 787,
+          "bytes": 20684,
+          "sha256": "ad589b121bc9e961acc7620e5ca5b7ae106bc23ed08276570b4d0277a6b04ade",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1284,18 +3003,18 @@
           "file": "frames/936d479d-402f-468a-b1c6-b2c2a68a0b4c-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "11594",
+            "content-length": "20684",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:35 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.517Z",
+          "fetchedAt": "2026-10-07T11:41:28.405Z",
           "status": 200,
-          "ms": 394,
-          "bytes": 13168,
-          "sha256": "2e8e99c609f641ff34beccbc778caba1b0000adffc5589fb322702b1b57b4df3",
+          "ms": 548,
+          "bytes": 21593,
+          "sha256": "aeabcc1a1e514c58a5ea0604df26854ecd55a1722ea7592326ed029bc8fd32ac",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1303,18 +3022,18 @@
           "file": "frames/936d479d-402f-468a-b1c6-b2c2a68a0b4c-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "13168",
+            "content-length": "21593",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.164Z",
+          "fetchedAt": "2026-10-07T11:41:33.040Z",
           "status": 200,
-          "ms": 150,
-          "bytes": 16523,
-          "sha256": "52545aaa14c1fce7f8f8dfe6746f3c5b7203211aa0028a4bbcea12ddd7dde0e1",
+          "ms": 442,
+          "bytes": 20419,
+          "sha256": "e2d2c11406e71f315826a7ae4c0ccd2e72ade250e8ae602ed4c26895280680e8",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1322,18 +3041,18 @@
           "file": "frames/936d479d-402f-468a-b1c6-b2c2a68a0b4c-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16523",
+            "content-length": "20419",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.326Z",
+          "fetchedAt": "2026-10-07T11:41:37.568Z",
           "status": 200,
-          "ms": 120,
-          "bytes": 15070,
-          "sha256": "0055fe35c62566e28735b00ffb7d4d88d2aca484f08c25abc83f1673bd41c79b",
+          "ms": 381,
+          "bytes": 20737,
+          "sha256": "2607e2ab17fe3fed448b495fd1564587f9691d00f8f0ca13c5e45be9d198c268",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1341,9 +3060,9 @@
           "file": "frames/936d479d-402f-468a-b1c6-b2c2a68a0b4c-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "15070",
+            "content-length": "20737",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:37 GMT"
           }
         }
       ]
@@ -1373,15 +3092,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 14562,
+      "avgBytes": 22094,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.763Z",
+          "fetchedAt": "2026-10-07T11:41:18.194Z",
           "status": 200,
-          "ms": 665,
-          "bytes": 12940,
-          "sha256": "74e1ddab01fd4e10883ca32dbc6be8dbc8a72439f645f160c82ffb5ba8542766",
+          "ms": 1067,
+          "bytes": 22297,
+          "sha256": "63c7072974aa5236758670545ad8c7472db69deefc39e26dcabcb8143096e8a1",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1389,18 +3108,18 @@
           "file": "frames/9f118098-cee3-4964-8630-b932c94f70a3-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "12940",
+            "content-length": "22297",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:19 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.661Z",
+          "fetchedAt": "2026-10-07T11:41:23.474Z",
           "status": 200,
-          "ms": 434,
-          "bytes": 14639,
-          "sha256": "b91b9df37ac697199d3a3e5aef5d3cfdcbfccbc8cdb35dc793a81f6dcd2ce1d2",
+          "ms": 812,
+          "bytes": 21921,
+          "sha256": "36451f438fe528b8ce84ad818f7cf2b69d984913773d2761de373b5b0d2e817a",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1408,18 +3127,18 @@
           "file": "frames/9f118098-cee3-4964-8630-b932c94f70a3-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "14639",
+            "content-length": "21921",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:36 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.517Z",
+          "fetchedAt": "2026-10-07T11:41:28.405Z",
           "status": 200,
-          "ms": 418,
-          "bytes": 14706,
-          "sha256": "83a5ee8ee8b6f0789561716dab0a088d03645da15557bc550037a8cd9f7c532b",
+          "ms": 550,
+          "bytes": 22136,
+          "sha256": "504dbffabef1d3af133e7c98a2d191d681fd0d6641c33172d2b229fbd32e1197",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1427,18 +3146,18 @@
           "file": "frames/9f118098-cee3-4964-8630-b932c94f70a3-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "14706",
+            "content-length": "22136",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.165Z",
+          "fetchedAt": "2026-10-07T11:41:33.040Z",
           "status": 200,
-          "ms": 135,
-          "bytes": 15073,
-          "sha256": "d9ee1266a78fecd2bc9a30a14e319c81fa195afcbf562e82606d3236b3105e8b",
+          "ms": 459,
+          "bytes": 22221,
+          "sha256": "7a947ee7da7da97bab0527e1c95f905fc596b37f95e09c4f868fbce32490aef9",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1446,18 +3165,18 @@
           "file": "frames/9f118098-cee3-4964-8630-b932c94f70a3-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "15073",
+            "content-length": "22221",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.327Z",
+          "fetchedAt": "2026-10-07T11:41:37.568Z",
           "status": 200,
-          "ms": 130,
-          "bytes": 15451,
-          "sha256": "67827d890276b4377575a7fc80d4534ecef5ec052f5984386d7243bc19b09777",
+          "ms": 591,
+          "bytes": 21893,
+          "sha256": "582ecdacc8ede49bee298d6e6f1cf0369e131c3fca09911af18b657bed9c4c20",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1465,9 +3184,9 @@
           "file": "frames/9f118098-cee3-4964-8630-b932c94f70a3-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "15451",
+            "content-length": "21893",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -1497,15 +3216,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 13342,
+      "avgBytes": 15923,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.763Z",
+          "fetchedAt": "2026-10-07T11:41:18.194Z",
           "status": 200,
-          "ms": 680,
-          "bytes": 13624,
-          "sha256": "82b533fa159bc19fe4e3879a677f9509f768bcddd908ce7fc036cfd351a13437",
+          "ms": 1063,
+          "bytes": 15904,
+          "sha256": "9939328dcf09e7cc005cf28e6ad163628c0a25244c04326866c7382a7084c266",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1513,18 +3232,18 @@
           "file": "frames/db028e65-b4b4-4f83-a427-6be6cb3f2ace-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "13624",
+            "content-length": "15904",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:19 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.661Z",
+          "fetchedAt": "2026-10-07T11:41:23.474Z",
           "status": 200,
-          "ms": 430,
-          "bytes": 13231,
-          "sha256": "50699657dc9055b305d0892bbf00551ef90fa5f3e41a4d0334fa81dc29bab27e",
+          "ms": 773,
+          "bytes": 15814,
+          "sha256": "84be3313d66b61b7b2f663b0d112c04dc830ef5e89fa34d0c0cfcfbcdd19a9e3",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1532,18 +3251,18 @@
           "file": "frames/db028e65-b4b4-4f83-a427-6be6cb3f2ace-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "13231",
+            "content-length": "15814",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:36 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.518Z",
+          "fetchedAt": "2026-10-07T11:41:28.406Z",
           "status": 200,
-          "ms": 410,
-          "bytes": 13238,
-          "sha256": "f64419880aefcd21abe8abae270296d1912f95a0b8b97b91e6e655712412a11f",
+          "ms": 569,
+          "bytes": 16102,
+          "sha256": "050a3d736d20596c01fdc62f0158adeb90ab85d71cbf04cd9b909287a66a92a9",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1551,18 +3270,18 @@
           "file": "frames/db028e65-b4b4-4f83-a427-6be6cb3f2ace-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "13238",
+            "content-length": "16102",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.165Z",
+          "fetchedAt": "2026-10-07T11:41:33.041Z",
           "status": 200,
-          "ms": 133,
-          "bytes": 13064,
-          "sha256": "f4f497199131f0f2a82ef76925fc1ae378a75b5b5eb74e7a341ecf8c0ea8ec9a",
+          "ms": 458,
+          "bytes": 15924,
+          "sha256": "bdba40d5f88b259d20011da4696a6a215bf0bd36a8d39fa5f84a02b9810ca5ea",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1570,18 +3289,18 @@
           "file": "frames/db028e65-b4b4-4f83-a427-6be6cb3f2ace-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "13064",
+            "content-length": "15924",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.328Z",
+          "fetchedAt": "2026-10-07T11:41:37.569Z",
           "status": 200,
-          "ms": 128,
-          "bytes": 13553,
-          "sha256": "0302945e3a4ef337739208ffa946572d5e0b3f9a9c0f7966f816d6d3eb1938cf",
+          "ms": 598,
+          "bytes": 15872,
+          "sha256": "41ff0f6fb2c5b1485f2c099b4acdd6c401dbff2b2ab93653e65867e5f7bd8ebe",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1589,9 +3308,9 @@
           "file": "frames/db028e65-b4b4-4f83-a427-6be6cb3f2ace-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "13553",
+            "content-length": "15872",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -1621,15 +3340,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 22804,
+      "avgBytes": 25612,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.764Z",
+          "fetchedAt": "2026-10-07T11:41:18.195Z",
           "status": 200,
-          "ms": 857,
-          "bytes": 22968,
-          "sha256": "4c364e050601d30776ef2eaf17130505e8a9021b569dbc68c1e709ff21c0db30",
+          "ms": 1233,
+          "bytes": 25658,
+          "sha256": "546b445930196f2c77bf9a6b3a712da7624beafda84d1b169eba4ec3a8a0ee39",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1637,18 +3356,18 @@
           "file": "frames/e610bc71-9bfb-4a92-928d-ad33cd1b9afd-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "22968",
+            "content-length": "25658",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:19 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.662Z",
+          "fetchedAt": "2026-10-07T11:41:23.474Z",
           "status": 200,
-          "ms": 673,
-          "bytes": 23022,
-          "sha256": "878fafef9f781df6c1c30d805d69762bbf45e3bf37adca77b74b533b4ec18512",
+          "ms": 804,
+          "bytes": 25597,
+          "sha256": "543de25c879bc2ef927b8e1dfa5ed53a13c6172f10795e689527d8533f670ae6",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1656,18 +3375,18 @@
           "file": "frames/e610bc71-9bfb-4a92-928d-ad33cd1b9afd-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "23022",
+            "content-length": "25597",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:36 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.518Z",
+          "fetchedAt": "2026-10-07T11:41:28.406Z",
           "status": 200,
-          "ms": 400,
-          "bytes": 22809,
-          "sha256": "5dc044b3b3dbe3e8c5a2ca65b14f99981ac5184eb935a084b6937f03315c43cc",
+          "ms": 556,
+          "bytes": 25885,
+          "sha256": "f51f2236058223eaeb7205938990ba7ecfaf6d26e0f672b0f8aab89741135b03",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1675,18 +3394,18 @@
           "file": "frames/e610bc71-9bfb-4a92-928d-ad33cd1b9afd-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "22809",
+            "content-length": "25885",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.166Z",
+          "fetchedAt": "2026-10-07T11:41:33.041Z",
           "status": 200,
-          "ms": 146,
-          "bytes": 22580,
-          "sha256": "cd917bc99703cb1ae1a68fd3aeb764082cb81905678158e7c02bbd5235e65f3a",
+          "ms": 472,
+          "bytes": 25699,
+          "sha256": "855ed1e1463d1a68663c89920e25ecf544e78ca14812224c782193092678b0b7",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1694,18 +3413,18 @@
           "file": "frames/e610bc71-9bfb-4a92-928d-ad33cd1b9afd-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "22580",
+            "content-length": "25699",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.328Z",
+          "fetchedAt": "2026-10-07T11:41:37.569Z",
           "status": 200,
-          "ms": 132,
-          "bytes": 22641,
-          "sha256": "90b9500143d0f16a8e11d6f40cfb340891b185b881a32403aed6a39e4b4c241f",
+          "ms": 583,
+          "bytes": 25222,
+          "sha256": "74a2c926f04ccb71ff55320c47487ac7f79e3d144668cb2ffbe9917d06c3a22a",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -1713,9 +3432,9 @@
           "file": "frames/e610bc71-9bfb-4a92-928d-ad33cd1b9afd-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "22641",
+            "content-length": "25222",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -1745,15 +3464,15 @@
         "height": 480,
         "width": 720
       },
-      "avgBytes": 17066,
+      "avgBytes": 40451,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.764Z",
+          "fetchedAt": "2026-10-07T11:41:18.195Z",
           "status": 200,
-          "ms": 861,
-          "bytes": 17169,
-          "sha256": "349920d92efc21ece41ea968da3e9c4249cc66336c7c1510f1e0a38316db5860",
+          "ms": 1242,
+          "bytes": 37937,
+          "sha256": "a11de4dd8fdc5c13bf16a5da912718a5a1dc550a9ba86a8c901a92f74f6f797a",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1761,18 +3480,18 @@
           "file": "frames/4302c1d7-48aa-45a8-a9cc-93e3132c1530-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "17169",
+            "content-length": "37937",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:19 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.662Z",
+          "fetchedAt": "2026-10-07T11:41:23.475Z",
           "status": 200,
-          "ms": 683,
-          "bytes": 16466,
-          "sha256": "d525b46f7b164355bfc85e8e10ec6ee9ba68f9335a405c9220f463b0e790e6b5",
+          "ms": 786,
+          "bytes": 39846,
+          "sha256": "19b7067efafd767a7413ecab678dcd637650f9c3d34ca11ea5fda73185206d44",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1780,18 +3499,18 @@
           "file": "frames/4302c1d7-48aa-45a8-a9cc-93e3132c1530-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16466",
+            "content-length": "39846",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:36 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.519Z",
+          "fetchedAt": "2026-10-07T11:41:28.407Z",
           "status": 200,
-          "ms": 390,
-          "bytes": 16685,
-          "sha256": "72431543312d33c0c31361c5559a37cfa7b36eebd69bc5b933a8271c9d0ff7d4",
+          "ms": 579,
+          "bytes": 36755,
+          "sha256": "3dc18e6ff2803ab6fb97e3260747615eced02f052ace312cd0d30ca50963b8c4",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1799,18 +3518,18 @@
           "file": "frames/4302c1d7-48aa-45a8-a9cc-93e3132c1530-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16685",
+            "content-length": "36755",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:40 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.166Z",
+          "fetchedAt": "2026-10-07T11:41:33.041Z",
           "status": 200,
-          "ms": 151,
-          "bytes": 16712,
-          "sha256": "f052577b2486625f065aad77c0de6274f2db8fd8b505e944f7799fe8f04695c3",
+          "ms": 486,
+          "bytes": 43562,
+          "sha256": "d37cb4a6f9bcee677ab0496e56e43d4c9eef312dd62383d71d62029b9c5f4a25",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1818,18 +3537,18 @@
           "file": "frames/4302c1d7-48aa-45a8-a9cc-93e3132c1530-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16712",
+            "content-length": "43562",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.329Z",
+          "fetchedAt": "2026-10-07T11:41:37.569Z",
           "status": 200,
-          "ms": 148,
-          "bytes": 18296,
-          "sha256": "702e87855f4d9c8e7707df68462458719131144929b59890f80cf90063361087",
+          "ms": 598,
+          "bytes": 44153,
+          "sha256": "230e2924f11af3028bfb8edd44d5887b31639c6a9ff98dd4a91083b69be0a215",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1837,9 +3556,9 @@
           "file": "frames/4302c1d7-48aa-45a8-a9cc-93e3132c1530-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "18296",
+            "content-length": "44153",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -1869,15 +3588,15 @@
         "height": 480,
         "width": 720
       },
-      "avgBytes": 28830,
+      "avgBytes": 46915,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.765Z",
+          "fetchedAt": "2026-10-07T11:41:18.196Z",
           "status": 200,
-          "ms": 886,
-          "bytes": 28229,
-          "sha256": "7d8798f30aff6e42fadb3b210a97158114525a0f683185fa0e811118ee44b34c",
+          "ms": 1225,
+          "bytes": 46073,
+          "sha256": "7365cdd71721a92ca40b99c181114d037d2dd52e0cbae69e39d596624164253f",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1885,18 +3604,18 @@
           "file": "frames/c8b15922-4262-459a-85d5-17442ec9c54f-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "28229",
+            "content-length": "46073",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:19 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.663Z",
+          "fetchedAt": "2026-10-07T11:41:23.475Z",
           "status": 200,
-          "ms": 834,
-          "bytes": 29135,
-          "sha256": "aa83bfe146061831cd298d0588235a4bfa4e2180061f458cb25940f5e6553d71",
+          "ms": 894,
+          "bytes": 47345,
+          "sha256": "95c019911266ae14e9bb815eaa11a250cf363aa771d6e25292c6a59bc025c219",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1904,18 +3623,18 @@
           "file": "frames/c8b15922-4262-459a-85d5-17442ec9c54f-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "29135",
+            "content-length": "47345",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:36 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.519Z",
+          "fetchedAt": "2026-10-07T11:41:28.407Z",
           "status": 200,
-          "ms": 639,
-          "bytes": 30623,
-          "sha256": "0ececc824ed41f43ddc4d99086166e66463268a35e69028f17f33de68ca4748c",
+          "ms": 594,
+          "bytes": 46996,
+          "sha256": "84885730b6ad9f7512ef42c994a4bcd8360d039c3654d55d9c861189fa644c06",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1923,18 +3642,18 @@
           "file": "frames/c8b15922-4262-459a-85d5-17442ec9c54f-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "30623",
+            "content-length": "46996",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:41 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.167Z",
+          "fetchedAt": "2026-10-07T11:41:33.042Z",
           "status": 200,
-          "ms": 138,
-          "bytes": 27825,
-          "sha256": "28b94b623ddb1054203d82ca795afa9a447baeb7e0ad5f2f21b5d60609e4fa64",
+          "ms": 466,
+          "bytes": 47069,
+          "sha256": "670d753b43862c58c3a7cae2f11281a155667984de037ee793a5c725a90fee62",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1942,18 +3661,18 @@
           "file": "frames/c8b15922-4262-459a-85d5-17442ec9c54f-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "27825",
+            "content-length": "47069",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.329Z",
+          "fetchedAt": "2026-10-07T11:41:37.570Z",
           "status": 200,
-          "ms": 130,
-          "bytes": 28337,
-          "sha256": "859fbce3ac58f7a0ebcf14ab6dac96057983322665652fa7e111b4008b18820c",
+          "ms": 636,
+          "bytes": 47094,
+          "sha256": "d3c8fb9a75b84dcf0fe846f58c1e0a1737cf87555fbc23cc7f1a54ee3a18dbf2",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -1961,9 +3680,9 @@
           "file": "frames/c8b15922-4262-459a-85d5-17442ec9c54f-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "28337",
+            "content-length": "47094",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -1993,15 +3712,15 @@
         "height": 480,
         "width": 720
       },
-      "avgBytes": 30340,
+      "avgBytes": 46411,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:30.765Z",
+          "fetchedAt": "2026-10-07T11:41:18.196Z",
           "status": 200,
-          "ms": 889,
-          "bytes": 30087,
-          "sha256": "bef9e35ed1717394b81402946e5e969c866797639b35ac9e5558e0e750cb5afe",
+          "ms": 1213,
+          "bytes": 44845,
+          "sha256": "1075e47e922301efb32c839f2fc30d3bb9a57a06645b65eacd57749b1a9f9de7",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -2009,18 +3728,18 @@
           "file": "frames/b9ba6a87-0e0b-4c5a-ad6a-7ead399e0864-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "30087",
+            "content-length": "44845",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:31 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:19 GMT"
           }
         },
         {
           "n": 1,
-          "fetchedAt": "2026-10-07T04:26:35.663Z",
+          "fetchedAt": "2026-10-07T11:41:23.475Z",
           "status": 200,
-          "ms": 848,
-          "bytes": 29601,
-          "sha256": "525a506f7bac8175081a968f35393d4c6ef5e63258d1697b774c6e51f85e674c",
+          "ms": 891,
+          "bytes": 46475,
+          "sha256": "f5ed4d7ab5c5b20740de9ae5ad00d427df231111d7d7194736faa80bb702fd73",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -2028,18 +3747,18 @@
           "file": "frames/b9ba6a87-0e0b-4c5a-ad6a-7ead399e0864-1.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "29601",
+            "content-length": "46475",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:36 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:24 GMT"
           }
         },
         {
           "n": 2,
-          "fetchedAt": "2026-10-07T04:26:40.519Z",
+          "fetchedAt": "2026-10-07T11:41:28.407Z",
           "status": 200,
-          "ms": 629,
-          "bytes": 30037,
-          "sha256": "72a9d41b060b27706cc45f8479ea4a79587e807eb4f894f3466cb48bed12e0c4",
+          "ms": 567,
+          "bytes": 46569,
+          "sha256": "85665622a5638214f385686e25a1d8bd77be5259c980ed3a8298126db61f946d",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -2047,18 +3766,18 @@
           "file": "frames/b9ba6a87-0e0b-4c5a-ad6a-7ead399e0864-2.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "30037",
+            "content-length": "46569",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:41 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:28 GMT"
           }
         },
         {
           "n": 3,
-          "fetchedAt": "2026-10-07T04:26:45.167Z",
+          "fetchedAt": "2026-10-07T11:41:33.042Z",
           "status": 200,
-          "ms": 152,
-          "bytes": 30765,
-          "sha256": "04dfd946606f42edf7b3b5f8afae558464fff1c7e1334702807180e8b1e9a204",
+          "ms": 458,
+          "bytes": 47144,
+          "sha256": "e834f8df81bd3eed27d21263529a45045643a585d448a80404b8dc2eecb13973",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -2066,18 +3785,18 @@
           "file": "frames/b9ba6a87-0e0b-4c5a-ad6a-7ead399e0864-3.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "30765",
+            "content-length": "47144",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:45 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:33 GMT"
           }
         },
         {
           "n": 4,
-          "fetchedAt": "2026-10-07T04:26:49.330Z",
+          "fetchedAt": "2026-10-07T11:41:37.571Z",
           "status": 200,
-          "ms": 150,
-          "bytes": 31210,
-          "sha256": "1c95f7d1f1e40829345dc1ae8d6fd8cae2192fa6bac06a4f2a44c78ad9db547f",
+          "ms": 615,
+          "bytes": 47024,
+          "sha256": "f990c861fc54b2e4ef6f2b40c0850e024f0b2c5269bac8baa5417b2d6e2f52e3",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -2085,9 +3804,9 @@
           "file": "frames/b9ba6a87-0e0b-4c5a-ad6a-7ead399e0864-4.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "31210",
+            "content-length": "47024",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2119,15 +3838,15 @@
         "height": 1080,
         "width": 1920
       },
-      "avgBytes": 70031,
+      "avgBytes": 143955,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.482Z",
+          "fetchedAt": "2026-10-07T11:41:38.238Z",
           "status": 200,
-          "ms": 29,
-          "bytes": 70031,
-          "sha256": "b83f9e4f2504823cd4114df7c84fd48c0de3eb37093e2ae7a6f72c36328044b2",
+          "ms": 69,
+          "bytes": 143955,
+          "sha256": "18bc00535f15688aab142224a1a732513b6549b9b2fdc9b843d1362149eaa234",
           "jpeg": {
             "height": 1080,
             "width": 1920
@@ -2135,9 +3854,9 @@
           "file": "frames/ded03849-7c56-43e5-8e82-05b61c175aca-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "70031",
+            "content-length": "143955",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2167,15 +3886,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 12998,
+      "avgBytes": 14106,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.482Z",
+          "fetchedAt": "2026-10-07T11:41:38.238Z",
           "status": 200,
-          "ms": 27,
-          "bytes": 12998,
-          "sha256": "f3ea7ac8c0465389c49db977f86313026d8940822f52ad687a5ae59cc2650935",
+          "ms": 62,
+          "bytes": 14106,
+          "sha256": "22f706752d1d919b5e8162cf45945fb2f304aa9c6ca80c1a1d5b027655532e49",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -2183,9 +3902,9 @@
           "file": "frames/d7910856-9d2c-4142-b8cc-cbd6c4b3acac-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "12998",
+            "content-length": "14106",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2215,15 +3934,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 18449,
+      "avgBytes": 21875,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.482Z",
+          "fetchedAt": "2026-10-07T11:41:38.239Z",
           "status": 200,
-          "ms": 24,
-          "bytes": 18449,
-          "sha256": "966cd059c0edbe9fac029dba5d9e7ea3cfd0ce35de1b551bebf39fa05e43b323",
+          "ms": 56,
+          "bytes": 21875,
+          "sha256": "4a77bf8b4ab26b38c70b8e704a6c8a5c9ac8ad1b6ed695e9170d648bfbbb854e",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -2231,9 +3950,9 @@
           "file": "frames/a9b2501d-062f-43f8-9419-f89faa4f36ba-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "18449",
+            "content-length": "21875",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2263,15 +3982,15 @@
         "height": 480,
         "width": 720
       },
-      "avgBytes": 26288,
+      "avgBytes": 26235,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.482Z",
+          "fetchedAt": "2026-10-07T11:41:38.239Z",
           "status": 200,
-          "ms": 26,
-          "bytes": 26288,
-          "sha256": "eacb8649ee931abe4789eef5c1d06ee0662a6327d337d7bbd51e7866ad3784d5",
+          "ms": 62,
+          "bytes": 26235,
+          "sha256": "0712272f1cf8c57968f6c29a13bf934125f973d823b50b46ac6b8d563d6d51b2",
           "jpeg": {
             "height": 480,
             "width": 720
@@ -2279,9 +3998,9 @@
           "file": "frames/d23ec5fd-f956-4283-975a-623514b001a3-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "26288",
+            "content-length": "26235",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2311,15 +4030,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 12724,
+      "avgBytes": 16124,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.482Z",
+          "fetchedAt": "2026-10-07T11:41:38.239Z",
           "status": 200,
-          "ms": 23,
-          "bytes": 12724,
-          "sha256": "81bfcf4e11106d38d97bd786d29ebdc588ed0ae1f995ca94be42fa74b22de278",
+          "ms": 61,
+          "bytes": 16124,
+          "sha256": "7ecf934330e3fb64764e8d2d53b6dda145c61ffc7898cb9825a9a60adf519cc5",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -2327,9 +4046,9 @@
           "file": "frames/ffae5a99-c403-41aa-9985-0633aee4aeff-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "12724",
+            "content-length": "16124",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2359,15 +4078,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 13874,
+      "avgBytes": 14024,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.482Z",
+          "fetchedAt": "2026-10-07T11:41:38.239Z",
           "status": 200,
-          "ms": 25,
-          "bytes": 13874,
-          "sha256": "a8c83f2eef51914ea16556eaf717893f68ea4bf8b6e1f56b5c416572ecfe9b0d",
+          "ms": 66,
+          "bytes": 14024,
+          "sha256": "683d54604e96ae70f68baba2a585690792cae1e3fb78a917544fb7c1c31e858e",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -2375,9 +4094,9 @@
           "file": "frames/e5f14a79-fe4c-450e-b81e-21d8c9e1ea9b-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "13874",
+            "content-length": "14024",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2407,15 +4126,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 16099,
+      "avgBytes": 18159,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.482Z",
+          "fetchedAt": "2026-10-07T11:41:38.239Z",
           "status": 200,
-          "ms": 24,
-          "bytes": 16099,
-          "sha256": "ee369b72173e13150adc6d4dc37e47d48430879d4449b2efd7cd3ccdb603a7dc",
+          "ms": 57,
+          "bytes": 18159,
+          "sha256": "690587fcb9f28c6a90be10c616085e4b07e0da083c83313d47c37a5ce820eaa3",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -2423,9 +4142,9 @@
           "file": "frames/9cdf1f47-307d-48e8-8627-e77e189b5fed-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "16099",
+            "content-length": "18159",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2455,15 +4174,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 23637,
+      "avgBytes": 27458,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.483Z",
+          "fetchedAt": "2026-10-07T11:41:38.239Z",
           "status": 200,
-          "ms": 24,
-          "bytes": 23637,
-          "sha256": "818a8f690b1b8ed9575170002a5648e90d2c56f2694b57e2f9b10c117536db5b",
+          "ms": 67,
+          "bytes": 27458,
+          "sha256": "612e817eaa4842394e17ea1195f9f7f3065e92102a5bcccbcdd0f7045f5a91f6",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -2471,9 +4190,9 @@
           "file": "frames/b591a4be-a1aa-4978-ab2c-be4a17eb190e-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "23637",
+            "content-length": "27458",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
@@ -2503,15 +4222,15 @@
         "height": 240,
         "width": 352
       },
-      "avgBytes": 17011,
+      "avgBytes": 24128,
       "frames": [
         {
           "n": 0,
-          "fetchedAt": "2026-10-07T04:26:49.483Z",
+          "fetchedAt": "2026-10-07T11:41:38.239Z",
           "status": 200,
-          "ms": 27,
-          "bytes": 17011,
-          "sha256": "c49fea468273f11e5a41af9bb8923b23b7298fa7a68bf5da7ae3168473565571",
+          "ms": 67,
+          "bytes": 24128,
+          "sha256": "5f7b48595da76c0016c2e47e963f18ae7899d1b5c0e35f459cf064402f790516",
           "jpeg": {
             "height": 240,
             "width": 352
@@ -2519,9 +4238,9 @@
           "file": "frames/572b1058-c33a-4de2-8f35-0f3e9e92bc33-0.jpg",
           "headers": {
             "content-type": "image/jpeg",
-            "content-length": "17011",
+            "content-length": "24128",
             "cache-control": "no-store",
-            "date": "Wed, 07 Oct 2026 04:26:49 GMT"
+            "date": "Wed, 07 Oct 2026 11:41:38 GMT"
           }
         }
       ]
